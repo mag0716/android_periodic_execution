@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.neenbedankt.android-apt'
 
-def support_lib_version="25.3.0"
-def leakcanary_version="1.5"
-def permission_dispatcher_version="2.3.2"
+def support_lib_version = "25.3.1"
+def leakcanary_version = "1.5"
+def permission_dispatcher_version = "2.3.2"
+def orma_version = "4.2.4"
 
 android {
     compileSdkVersion 25
@@ -55,12 +55,15 @@ dependencies {
     compile "com.github.hotchemi:permissionsdispatcher:${permission_dispatcher_version}"
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:${permission_dispatcher_version}"
     compile 'com.vanniktech:onactivityresult:0.6.0'
-    apt 'com.vanniktech:onactivityresult-compiler:0.6.0'
+    annotationProcessor 'com.vanniktech:onactivityresult-compiler:0.6.0'
+    compile "com.github.gfx.android.orma:orma:${orma_version}"
+    annotationProcessor "com.github.gfx.android.orma:orma-processor:${orma_version}"
 
     // third party for debug
     debugCompile "com.squareup.leakcanary:leakcanary-android:${leakcanary_version}"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary_version}"
     testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary_version}"
+    debugCompile 'com.facebook.stetho:stetho:1.5.0'
 
     // for test
     testCompile 'junit:junit:4.12'
