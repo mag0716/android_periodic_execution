@@ -3,42 +3,98 @@ package com.github.mag0716.memorytraining.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.github.gfx.android.orma.annotation.Column;
+import com.github.gfx.android.orma.annotation.PrimaryKey;
+import com.github.gfx.android.orma.annotation.Setter;
+import com.github.gfx.android.orma.annotation.Table;
+
 /**
  * Created by mag0716 on 2017/04/30.
  */
+@Table
 public class Memory implements Parcelable {
+
+    public Memory(@Setter long id,
+                  @Setter String question,
+                  @Setter String answer,
+                  @Setter int level,
+                  @Setter int count,
+                  @Setter long nextTrainingDatetime) {
+        this.id = id;
+        this.question = question;
+        this.answer = answer;
+        this.level = level;
+        this.count = count;
+        this.nextTrainingDatetime = nextTrainingDatetime;
+    }
 
     /**
      * ID
      */
-    private long mId;
+    @PrimaryKey(autoincrement = true)
+    @Column
+    private long id;
 
     /**
      * 質問
      */
-    private String mQuestion;
+    @Column
+    private String question;
 
     /**
      * 回答
      */
-    private String mAnswer;
+    @Column
+    private String answer;
 
     /**
      * 訓練レベル
      */
-    private int mLevel;
+    @Column(indexed = true)
+    private int level;
 
     /**
      * 訓練回数
      */
-    private int mCount;
+    @Column
+    private int count;
 
     /**
      * 次回訓練予定日時
      */
-    private long mNextTrainingDatetime;
+    @Column("next_training_datetime")
+    private long nextTrainingDatetime;
+
+    public long getId() {
+        return id;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public long getNextTrainingDatetime() {
+        return nextTrainingDatetime;
+    }
 
     // region Parcelable
+
+    public Memory() {
+    }
+
+    // endregion
 
     @Override
     public int describeContents() {
@@ -47,27 +103,24 @@ public class Memory implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.mId);
-        dest.writeString(this.mQuestion);
-        dest.writeString(this.mAnswer);
-        dest.writeInt(this.mLevel);
-        dest.writeInt(this.mCount);
-        dest.writeLong(this.mNextTrainingDatetime);
+        dest.writeLong(this.id);
+        dest.writeString(this.question);
+        dest.writeString(this.answer);
+        dest.writeInt(this.level);
+        dest.writeInt(this.count);
+        dest.writeLong(this.nextTrainingDatetime);
     }
 
-    public Memory() {
+    protected Memory(Parcel in) {
+        this.id = in.readLong();
+        this.question = in.readString();
+        this.answer = in.readString();
+        this.level = in.readInt();
+        this.count = in.readInt();
+        this.nextTrainingDatetime = in.readLong();
     }
 
-    private Memory(Parcel in) {
-        this.mId = in.readLong();
-        this.mQuestion = in.readString();
-        this.mAnswer = in.readString();
-        this.mLevel = in.readInt();
-        this.mCount = in.readInt();
-        this.mNextTrainingDatetime = in.readLong();
-    }
-
-    public static final Parcelable.Creator<Memory> CREATOR = new Parcelable.Creator<Memory>() {
+    public static final Creator<Memory> CREATOR = new Creator<Memory>() {
         @Override
         public Memory createFromParcel(Parcel source) {
             return new Memory(source);
@@ -78,6 +131,4 @@ public class Memory implements Parcelable {
             return new Memory[size];
         }
     };
-
-    // endregion
 }

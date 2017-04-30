@@ -5,11 +5,16 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.github.gfx.android.orma.AccessThreadConstraint;
 import com.github.mag0716.memorytraining.R;
+import com.github.mag0716.memorytraining.model.Memory;
+import com.github.mag0716.memorytraining.model.OrmaDatabase;
+
+import timber.log.Timber;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -28,6 +33,19 @@ public class ListActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        // TODO: test code
+        OrmaDatabase orma = OrmaDatabase.builder(this)
+                .readOnMainThread(AccessThreadConstraint.NONE)
+                .writeOnMainThread(AccessThreadConstraint.NONE)
+                .build();
+        Memory memory = orma.selectFromMemory().idEq(1L).getOrNull(0);
+        if (memory == null) {
+            Timber.d("create Memory");
+            orma.insertIntoMemory(new Memory(1L, "question", "answer", 0, 0, System.currentTimeMillis()));
+        } else {
+            Timber.d("select Memory : question = %s", memory.getQuestion());
+        }
     }
 
     @Override
