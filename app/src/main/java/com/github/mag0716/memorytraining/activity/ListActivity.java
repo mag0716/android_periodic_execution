@@ -34,18 +34,18 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
-        // TODO: test code
-        OrmaDatabase orma = OrmaDatabase.builder(this)
-                .readOnMainThread(AccessThreadConstraint.NONE)
-                .writeOnMainThread(AccessThreadConstraint.NONE)
-                .build();
-        Memory memory = orma.selectFromMemory().idEq(1L).getOrNull(0);
-        if (memory == null) {
-            Timber.d("create Memory");
-            orma.insertIntoMemory(new Memory(1L, "question", "answer", 0, 0, System.currentTimeMillis()));
-        } else {
-            Timber.d("select Memory : question = %s", memory.getQuestion());
-        }
+//        // TODO: test code
+//        OrmaDatabase orma = OrmaDatabase.builder(this)
+//                .readOnMainThread(AccessThreadConstraint.NONE)
+//                .writeOnMainThread(AccessThreadConstraint.NONE)
+//                .build();
+//        Memory memory = orma.selectFromMemory().idEq(1L).getOrNull(0);
+//        if (memory == null) {
+//            Timber.d("create Memory");
+//            orma.insertIntoMemory(new Memory(1L, "question", "answer", 0, 0, System.currentTimeMillis()));
+//        } else {
+//            Timber.d("select Memory : question = %s", memory.getQuestion());
+//        }
     }
 
     @Override
