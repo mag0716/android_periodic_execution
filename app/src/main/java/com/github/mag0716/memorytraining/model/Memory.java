@@ -8,6 +8,8 @@ import com.github.gfx.android.orma.annotation.PrimaryKey;
 import com.github.gfx.android.orma.annotation.Setter;
 import com.github.gfx.android.orma.annotation.Table;
 
+import lombok.experimental.Accessors;
+
 /**
  * Created by mag0716 on 2017/04/30.
  */
@@ -63,6 +65,7 @@ public class Memory implements Parcelable {
      * 次回訓練予定日時
      */
     @Column("next_training_datetime")
+    @Accessors(fluent = true) @lombok.Setter
     private long nextTrainingDatetime;
 
     public long getId() {

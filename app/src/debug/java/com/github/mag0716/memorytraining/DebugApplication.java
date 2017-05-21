@@ -3,6 +3,7 @@ package com.github.mag0716.memorytraining;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.annimon.stream.Stream;
 import com.facebook.stetho.Stetho;
 import com.github.gfx.android.orma.Inserter;
 import com.github.mag0716.memorytraining.model.Memory;
@@ -57,9 +58,14 @@ public class DebugApplication extends Application {
         JsonAdapter<List<Memory>> adapter = moshi.adapter(Types.newParameterizedType(List.class, Memory.class));
         try {
             try (BufferedSource source = Okio.buffer(Okio.source(getAssets().open("test_data.json")))) {
-                return adapter.fromJson(source);
-
-                // TODO: add next_training_datetime
+                final long trainingDatetime = System.currentTimeMillis();
+                List<Memory> testData = adapter.fromJson(source);
+                if(testData == null) {
+                    throw new IllegalStateException("test_data.json is empty.");
+                }
+                return Stream.of(testData)
+                        .map(memory -> memory.nextTrainingDatetime(trainingDatetime))
+                        .toList();
             }
         } catch (IOException e) {
             throw new IllegalStateException("test_data.json is invalid.");

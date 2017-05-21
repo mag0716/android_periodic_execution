@@ -46,6 +46,9 @@ dependencies {
     implementation "com.android.support:design:${support_lib_version}"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
+    compileOnly "org.projectlombok:lombok:1.16.16"
+    annotationProcessor "org.projectlombok:lombok:1.16.16"
+
     // third party
     implementation 'com.jakewharton.timber:timber:4.5.1'
     implementation "io.reactivex.rxjava2:rxjava:2.0.9"
