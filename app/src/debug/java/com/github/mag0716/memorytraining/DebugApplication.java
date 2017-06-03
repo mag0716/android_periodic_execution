@@ -15,7 +15,6 @@ import com.squareup.moshi.Types;
 import java.io.IOException;
 import java.util.List;
 
-import io.reactivex.CompletableSource;
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -24,6 +23,11 @@ import okio.Okio;
 import timber.log.Timber;
 
 /**
+ * デバッグ用のアプリケーション情報
+ *
+ * Stetho の有効化
+ * デバッグ用の DB 設定
+ *
  * Created by mag0716 on 2017/04/30.
  */
 public class DebugApplication extends Application {
@@ -36,7 +40,7 @@ public class DebugApplication extends Application {
     }
 
     private void initializeOrmaDebug(@NonNull Context context) {
-        if(orma != null) {
+        if (orma != null) {
             throw new IllegalStateException("OrmaDatabase initialized already.");
         }
         orma = OrmaDatabase.builder(context)
@@ -48,7 +52,8 @@ public class DebugApplication extends Application {
                 .subscribeOn(Schedulers.io())
                 .flatMapObservable((Function<Inserter<Memory>, ObservableSource<?>>) memoryInserter
                         -> memoryInserter.executeAllAsObservable(loadTestData()))
-                .subscribe(id -> {},
+                .subscribe(id -> {
+                        },
                         Timber::e,
                         () -> Timber.d("completed to insert test data."));
     }
@@ -60,7 +65,7 @@ public class DebugApplication extends Application {
             try (BufferedSource source = Okio.buffer(Okio.source(getAssets().open("test_data.json")))) {
                 final long trainingDatetime = System.currentTimeMillis();
                 List<Memory> testData = adapter.fromJson(source);
-                if(testData == null) {
+                if (testData == null) {
                     throw new IllegalStateException("test_data.json is empty.");
                 }
                 return Stream.of(testData)

@@ -4,10 +4,17 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 /**
+ * View インタフェース
+ * 単体テストを容易にするため、本インタフェースを継承した各画面の View インタフェースを実装すること
+ *
  * Created by mag0716 on 2017/04/27.
  */
 public interface IView {
 
+    /**
+     * Context の取得
+     * @return Context
+     */
     @NonNull
     public Context getContext();
 }
