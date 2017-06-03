@@ -7,7 +7,7 @@ import com.github.mag0716.memorytraining.view.IView;
 /**
  * Presenter インタフェース
  * 各画面で利用する Presenter は本インタフェースを実装すること
- *
+ * <p>
  * Created by mag0716 on 2017/04/27.
  */
 public interface IPresenter {

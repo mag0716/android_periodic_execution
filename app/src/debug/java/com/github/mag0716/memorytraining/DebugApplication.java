@@ -24,10 +24,10 @@ import timber.log.Timber;
 
 /**
  * デバッグ用のアプリケーション情報
- *
+ * <p>
  * Stetho の有効化
  * デバッグ用の DB 設定
- *
+ * <p>
  * Created by mag0716 on 2017/04/30.
  */
 public class DebugApplication extends Application {
