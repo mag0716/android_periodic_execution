@@ -1,13 +1,13 @@
 package com.github.mag0716.memorytraining.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.github.gfx.android.orma.annotation.Column;
-import com.github.gfx.android.orma.annotation.PrimaryKey;
-import com.github.gfx.android.orma.annotation.Setter;
-import com.github.gfx.android.orma.annotation.Table;
-
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 /**
@@ -15,60 +15,45 @@ import lombok.experimental.Accessors;
  * <p>
  * Created by mag0716 on 2017/04/30.
  */
-@Table
+@Entity(indices = {@Index("level")})
+@Accessors(fluent = true)
 public class Memory implements Parcelable {
-
-    public Memory(@Setter long id,
-                  @Setter String question,
-                  @Setter String answer,
-                  @Setter int level,
-                  @Setter int count,
-                  @Setter long nextTrainingDatetime) {
-        this.id = id;
-        this.question = question;
-        this.answer = answer;
-        this.level = level;
-        this.count = count;
-        this.nextTrainingDatetime = nextTrainingDatetime;
-    }
 
     /**
      * ID
      */
-    @PrimaryKey(autoincrement = true)
-    @Column
+    @PrimaryKey(autoGenerate = true)
     private long id;
 
     /**
      * 質問
      */
-    @Column
+    @Setter
     private String question;
 
     /**
      * 回答
      */
-    @Column
+    @Setter
     private String answer;
 
     /**
      * 訓練レベル
      */
-    @Column(indexed = true)
+    @Setter
     private int level;
 
     /**
      * 訓練回数
      */
-    @Column
+    @Setter
     private int count;
 
     /**
      * 次回訓練予定日時
      */
-    @Column("next_training_datetime")
-    @Accessors(fluent = true)
-    @lombok.Setter
+    @ColumnInfo(name = "next_training_datetime")
+    @Setter
     private long nextTrainingDatetime;
 
     public long getId() {
