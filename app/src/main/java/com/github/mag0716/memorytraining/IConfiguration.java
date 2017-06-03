@@ -1,7 +1,8 @@
 package com.github.mag0716.memorytraining;
 
-import android.arch.persistence.room.Database;
 import android.support.annotation.NonNull;
+
+import com.github.mag0716.memorytraining.repository.database.ApplicationDatabase;
 
 /**
  * アプリケーションの設定情報インタフェース
@@ -16,6 +17,6 @@ public interface IConfiguration {
      * @return Database
      */
     @NonNull
-    Database getDatabase();
+    ApplicationDatabase getDatabase();
 
 }

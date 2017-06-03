@@ -12,4 +12,10 @@ import com.github.mag0716.memorytraining.model.Memory;
  */
 @Database(entities = {Memory.class}, version = 1)
 public abstract class ApplicationDatabase extends RoomDatabase {
+    /**
+     * Memory テーブルアクセス用の DAO 返却
+     *
+     * @return MemoryDao
+     */
+    public abstract MemoryDao memoryDao();
 }
