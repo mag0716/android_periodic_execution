@@ -1,6 +1,8 @@
 package com.github.mag0716.memorytraining;
 
 import android.annotation.SuppressLint;
+import android.arch.persistence.room.Database;
+import android.support.annotation.NonNull;
 
 import timber.log.Timber;
 
@@ -21,6 +23,12 @@ public class Application extends android.app.Application implements IConfigurati
         super.onCreate();
         // TODO: ログ出力を抑制する
         Timber.plant(new Timber.DebugTree());
+    }
+
+    @NonNull
+    @Override
+    public Database getDatabase() {
+        return null;
     }
 
 //    @Override

@@ -30,10 +30,10 @@ public class DebugApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Stetho.initializeWithDefaults(this);
-        initializeOrmaDebug(this);
+        initializeDatabaseForDebug(this);
     }
 
-    private void initializeOrmaDebug(@NonNull Context context) {
+    private void initializeDatabaseForDebug(@NonNull Context context) {
 //        if (orma != null) {
 //            throw new IllegalStateException("OrmaDatabase initialized already.");
 //        }
@@ -63,7 +63,10 @@ public class DebugApplication extends Application {
                     throw new IllegalStateException("test_data.json is empty.");
                 }
                 return Stream.of(testData)
-                        .map(memory -> memory.nextTrainingDatetime(trainingDatetime))
+                        .map(memory -> {
+                            memory.setNextTrainingDatetime(trainingDatetime);
+                            return memory;
+                        })
                         .toList();
             }
         } catch (IOException e) {

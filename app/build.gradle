@@ -5,7 +5,6 @@ def support_lib_version = "25.3.1"
 def arch_lib_version = "1.0.0-alpha1"
 def leakcanary_version = "1.5"
 def permission_dispatcher_version = "2.3.2"
-def orma_version = "4.2.4"
 
 android {
     compileSdkVersion 25
@@ -69,8 +68,6 @@ dependencies {
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:${permission_dispatcher_version}"
     implementation 'com.vanniktech:onactivityresult:0.6.0'
     annotationProcessor 'com.vanniktech:onactivityresult-compiler:0.6.0'
-    implementation "com.github.gfx.android.orma:orma:${orma_version}"
-    annotationProcessor "com.github.gfx.android.orma:orma-processor:${orma_version}"
     implementation 'com.squareup.moshi:moshi:1.5.0'
 
     // third party for debug
