@@ -11,6 +11,8 @@ import com.github.gfx.android.orma.annotation.Table;
 import lombok.experimental.Accessors;
 
 /**
+ * 訓練対象データ
+ * <p>
  * Created by mag0716 on 2017/04/30.
  */
 @Table
@@ -65,7 +67,8 @@ public class Memory implements Parcelable {
      * 次回訓練予定日時
      */
     @Column("next_training_datetime")
-    @Accessors(fluent = true) @lombok.Setter
+    @Accessors(fluent = true)
+    @lombok.Setter
     private long nextTrainingDatetime;
 
     public long getId() {
