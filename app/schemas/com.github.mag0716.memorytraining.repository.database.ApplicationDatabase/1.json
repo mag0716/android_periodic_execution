@@ -1,0 +1,66 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "a485500c8560ddbe181b40b78b08c3bb",
+    "entities": [
+      {
+        "tableName": "Memory",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `question` TEXT, `answer` TEXT, `level` INTEGER, `count` INTEGER, `next_training_datetime` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "question",
+            "columnName": "question",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "answer",
+            "columnName": "answer",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "level",
+            "columnName": "level",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "count",
+            "columnName": "count",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "nextTrainingDatetime",
+            "columnName": "next_training_datetime",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_Memory_level",
+            "unique": false,
+            "columnNames": [
+              "level"
+            ],
+            "createSql": "CREATE  INDEX `index_Memory_level` ON `${TABLE_NAME}` (`level`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a485500c8560ddbe181b40b78b08c3bb\")"
+    ]
+  }
+}
