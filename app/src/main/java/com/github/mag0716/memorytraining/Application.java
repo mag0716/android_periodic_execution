@@ -1,9 +1,6 @@
 package com.github.mag0716.memorytraining;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.RestrictTo;
-
-import com.github.mag0716.memorytraining.model.OrmaDatabase;
 
 import timber.log.Timber;
 
@@ -16,8 +13,8 @@ import timber.log.Timber;
 @SuppressLint("Registered")
 public class Application extends android.app.Application implements IConfiguration {
 
-    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
-    protected static OrmaDatabase orma;
+//    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+//    protected static OrmaDatabase orma;
 
     @Override
     public void onCreate() {
@@ -26,12 +23,12 @@ public class Application extends android.app.Application implements IConfigurati
         Timber.plant(new Timber.DebugTree());
     }
 
-    @Override
-    public OrmaDatabase getOrma() {
-        if (orma == null) {
-            orma = OrmaDatabase.builder(this)
-                    .build();
-        }
-        return orma;
-    }
+//    @Override
+//    public OrmaDatabase getOrma() {
+//        if (orma == null) {
+//            orma = OrmaDatabase.builder(this)
+//                    .build();
+//        }
+//        return orma;
+//    }
 }
