@@ -41,7 +41,7 @@ class ApplicationDatabaseTest {
             {
                 var index = 0
                 while (cursor.moveToNext()) {
-                    assertThat(cursor.getInt(cursor.getColumnIndex("id")), `is`(index))
+                    assertThat(cursor.getInt(cursor.getColumnIndex("_id")), `is`(index))
                     assertThat(cursor.getString(cursor.getColumnIndex("question")), `is`("question%d".format(index)))
                     assertThat(cursor.getString(cursor.getColumnIndex("answer")), `is`("answer%d".format(index)))
                     assertThat(cursor.getInt(cursor.getColumnIndex("level")), `is`(index))

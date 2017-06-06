@@ -6,6 +6,7 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.BaseColumns;
 
 /**
  * 訓練対象データ
@@ -19,6 +20,7 @@ public class Memory implements Parcelable {
      * ID
      */
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = BaseColumns._ID)
     private long id;
 
     /**
