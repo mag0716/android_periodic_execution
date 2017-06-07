@@ -1,98 +1,100 @@
 package com.github.mag0716.memorytraining.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.github.gfx.android.orma.annotation.Column;
-import com.github.gfx.android.orma.annotation.PrimaryKey;
-import com.github.gfx.android.orma.annotation.Setter;
-import com.github.gfx.android.orma.annotation.Table;
-
-import lombok.experimental.Accessors;
+import android.provider.BaseColumns;
 
 /**
  * 訓練対象データ
  * <p>
  * Created by mag0716 on 2017/04/30.
  */
-@Table
+@Entity(indices = {@Index("level")})
 public class Memory implements Parcelable {
-
-    public Memory(@Setter long id,
-                  @Setter String question,
-                  @Setter String answer,
-                  @Setter int level,
-                  @Setter int count,
-                  @Setter long nextTrainingDatetime) {
-        this.id = id;
-        this.question = question;
-        this.answer = answer;
-        this.level = level;
-        this.count = count;
-        this.nextTrainingDatetime = nextTrainingDatetime;
-    }
 
     /**
      * ID
      */
-    @PrimaryKey(autoincrement = true)
-    @Column
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = BaseColumns._ID)
     private long id;
 
     /**
      * 質問
      */
-    @Column
     private String question;
 
     /**
      * 回答
      */
-    @Column
     private String answer;
 
     /**
      * 訓練レベル
      */
-    @Column(indexed = true)
     private int level;
 
     /**
      * 訓練回数
      */
-    @Column
     private int count;
 
     /**
      * 次回訓練予定日時
      */
-    @Column("next_training_datetime")
-    @Accessors(fluent = true)
-    @lombok.Setter
+    @ColumnInfo(name = "next_training_datetime")
     private long nextTrainingDatetime;
 
     public long getId() {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getQuestion() {
         return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
     public String getAnswer() {
         return answer;
     }
 
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
     public int getLevel() {
         return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public int getCount() {
         return count;
     }
 
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     public long getNextTrainingDatetime() {
         return nextTrainingDatetime;
+    }
+
+    public void setNextTrainingDatetime(long nextTrainingDatetime) {
+        this.nextTrainingDatetime = nextTrainingDatetime;
     }
 
     // region Parcelable

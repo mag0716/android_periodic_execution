@@ -1,8 +1,8 @@
 package com.github.mag0716.memorytraining;
 
-import com.github.mag0716.memorytraining.model.OrmaDatabase;
+import android.support.annotation.NonNull;
 
-import io.reactivex.annotations.NonNull;
+import com.github.mag0716.memorytraining.repository.database.ApplicationDatabase;
 
 /**
  * アプリケーションの設定情報インタフェース
@@ -12,11 +12,11 @@ import io.reactivex.annotations.NonNull;
 public interface IConfiguration {
 
     /**
-     * OrmaDatabase を返却する
+     * Database を返却する
      *
-     * @return OrmaDatabase
+     * @return Database
      */
     @NonNull
-    OrmaDatabase getOrma();
+    ApplicationDatabase getDatabase();
 
 }

@@ -1,9 +1,11 @@
 package com.github.mag0716.memorytraining;
 
 import android.annotation.SuppressLint;
+import android.arch.persistence.room.Room;
+import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 
-import com.github.mag0716.memorytraining.model.OrmaDatabase;
+import com.github.mag0716.memorytraining.repository.database.ApplicationDatabase;
 
 import timber.log.Timber;
 
@@ -16,8 +18,10 @@ import timber.log.Timber;
 @SuppressLint("Registered")
 public class Application extends android.app.Application implements IConfiguration {
 
+    private static final String DB_NAME = "memory.db";
+
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
-    protected static OrmaDatabase orma;
+    protected static ApplicationDatabase database;
 
     @Override
     public void onCreate() {
@@ -26,12 +30,12 @@ public class Application extends android.app.Application implements IConfigurati
         Timber.plant(new Timber.DebugTree());
     }
 
+    @NonNull
     @Override
-    public OrmaDatabase getOrma() {
-        if (orma == null) {
-            orma = OrmaDatabase.builder(this)
-                    .build();
+    public ApplicationDatabase getDatabase() {
+        if (database == null) {
+            database = Room.databaseBuilder(this, ApplicationDatabase.class, DB_NAME).build();
         }
-        return orma;
+        return database;
     }
 }
