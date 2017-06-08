@@ -1,0 +1,23 @@
+<resources>
+
+    <!-- Cards(https://material.io/guidelines/components/cards.html)-->
+    <dimen name="cards_primary_title_top_padding">24dp</dimen>
+    <dimen name="cards_primary_title_bottom_padding">16dp</dimen>
+    <dimen name="cards_action_button_row_padding">8dp</dimen>
+    <dimen name="cards_supporting_text_top_padding">16dp</dimen>
+    <dimen name="cards_supporting_text_bottom_padding">24dp</dimen>
+    <dimen name="cards_primary_title_text_size">24sp</dimen>
+    <dimen name="cards_primary_title_small_text_size">14sp</dimen>
+    <dimen name="cards_sub_title_text_size">14sp</dimen>
+    <dimen name="cards_primary_title_horizontal_padding">16dp</dimen>
+    <!-- when a small primary title is present -->
+    <dimen name="cards_primary_title_small_top_padding">16dp</dimen>
+    <!-- no actions or supporting text -->
+    <dimen name="cards_primary_title_large_bottom_padding">24dp</dimen>
+    <dimen name="cards_supporting_text_size">14sp</dimen>
+    <dimen name="cards_supporting_text_horizontal_padding">16dp</dimen>
+    <!-- if there are additional actions or text below -->
+    <dimen name="cards_supporting_text_small_bottom_padding">16dp</dimen>
+    <dimen name="cards_elevation">2dp</dimen>
+    <dimen name="cards_elevation_raised">8dp</dimen>
+</resources>
