@@ -1,6 +1,21 @@
 <resources>
 
-    <!-- Cards(https://material.io/guidelines/components/cards.html)-->
+    <!-- Buttons(https://material.io/guidelines/components/buttons.html) -->
+    <dimen name="buttons_minimum_width">88dp</dimen>
+    <dimen name="buttons_minimum_height">36dp</dimen>
+    <dimen name="buttons_minimum_touchable_target_height">48dp</dimen>
+    <dimen name="buttons_corner_radius">2dp</dimen>
+    <dimen name="buttons_text_size">14sp</dimen>
+    <dimen name="buttons_horizontal_padding">16dp</dimen>
+    <dimen name="buttons_dense_text_size">13sp</dimen>
+    <dimen name="buttons_dense_minimum_height">32dp</dimen>
+    <dimen name="buttons_raised_elevation">2dp</dimen>
+
+    <!-- Lists(https://material.io/guidelines/components/lists.html) -->
+    <dimen name="lists_top_padding">8dp</dimen>
+    <dimen name="lists_dense_top_padding">4dp</dimen>
+
+    <!-- Cards(https://material.io/guidelines/components/cards.html) -->
     <dimen name="cards_primary_title_top_padding">24dp</dimen>
     <dimen name="cards_primary_title_bottom_padding">16dp</dimen>
     <dimen name="cards_action_button_row_padding">8dp</dimen>
@@ -18,6 +33,8 @@
     <dimen name="cards_supporting_text_horizontal_padding">16dp</dimen>
     <!-- if there are additional actions or text below -->
     <dimen name="cards_supporting_text_small_bottom_padding">16dp</dimen>
+    <dimen name="cards_horizontal_margin">8dp</dimen>
+    <dimen name="cards_vertical_margin">8dp</dimen>
     <dimen name="cards_elevation">2dp</dimen>
     <dimen name="cards_elevation_raised">8dp</dimen>
 </resources>

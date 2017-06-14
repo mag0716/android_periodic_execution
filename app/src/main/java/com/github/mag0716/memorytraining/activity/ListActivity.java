@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.github.mag0716.memorytraining.databinding.ActivityListBinding;
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
 import com.github.mag0716.memorytraining.view.adapter.MemoryListAdapter;
+import com.github.mag0716.memorytraining.view.decoration.CardItemDecoration;
 
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class ListActivity extends AppCompatActivity {
     private ActivityListBinding binding;
 
     private MemoryListAdapter adapter;
+    private RecyclerView.ItemDecoration itemDecoration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,8 @@ public class ListActivity extends AppCompatActivity {
 
         adapter = new MemoryListAdapter(this);
         binding.content.trainingList.setLayoutManager(new LinearLayoutManager(this));
+        itemDecoration = new CardItemDecoration(this);
+        binding.content.trainingList.addItemDecoration(itemDecoration);
         binding.content.trainingList.setAdapter(adapter);
     }
 
@@ -60,6 +65,12 @@ public class ListActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(memoryList -> adapter.addAll(memoryList));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding.content.trainingList.removeItemDecoration(itemDecoration);
     }
 
     @Override
