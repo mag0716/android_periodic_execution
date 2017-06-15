@@ -1,5 +1,8 @@
 <resources>
 
+    <!-- Metrics(https://material.io/guidelines/layout/metrics-keylines.htm) -->
+    <dimen name="touch_target_minimum_size">48dp</dimen>
+
     <!-- Buttons(https://material.io/guidelines/components/buttons.html) -->
     <dimen name="buttons_minimum_width">88dp</dimen>
     <dimen name="buttons_minimum_height">36dp</dimen>

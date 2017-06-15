@@ -40,6 +40,11 @@ public class MemoryListAdapter extends RecyclerView.Adapter<MemoryListAdapter.Me
         // TODO: setVariable & executePendingBindings
         final Memory memory = memoryList.get(position);
         ((ViewListItemBinding) viewHolder.binding).questionText.setText(memory.getQuestion());
+        ((ViewListItemBinding) viewHolder.binding).answerText.setText(memory.getAnswer());
+        ((ViewListItemBinding) viewHolder.binding).openAndCloseIcon.setOnClickListener(v -> {
+            final View answerGroup = ((ViewListItemBinding) viewHolder.binding).answerGroup;
+            answerGroup.setVisibility(answerGroup.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+        });
     }
 
     @Override
