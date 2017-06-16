@@ -17,6 +17,7 @@ import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
 import com.github.mag0716.memorytraining.view.adapter.MemoryListAdapter;
 import com.github.mag0716.memorytraining.view.decoration.CardItemDecoration;
+import com.github.mag0716.memorytraining.viewmodel.ListViewModel;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ import io.reactivex.schedulers.Schedulers;
 public class ListActivity extends AppCompatActivity {
 
     private ActivityListBinding binding;
+    private ListViewModel viewModel = new ListViewModel();
 
     private MemoryListAdapter adapter;
     private RecyclerView.ItemDecoration itemDecoration;
@@ -64,7 +66,10 @@ public class ListActivity extends AppCompatActivity {
         Single.create((SingleOnSubscribe<List<Memory>>) emitter -> emitter.onSuccess(memoryDao.loadAll()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(memoryList -> adapter.addAll(memoryList));
+                .subscribe(memoryList -> {
+                    viewModel.addAll(memoryList);
+                    adapter.addAll(viewModel.getItemViewModelList());
+                });
     }
 
     @Override

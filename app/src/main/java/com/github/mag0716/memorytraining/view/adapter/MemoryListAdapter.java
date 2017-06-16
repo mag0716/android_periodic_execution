@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.databinding.ViewListItemBinding;
-import com.github.mag0716.memorytraining.model.Memory;
+import com.github.mag0716.memorytraining.viewmodel.ListItemViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import lombok.Getter;
 public class MemoryListAdapter extends RecyclerView.Adapter<MemoryListAdapter.MemoryViewHolder> {
 
     private final LayoutInflater inflater;
-    private List<Memory> memoryList = new ArrayList<>();
+    private List<ListItemViewModel> viewModelList = new ArrayList<>();
 
     public MemoryListAdapter(@NonNull Context context) {
         inflater = LayoutInflater.from(context);
@@ -37,10 +37,9 @@ public class MemoryListAdapter extends RecyclerView.Adapter<MemoryListAdapter.Me
 
     @Override
     public void onBindViewHolder(MemoryViewHolder viewHolder, int position) {
-        // TODO: setVariable & executePendingBindings
-        final Memory memory = memoryList.get(position);
-        ((ViewListItemBinding) viewHolder.binding).questionText.setText(memory.getQuestion());
-        ((ViewListItemBinding) viewHolder.binding).answerText.setText(memory.getAnswer());
+        final ListItemViewModel viewModel = viewModelList.get(position);
+        ((ViewListItemBinding) viewHolder.binding).setMemory(viewModel);
+        viewHolder.binding.executePendingBindings();
         ((ViewListItemBinding) viewHolder.binding).openAndCloseIcon.setOnClickListener(v -> {
             final View answerGroup = ((ViewListItemBinding) viewHolder.binding).answerGroup;
             answerGroup.setVisibility(answerGroup.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
@@ -49,13 +48,13 @@ public class MemoryListAdapter extends RecyclerView.Adapter<MemoryListAdapter.Me
 
     @Override
     public int getItemCount() {
-        return memoryList.size();
+        return viewModelList.size();
     }
 
-    public void addAll(List<Memory> memoryList) {
-        this.memoryList.clear();
-        if (memoryList != null) {
-            this.memoryList.addAll(memoryList);
+    public void addAll(List<ListItemViewModel> viewModelList) {
+        this.viewModelList.clear();
+        if (viewModelList != null) {
+            this.viewModelList.addAll(viewModelList);
             notifyDataSetChanged();
         }
     }
