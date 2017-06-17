@@ -38,4 +38,8 @@ public class ListItemViewModel extends BaseObservable {
         isShowingAnswer = showingAnswer;
         notifyPropertyChanged(BR.showingAnswer);
     }
+
+    public void toggleShowingAnswer() {
+        setShowingAnswer(!isShowingAnswer);
+    }
 }

@@ -40,10 +40,6 @@ public class MemoryListAdapter extends RecyclerView.Adapter<MemoryListAdapter.Me
         final ListItemViewModel viewModel = viewModelList.get(position);
         ((ViewListItemBinding) viewHolder.binding).setMemory(viewModel);
         viewHolder.binding.executePendingBindings();
-        ((ViewListItemBinding) viewHolder.binding).openAndCloseIcon.setOnClickListener(v -> {
-            final View answerGroup = ((ViewListItemBinding) viewHolder.binding).answerGroup;
-            answerGroup.setVisibility(answerGroup.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-        });
     }
 
     @Override
