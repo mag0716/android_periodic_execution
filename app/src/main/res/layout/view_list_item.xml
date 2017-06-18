@@ -43,7 +43,7 @@
                 android:onClick="@{() -> memory.toggleShowingAnswer()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_arrow_down_black_24dp" />
+                app:srcCompat="@{memory.openAndCloseIcon}" />
 
             <TextView
                 android:id="@+id/answer_text"
