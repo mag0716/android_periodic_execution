@@ -2,13 +2,11 @@ package com.github.mag0716.memorytraining.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.github.mag0716.memorytraining.Application;
 import com.github.mag0716.memorytraining.R;
@@ -46,15 +44,7 @@ public class ListActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
 
         presenter = new ListPresenter(((Application) getApplication()).getDatabase().memoryDao());
-
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
+        binding.setPresenter(presenter);
         adapter = new MemoryListAdapter(this, presenter);
         binding.content.trainingList.setLayoutManager(new LinearLayoutManager(this));
         itemDecoration = new CardItemDecoration(this);

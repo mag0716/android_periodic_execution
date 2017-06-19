@@ -34,6 +34,14 @@ public class ListPresenter implements IPresenter {
     }
 
     /**
+     * 訓練データの追加
+     */
+    public void addMemory() {
+        Timber.d("addMemory");
+        // TODO: 追加画面へ遷移
+    }
+
+    /**
      * 記憶できていたのでレベルアップ
      *
      * @param id 訓練対象データ ID
