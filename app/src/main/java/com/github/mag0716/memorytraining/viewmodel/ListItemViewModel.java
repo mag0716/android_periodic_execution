@@ -14,13 +14,19 @@ import com.github.mag0716.memorytraining.model.Memory;
  */
 public class ListItemViewModel extends BaseObservable {
 
+    private final long id;
     private final String question;
     private final String answer;
     private boolean isShowingAnswer = false;
 
     public ListItemViewModel(@NonNull Memory memory) {
+        id = memory.getId();
         question = memory.getQuestion();
         answer = memory.getAnswer();
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getQuestion() {

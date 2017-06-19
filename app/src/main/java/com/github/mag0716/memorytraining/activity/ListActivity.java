@@ -14,6 +14,7 @@ import com.github.mag0716.memorytraining.Application;
 import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.databinding.ActivityListBinding;
 import com.github.mag0716.memorytraining.model.Memory;
+import com.github.mag0716.memorytraining.presenter.ListPresenter;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
 import com.github.mag0716.memorytraining.view.adapter.MemoryListAdapter;
 import com.github.mag0716.memorytraining.view.decoration.CardItemDecoration;
@@ -33,6 +34,7 @@ public class ListActivity extends AppCompatActivity {
 
     private ActivityListBinding binding;
     private ListViewModel viewModel = new ListViewModel();
+    private ListPresenter presenter;
 
     private MemoryListAdapter adapter;
     private RecyclerView.ItemDecoration itemDecoration;
@@ -43,6 +45,8 @@ public class ListActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_list);
         setSupportActionBar(binding.toolbar);
 
+        presenter = new ListPresenter(((Application) getApplication()).getDatabase().memoryDao());
+
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,7 +55,7 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
-        adapter = new MemoryListAdapter(this);
+        adapter = new MemoryListAdapter(this, presenter);
         binding.content.trainingList.setLayoutManager(new LinearLayoutManager(this));
         itemDecoration = new CardItemDecoration(this);
         binding.content.trainingList.addItemDecoration(itemDecoration);
@@ -62,6 +66,7 @@ public class ListActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        // TODO: Presenter に委譲
         final MemoryDao memoryDao = ((Application) getApplication()).getDatabase().memoryDao();
         Single.create((SingleOnSubscribe<List<Memory>>) emitter -> emitter.onSuccess(memoryDao.loadAll()))
                 .subscribeOn(Schedulers.io())

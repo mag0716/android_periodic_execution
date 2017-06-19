@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.databinding.ViewListItemBinding;
+import com.github.mag0716.memorytraining.presenter.ListPresenter;
 import com.github.mag0716.memorytraining.viewmodel.ListItemViewModel;
 
 import java.util.ArrayList;
@@ -24,10 +25,12 @@ import lombok.Getter;
 public class MemoryListAdapter extends RecyclerView.Adapter<MemoryListAdapter.MemoryViewHolder> {
 
     private final LayoutInflater inflater;
+    private final ListPresenter presenter;
     private List<ListItemViewModel> viewModelList = new ArrayList<>();
 
-    public MemoryListAdapter(@NonNull Context context) {
+    public MemoryListAdapter(@NonNull Context context, @NonNull ListPresenter presenter) {
         inflater = LayoutInflater.from(context);
+        this.presenter = presenter;
     }
 
     @Override
@@ -39,6 +42,7 @@ public class MemoryListAdapter extends RecyclerView.Adapter<MemoryListAdapter.Me
     public void onBindViewHolder(MemoryViewHolder viewHolder, int position) {
         final ListItemViewModel viewModel = viewModelList.get(position);
         ((ViewListItemBinding) viewHolder.binding).setMemory(viewModel);
+        ((ViewListItemBinding) viewHolder.binding).setPresenter(presenter);
         viewHolder.binding.executePendingBindings();
     }
 
