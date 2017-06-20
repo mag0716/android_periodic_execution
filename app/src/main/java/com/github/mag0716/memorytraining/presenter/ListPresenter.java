@@ -2,10 +2,14 @@ package com.github.mag0716.memorytraining.presenter;
 
 import android.support.annotation.NonNull;
 
+import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
 import com.github.mag0716.memorytraining.view.IView;
 import com.github.mag0716.memorytraining.view.ListView;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import lombok.RequiredArgsConstructor;
 import timber.log.Timber;
 
@@ -48,7 +52,18 @@ public class ListPresenter implements IPresenter {
      */
     public void levelUp(long id) {
         Timber.d("levelUp : %d", id);
-        // TODO: DB 更新 -> View 更新
+        loadMemory(id)
+                .map(memory -> {
+                    // TODO: DB 更新
+                    return memory;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(memory -> {
+                            //TODO: View 更新
+                        },
+                        throwable -> Timber.w(throwable, "failed levelUp.")
+                );
     }
 
     /**
@@ -58,6 +73,29 @@ public class ListPresenter implements IPresenter {
      */
     public void levelDown(long id) {
         Timber.d("levelDown : %d", id);
-        // TODO: DB 更新 -> View 更新
+        loadMemory(id)
+                .map(memory -> {
+                    // TODO: DB 更新
+                    return memory;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(memory -> {
+                            //TODO: View 更新
+                        },
+                        throwable -> Timber.w(throwable, "failed levelDown.")
+                );
+    }
+
+    private Single<Memory> loadMemory(long id) {
+        return Single.create(emitter -> {
+            final Memory memory = dao.load(id);
+            Timber.d("load : %s", memory);
+            if (memory != null) {
+                emitter.onSuccess(memory);
+            } else {
+                emitter.onError(new IllegalArgumentException("cannot load by id = " + id));
+            }
+        });
     }
 }
