@@ -1,7 +1,9 @@
 package com.github.mag0716.memorytraining.activity;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,22 +15,17 @@ import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.databinding.ActivityListBinding;
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.presenter.ListPresenter;
-import com.github.mag0716.memorytraining.repository.database.MemoryDao;
+import com.github.mag0716.memorytraining.view.ListView;
 import com.github.mag0716.memorytraining.view.adapter.MemoryListAdapter;
 import com.github.mag0716.memorytraining.view.decoration.CardItemDecoration;
 import com.github.mag0716.memorytraining.viewmodel.ListViewModel;
 
 import java.util.List;
 
-import io.reactivex.Single;
-import io.reactivex.SingleOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-
 /**
  * 訓練対象データ一覧画面
  */
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity implements ListView {
 
     private ActivityListBinding binding;
     private ListViewModel viewModel = new ListViewModel();
@@ -55,16 +52,15 @@ public class ListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        presenter.attachView(this);
 
-        // TODO: Presenter に委譲
-        final MemoryDao memoryDao = ((Application) getApplication()).getDatabase().memoryDao();
-        Single.create((SingleOnSubscribe<List<Memory>>) emitter -> emitter.onSuccess(memoryDao.loadAll()))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(memoryList -> {
-                    viewModel.addAll(memoryList);
-                    adapter.addAll(viewModel.getItemViewModelList());
-                });
+        presenter.loadTrainingData(System.currentTimeMillis());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        presenter.detachView();
     }
 
     @Override
@@ -93,5 +89,27 @@ public class ListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @NonNull
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public void showMemoryList(@NonNull List<Memory> memoryList) {
+        viewModel.addAll(memoryList);
+        adapter.addAll(viewModel.getItemViewModelList());
+    }
+
+    @Override
+    public void dismissMemory(long id) {
+        adapter.remove(id);
+    }
+
+    @Override
+    public void completedTraining() {
+
     }
 }

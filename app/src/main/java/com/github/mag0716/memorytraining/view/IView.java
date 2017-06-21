@@ -17,5 +17,5 @@ public interface IView {
      * @return Context
      */
     @NonNull
-    public Context getContext();
+    Context getContext();
 }

@@ -30,6 +30,15 @@ public interface MemoryDao {
     List<Memory> loadAll();
 
     /**
+     * 訓練日時が過ぎている Memory を取得
+     *
+     * @param trainingDatetime 訓練日時
+     * @return List<Memory>
+     */
+    @Query("SELECT * from Memory WHERE next_training_datetime <= :trainingDatetime")
+    List<Memory> loadAll(long trainingDatetime);
+
+    /**
      * 指定した ID の Memory を取得
      *
      * @param id ID
@@ -61,7 +70,7 @@ public interface MemoryDao {
      * @param memory 更新対象の Memory
      */
     @Update
-    void update(@NonNull Memory memory);
+    int update(@NonNull Memory memory);
 
     /**
      * 削除

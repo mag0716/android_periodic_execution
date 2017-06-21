@@ -2,7 +2,7 @@ package com.github.mag0716.memorytraining.view;
 
 import android.support.annotation.NonNull;
 
-import com.github.mag0716.memorytraining.viewmodel.ListViewModel;
+import com.github.mag0716.memorytraining.model.Memory;
 
 import java.util.List;
 
@@ -16,9 +16,16 @@ public interface ListView extends IView {
     /**
      * 訓練対象データを表示
      *
-     * @param viewModelList 訓練対象データ一覧
+     * @param memoryList 訓練対象データ一覧
      */
-    void showMemoryList(@NonNull List<ListViewModel> viewModelList);
+    void showMemoryList(@NonNull List<Memory> memoryList);
+
+    /**
+     * 訓練対象データを非表示にする
+     *
+     * @param id Memory#id
+     */
+    void dismissMemory(long id);
 
     /**
      * 訓練完了

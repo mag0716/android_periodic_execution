@@ -15,6 +15,7 @@ import com.github.mag0716.memorytraining.presenter.ListPresenter;
 import com.github.mag0716.memorytraining.viewmodel.ListItemViewModel;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import lombok.Getter;
@@ -57,6 +58,18 @@ public class MemoryListAdapter extends RecyclerView.Adapter<MemoryListAdapter.Me
             this.viewModelList.addAll(viewModelList);
             notifyDataSetChanged();
         }
+    }
+
+    public void remove(long id) {
+        Iterator<ListItemViewModel> iterator = viewModelList.iterator();
+        while (iterator.hasNext()) {
+            ListItemViewModel viewModel = iterator.next();
+            if (viewModel.getId() == id) {
+                iterator.remove();
+                break;
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public class MemoryViewHolder extends RecyclerView.ViewHolder {
