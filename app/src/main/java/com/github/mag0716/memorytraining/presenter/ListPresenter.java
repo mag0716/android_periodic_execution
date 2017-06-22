@@ -78,10 +78,10 @@ public class ListPresenter implements IPresenter {
         Timber.d("levelUp : %d", id);
         disposables.add(loadMemory(id)
                 .map(memory -> {
-                    // TODO: level, count の更新
                     final Level currentLevel = Level.values()[memory.getLevel()];
                     final Level nextLevel = currentLevel.getNextLevel(memory.getCount());
                     memory.setNextTrainingDatetime(System.currentTimeMillis() + nextLevel.getTrainingInterval());
+                    memory.levelUp(nextLevel.getId());
                     dao.update(memory);
                     return memory;
                 })
@@ -103,10 +103,10 @@ public class ListPresenter implements IPresenter {
         Timber.d("levelDown : %d", id);
         disposables.add(loadMemory(id)
                 .map(memory -> {
-                    // TODO: level, count の更新
                     final Level currentLevel = Level.values()[memory.getLevel()];
                     final Level previousLevel = currentLevel.getPreviousLevel(memory.getCount());
                     memory.setNextTrainingDatetime(System.currentTimeMillis() + previousLevel.getTrainingInterval());
+                    memory.levelDown(previousLevel.getId());
                     dao.update(memory);
                     return memory;
                 })

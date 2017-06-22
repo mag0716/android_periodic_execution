@@ -2,11 +2,14 @@ package com.github.mag0716.memorytraining.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.BaseColumns;
+import android.support.annotation.IntRange;
+import android.support.annotation.VisibleForTesting;
 
 /**
  * 訓練対象データ
@@ -42,6 +45,16 @@ public class Memory implements Parcelable {
      * 訓練回数
      */
     private int count;
+
+    @Ignore
+    @VisibleForTesting
+    Memory(long id, String question, String answer, int level, int count) {
+        this.id = id;
+        this.question = question;
+        this.answer = answer;
+        this.level = level;
+        this.count = count;
+    }
 
     /**
      * 次回訓練予定日時
@@ -95,6 +108,20 @@ public class Memory implements Parcelable {
 
     public void setNextTrainingDatetime(long nextTrainingDatetime) {
         this.nextTrainingDatetime = nextTrainingDatetime;
+    }
+
+    public void levelUp(@IntRange(from = 0, to = 4) int nextLevel) {
+        if (this.level == nextLevel) {
+            count++;
+        } else {
+            count = 0;
+        }
+        this.level = nextLevel;
+    }
+
+    public void levelDown(@IntRange(from = 0, to = 4) int nextLevel) {
+        count = 0;
+        this.level = nextLevel;
     }
 
     // region Parcelable
