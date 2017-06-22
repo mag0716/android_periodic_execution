@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MemoryTraining</string>
     <string name="action_settings">Settings</string>
+
+    <string name="list_empty_message">データがありません。\n追加画面より追加して訓練を始めましょう。</string>
+    <string name="list_completed_training_message">おめでとうございます!!\n全ての訓練が完了しました。</string>
 </resources>

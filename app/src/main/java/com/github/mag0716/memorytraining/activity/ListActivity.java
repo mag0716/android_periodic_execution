@@ -38,6 +38,7 @@ public class ListActivity extends AppCompatActivity implements ListView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_list);
+        binding.content.setViewModel(viewModel);
         setSupportActionBar(binding.toolbar);
 
         presenter = new ListPresenter(((Application) getApplication()).getDatabase().memoryDao());
@@ -99,12 +100,14 @@ public class ListActivity extends AppCompatActivity implements ListView {
 
     @Override
     public void showMemoryList(@NonNull List<Memory> memoryList) {
+        // TODO: ViewModel と Adapter に対して同じ処理を行っているので、ViewModel のみの変更で、View も変更されるようにバインディングする
         viewModel.addAll(memoryList);
         adapter.addAll(viewModel.getItemViewModelList());
     }
 
     @Override
     public void dismissMemory(long id) {
+        viewModel.remove(id);
         adapter.remove(id);
     }
 
