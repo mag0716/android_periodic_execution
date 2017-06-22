@@ -7,6 +7,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.github.mag0716.memorytraining.model.Memory;
 
@@ -27,6 +28,25 @@ public interface MemoryDao {
      */
     @Query("SELECT * from Memory")
     List<Memory> loadAll();
+
+    /**
+     * 訓練日時が過ぎている Memory を取得
+     *
+     * @param trainingDatetime 訓練日時
+     * @return List<Memory>
+     */
+    @Query("SELECT * from Memory WHERE next_training_datetime <= :trainingDatetime")
+    List<Memory> loadAll(long trainingDatetime);
+
+    /**
+     * 指定した ID の Memory を取得
+     *
+     * @param id ID
+     * @return ID に合致する Memory
+     */
+    @Nullable
+    @Query("SELECT * from Memory WHERE _id = :id")
+    Memory load(long id);
 
     /**
      * 追加
@@ -50,7 +70,7 @@ public interface MemoryDao {
      * @param memory 更新対象の Memory
      */
     @Update
-    void update(@NonNull Memory memory);
+    int update(@NonNull Memory memory);
 
     /**
      * 削除

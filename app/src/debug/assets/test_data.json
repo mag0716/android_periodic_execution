@@ -11,6 +11,6 @@
   {"id":9,"question":"charge","answer":"請求する","level":3,"count":0},
   {"id":10,"question":"check","answer":"確認する","level":4,"count":0},
   {"id":11,"question":"colleague","answer":"同僚","level":4,"count":0},
-  {"id":12,"question":"committee","answer":"役員会","level":5,"count":0},
-  {"id":13,"question":"condition","answer":"状態","level":5,"count":0}
+  {"id":12,"question":"committee","answer":"役員会","level":4,"count":1},
+  {"id":13,"question":"condition","answer":"状態","level":4,"count":2}
 ]
