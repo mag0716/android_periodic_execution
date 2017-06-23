@@ -43,7 +43,7 @@ public class ListActivity extends AppCompatActivity implements ListView {
 
         presenter = new ListPresenter(((Application) getApplication()).getDatabase().memoryDao());
         binding.setPresenter(presenter);
-        adapter = new MemoryListAdapter(this, presenter);
+        adapter = new MemoryListAdapter(this, presenter, viewModel.getItemViewModelList());
         binding.content.trainingList.setLayoutManager(new LinearLayoutManager(this));
         itemDecoration = new CardItemDecoration(this);
         binding.content.trainingList.addItemDecoration(itemDecoration);
@@ -100,15 +100,12 @@ public class ListActivity extends AppCompatActivity implements ListView {
 
     @Override
     public void showMemoryList(@NonNull List<Memory> memoryList) {
-        // TODO: ViewModel と Adapter に対して同じ処理を行っているので、ViewModel のみの変更で、View も変更されるようにバインディングする
         viewModel.addAll(memoryList);
-        adapter.addAll(viewModel.getItemViewModelList());
     }
 
     @Override
     public void dismissMemory(long id) {
         viewModel.remove(id);
-        adapter.remove(id);
     }
 
     @Override

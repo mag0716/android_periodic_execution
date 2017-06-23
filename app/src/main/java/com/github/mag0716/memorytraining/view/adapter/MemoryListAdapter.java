@@ -2,6 +2,7 @@ package com.github.mag0716.memorytraining.view.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableList;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,10 +15,6 @@ import com.github.mag0716.memorytraining.databinding.ViewListItemBinding;
 import com.github.mag0716.memorytraining.presenter.ListPresenter;
 import com.github.mag0716.memorytraining.viewmodel.ListItemViewModel;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import lombok.Getter;
 
 /**
@@ -27,11 +24,38 @@ public class MemoryListAdapter extends RecyclerView.Adapter<MemoryListAdapter.Me
 
     private final LayoutInflater inflater;
     private final ListPresenter presenter;
-    private List<ListItemViewModel> viewModelList = new ArrayList<>();
+    private final ObservableList<ListItemViewModel> viewModelList;
 
-    public MemoryListAdapter(@NonNull Context context, @NonNull ListPresenter presenter) {
+    public MemoryListAdapter(@NonNull Context context, @NonNull ListPresenter presenter, @NonNull ObservableList<ListItemViewModel> viewModelList) {
         inflater = LayoutInflater.from(context);
         this.presenter = presenter;
+        this.viewModelList = viewModelList;
+        this.viewModelList.addOnListChangedCallback(new ObservableList.OnListChangedCallback<ObservableList<ListItemViewModel>>() {
+            @Override
+            public void onChanged(ObservableList<ListItemViewModel> listItemViewModels) {
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onItemRangeChanged(ObservableList<ListItemViewModel> listItemViewModels, int positionStart, int itemCount) {
+                notifyItemRangeChanged(positionStart, itemCount);
+            }
+
+            @Override
+            public void onItemRangeInserted(ObservableList<ListItemViewModel> listItemViewModels, int positionStart, int itemCount) {
+                notifyItemRangeInserted(positionStart, itemCount);
+            }
+
+            @Override
+            public void onItemRangeMoved(ObservableList<ListItemViewModel> listItemViewModels, int fromPosition, int toPosition, int itemCount) {
+                notifyItemMoved(fromPosition, toPosition);
+            }
+
+            @Override
+            public void onItemRangeRemoved(ObservableList<ListItemViewModel> listItemViewModels, int positionStart, int itemCount) {
+                notifyItemRangeRemoved(positionStart, itemCount);
+            }
+        });
     }
 
     @Override
@@ -50,26 +74,6 @@ public class MemoryListAdapter extends RecyclerView.Adapter<MemoryListAdapter.Me
     @Override
     public int getItemCount() {
         return viewModelList.size();
-    }
-
-    public void addAll(List<ListItemViewModel> viewModelList) {
-        this.viewModelList.clear();
-        if (viewModelList != null) {
-            this.viewModelList.addAll(viewModelList);
-            notifyDataSetChanged();
-        }
-    }
-
-    public void remove(long id) {
-        Iterator<ListItemViewModel> iterator = viewModelList.iterator();
-        while (iterator.hasNext()) {
-            ListItemViewModel viewModel = iterator.next();
-            if (viewModel.getId() == id) {
-                iterator.remove();
-                break;
-            }
-        }
-        notifyDataSetChanged();
     }
 
     public class MemoryViewHolder extends RecyclerView.ViewHolder {
