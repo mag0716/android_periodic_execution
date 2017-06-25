@@ -2,13 +2,13 @@ package com.github.mag0716.memorytraining.repository.database
 
 import android.arch.persistence.db.framework.FrameworkSQLiteOpenHelperFactory
 import android.arch.persistence.room.testing.MigrationTestHelper
+import android.support.test.InstrumentationRegistry
 import org.hamcrest.Matchers.`is`
 import org.junit.Assert.assertThat
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
 /**
@@ -22,11 +22,9 @@ class ApplicationDatabaseTest {
 
     @Rule
     @JvmField
-    var helper = MigrationTestHelper(RuntimeEnvironment.application,
-            ApplicationDatabase::
-            class.java.canonicalName,
+    var helper = MigrationTestHelper(InstrumentationRegistry.getInstrumentation(),
+            ApplicationDatabase::class.java.canonicalName,
             FrameworkSQLiteOpenHelperFactory())
-
 
     @Test
     fun v1() {
