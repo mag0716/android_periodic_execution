@@ -16,11 +16,11 @@ import timber.log.Timber;
  * <p>
  * Created by mag0716 on 2017/06/28.
  */
-public class TaskRegister {
+public class TaskConductor {
 
     private static final String TASK_TAG = "MemoryTask";
 
-    private TaskRegister() {
+    private TaskConductor() {
     }
 
     /**
