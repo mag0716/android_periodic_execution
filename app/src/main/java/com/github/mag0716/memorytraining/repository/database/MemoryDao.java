@@ -39,6 +39,15 @@ public interface MemoryDao {
     List<Memory> loadAll(long trainingDatetime);
 
     /**
+     * 直近の Memory を取得
+     *
+     * @param trainingDatetime 訓練日時
+     * @return 直近の Memory
+     */
+    @Query("SELECT * from Memory WHERE next_training_datetime > :trainingDatetime ORDER BY next_training_datetime ASC LIMIT 1")
+    Memory loadRecent(long trainingDatetime);
+
+    /**
      * 指定した ID の Memory を取得
      *
      * @param id ID
