@@ -48,7 +48,7 @@ public class Memory implements Parcelable {
 
     @Ignore
     @VisibleForTesting
-    Memory(long id, String question, String answer, int level, int count) {
+    public Memory(long id, String question, String answer, int level, int count) {
         this.id = id;
         this.question = question;
         this.answer = answer;
@@ -56,6 +56,16 @@ public class Memory implements Parcelable {
         this.count = count;
     }
 
+    @Ignore
+    @VisibleForTesting
+    public Memory(long id, String question, String answer, int level, int count, long nextTrainingDatetime) {
+        this.id = id;
+        this.question = question;
+        this.answer = answer;
+        this.level = level;
+        this.count = count;
+        this.nextTrainingDatetime = nextTrainingDatetime;
+    }
     /**
      * 次回訓練予定日時
      */
