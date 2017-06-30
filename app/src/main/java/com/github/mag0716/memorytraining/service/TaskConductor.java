@@ -9,6 +9,12 @@ import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.OneoffTask;
 
+import io.reactivex.Maybe;
+import io.reactivex.MaybeObserver;
+import io.reactivex.MaybeOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -30,8 +36,36 @@ public class TaskConductor {
      */
     public static void registerTaskIfNeeded(@NonNull Context context, @NonNull MemoryDao dao) {
         // TODO: 各 API の振り分け, タスクの登録, 選択中の API 以外のタスクをキャンセル
-//        final Memory recentMemory;
-//        registerGcmTask(context, recentMemory);
+        Maybe.create((MaybeOnSubscribe<Memory>) emitter -> {
+                    final Memory recentMemory = dao.loadRecent(System.currentTimeMillis());
+                    if (recentMemory != null) {
+                        emitter.onSuccess(recentMemory);
+                    } else {
+                        emitter.onComplete();
+                    }
+                }
+        ).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MaybeObserver<Memory>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onSuccess(Memory memory) {
+                        registerGcmTask(context, memory);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.w("registerTaskIfNeeded#onError", e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Timber.d("registerTaskIfNeeded#onComplete");
+                    }
+                });
     }
 
     /**
