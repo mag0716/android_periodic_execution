@@ -9,6 +9,7 @@ import com.facebook.stetho.Stetho;
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.repository.database.ApplicationDatabase;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
+import com.github.mag0716.memorytraining.service.TaskConductor;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
@@ -37,6 +38,7 @@ public class DebugApplication extends Application {
         super.onCreate();
         Stetho.initializeWithDefaults(this);
         initializeDatabaseForDebug(this);
+        TaskConductor.registerTaskIfNeeded(this, database.memoryDao());
     }
 
     private void initializeDatabaseForDebug(@NonNull Context context) {

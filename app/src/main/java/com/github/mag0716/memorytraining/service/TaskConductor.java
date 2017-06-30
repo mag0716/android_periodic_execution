@@ -26,9 +26,6 @@ public class TaskConductor {
 
     private static final String TASK_TAG = "MemoryTask";
 
-    private TaskConductor() {
-    }
-
     /**
      * 直近の訓練日時のデータがあればタスクを登録する
      *
