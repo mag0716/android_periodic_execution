@@ -85,6 +85,7 @@ public class TaskConductor {
                 .setRequiredNetwork(Task.NETWORK_STATE_ANY)
                 .setRequiresCharging(false)
                 .setPersisted(false)
+                .setUpdateCurrent(true)
                 .build();
         manager.schedule(task);
     }
