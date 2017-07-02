@@ -84,6 +84,7 @@ public class TaskConductor {
                         TimeUnit.MILLISECONDS.toSeconds(delayMilliseconds) + 60L) // TODO: 固定値の調整
                 .setRequiredNetwork(Task.NETWORK_STATE_ANY)
                 .setRequiresCharging(false)
+                .setPersisted(false)
                 .build();
         manager.schedule(task);
     }
