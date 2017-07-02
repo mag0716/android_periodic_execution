@@ -8,6 +8,9 @@ import com.github.mag0716.memorytraining.repository.database.MemoryDao;
 import com.github.mag0716.memorytraining.service.gcmnetworkmanager.GcmNetworkManagerService;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.OneoffTask;
+import com.google.android.gms.gcm.Task;
+
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
@@ -72,12 +75,15 @@ public class TaskConductor {
      */
     private static void registerGcmTask(@NonNull Context context, @NonNull Memory memory) {
         Timber.d("registerGcmTask : memory = %s", memory);
-        final long delay = memory.getNextTrainingDatetime() - System.currentTimeMillis();
+        final long delayMilliseconds = memory.getNextTrainingDatetime() - System.currentTimeMillis();
         final GcmNetworkManager manager = GcmNetworkManager.getInstance(context);
         final OneoffTask task = new OneoffTask.Builder()
                 .setService(GcmNetworkManagerService.class)
                 .setTag(TASK_TAG)
-                .setExecutionWindow(delay, delay + 3600L) // TODO: 固定値の調整
+                .setExecutionWindow(TimeUnit.MILLISECONDS.toSeconds(delayMilliseconds),
+                        TimeUnit.MILLISECONDS.toSeconds(delayMilliseconds) + 60L) // TODO: 固定値の調整
+                .setRequiredNetwork(Task.NETWORK_STATE_ANY)
+                .setRequiresCharging(false)
                 .build();
         manager.schedule(task);
     }
