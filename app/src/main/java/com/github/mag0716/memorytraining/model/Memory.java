@@ -11,6 +11,10 @@ import android.provider.BaseColumns;
 import android.support.annotation.IntRange;
 import android.support.annotation.VisibleForTesting;
 
+import com.github.mag0716.memorytraining.util.DatetimeUtil;
+
+import java.util.Locale;
+
 /**
  * 訓練対象データ
  * <p>
@@ -46,6 +50,12 @@ public class Memory implements Parcelable {
      */
     private int count;
 
+    /**
+     * 次回訓練予定日時
+     */
+    @ColumnInfo(name = "next_training_datetime")
+    private long nextTrainingDatetime;
+
     @Ignore
     @VisibleForTesting
     public Memory(long id, String question, String answer, int level, int count) {
@@ -66,11 +76,6 @@ public class Memory implements Parcelable {
         this.count = count;
         this.nextTrainingDatetime = nextTrainingDatetime;
     }
-    /**
-     * 次回訓練予定日時
-     */
-    @ColumnInfo(name = "next_training_datetime")
-    private long nextTrainingDatetime;
 
     public long getId() {
         return id;
@@ -134,12 +139,21 @@ public class Memory implements Parcelable {
         this.level = nextLevel;
     }
 
+    @Override
+    public String toString() {
+        final String format = "Memory(id=%d, count=%d, level=%d, next training datetime=%s)";
+        return String.format(Locale.getDefault(),
+                format,
+                id,
+                count,
+                level,
+                DatetimeUtil.convertDebugFormat(nextTrainingDatetime));
+    }
+
     // region Parcelable
 
     public Memory() {
     }
-
-    // endregion
 
     @Override
     public int describeContents() {
@@ -176,4 +190,5 @@ public class Memory implements Parcelable {
             return new Memory[size];
         }
     };
+    // endregion
 }

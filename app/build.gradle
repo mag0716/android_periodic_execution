@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 
 def support_lib_version = "25.3.1"
 def arch_lib_version = "1.0.0-alpha3"
+def play_services_version = "11.0.1"
 def leakcanary_version = "1.5"
 def permission_dispatcher_version = "2.3.2"
 
@@ -56,6 +57,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta1'
     implementation "android.arch.persistence.room:runtime:${arch_lib_version}"
     annotationProcessor "android.arch.persistence.room:compiler:${arch_lib_version}"
+    implementation "com.google.android.gms:play-services-gcm:${play_services_version}"
 
     compileOnly "org.projectlombok:lombok:1.16.16"
     annotationProcessor "org.projectlombok:lombok:1.16.16"
