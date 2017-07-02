@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
+import com.github.mag0716.memorytraining.service.gcmnetworkmanager.GcmNetworkManagerService;
 import com.google.android.gms.gcm.GcmNetworkManager;
-import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.OneoffTask;
 
 import io.reactivex.Maybe;
@@ -75,7 +75,7 @@ public class TaskConductor {
         final long delay = memory.getNextTrainingDatetime() - System.currentTimeMillis();
         final GcmNetworkManager manager = GcmNetworkManager.getInstance(context);
         final OneoffTask task = new OneoffTask.Builder()
-                .setService(GcmTaskService.class)
+                .setService(GcmNetworkManagerService.class)
                 .setTag(TASK_TAG)
                 .setExecutionWindow(delay, delay + 3600L) // TODO: 固定値の調整
                 .build();
