@@ -25,6 +25,26 @@ import timber.log.Timber;
  */
 public class NotificationConductor {
 
+    /**
+     * Notification 種別
+     */
+    private enum NotificationType {
+        /**
+         * 訓練を促す Notification
+         */
+        TRAINING_NOTIFICATION(0);
+
+        private final int id;
+
+        NotificationType(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
+    }
+
     private NotificationConductor() {
     }
 
@@ -52,8 +72,7 @@ public class NotificationConductor {
                     .setContentTitle("訓練日時になりました")
                     .setContentText(String.format(Locale.getDefault(), "訓練対象データが%d件があります。覚えているか確認しましょう。", count))
                     .build();
-            // TODO: ID
-            manager.notify(0, notification);
+            manager.notify(NotificationType.TRAINING_NOTIFICATION.getId(), notification);
         });
 
     }
