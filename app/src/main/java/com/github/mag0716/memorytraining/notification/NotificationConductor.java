@@ -11,7 +11,6 @@ import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
 
 import java.util.List;
-import java.util.Locale;
 
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
@@ -65,12 +64,11 @@ public class NotificationConductor {
                 emitter.onSuccess(memoryList.size());
             }
         }).subscribeOn(Schedulers.io()).subscribe(count -> {
-            // TODO: アイコン、文言
             final NotificationManagerCompat manager = NotificationManagerCompat.from(context);
             Notification notification = new NotificationCompat.Builder(context)
                     .setSmallIcon(R.drawable.ic_alarm_black_24dp)
-                    .setContentTitle("訓練日時になりました")
-                    .setContentText(String.format(Locale.getDefault(), "訓練対象データが%d件があります。覚えているか確認しましょう。", count))
+                    .setContentTitle(context.getString(R.string.notification_training_title))
+                    .setContentText(context.getString(R.string.notification_training_message_format, count))
                     .build();
             manager.notify(NotificationType.TRAINING_NOTIFICATION.getId(), notification);
         });
