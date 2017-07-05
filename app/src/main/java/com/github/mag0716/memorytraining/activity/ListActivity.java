@@ -1,6 +1,7 @@
 package com.github.mag0716.memorytraining.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -33,6 +34,12 @@ public class ListActivity extends AppCompatActivity implements ListView {
 
     private MemoryListAdapter adapter;
     private RecyclerView.ItemDecoration itemDecoration;
+
+    public static Intent createIntent(@NonNull Context context) {
+        return new Intent(context, ListActivity.class);
+    }
+
+    // region lifecycle
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +77,8 @@ public class ListActivity extends AppCompatActivity implements ListView {
         binding.content.trainingList.removeItemDecoration(itemDecoration);
     }
 
+    // endregion
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -92,6 +101,8 @@ public class ListActivity extends AppCompatActivity implements ListView {
         return super.onOptionsItemSelected(item);
     }
 
+    // region ListView
+
     @NonNull
     @Override
     public Context getContext() {
@@ -112,4 +123,6 @@ public class ListActivity extends AppCompatActivity implements ListView {
     public void completedTraining() {
 
     }
+
+    // endregion
 }
