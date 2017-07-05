@@ -30,7 +30,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
             final MemoryDao dao = ((Application) context.getApplicationContext()).getDatabase().memoryDao();
             TaskConductor.registerTaskIfNeeded(context, dao);
-            NotificationConductor.notifyTraining(context, dao);
+            NotificationConductor.notifyTrainingIfNeeded(context, dao);
         }
     }
 }

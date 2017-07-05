@@ -18,7 +18,7 @@ public class GcmNetworkManagerService extends GcmTaskService {
     public int onRunTask(TaskParams taskParams) {
         Timber.d("onRunTask : tag = %s", taskParams.getTag());
         final MemoryDao dao = ((Application) getApplication()).getDatabase().memoryDao();
-        NotificationConductor.notifyTraining(getApplicationContext(), dao);
+        NotificationConductor.notifyTrainingIfNeeded(getApplicationContext(), dao);
         return GcmNetworkManager.RESULT_SUCCESS;
     }
 
