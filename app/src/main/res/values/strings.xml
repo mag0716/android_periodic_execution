@@ -2,6 +2,11 @@
     <string name="app_name">MemoryTraining</string>
     <string name="action_settings">Settings</string>
 
+    <!-- notification -->
+    <string name="notification_training_title">訓練日時になりました</string>
+    <string name="notification_training_message_format">訓練対象データが%d件があります。復習しましょう。</string>
+
+    <!-- 一覧画面 -->
     <string name="list_empty_message">データがありません。\n追加画面より追加して訓練を始めましょう。</string>
     <string name="list_completed_training_message">おめでとうございます!!\n全ての訓練が完了しました。</string>
 </resources>

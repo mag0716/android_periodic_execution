@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.github.mag0716.memorytraining.Application;
+import com.github.mag0716.memorytraining.notification.NotificationConductor;
+import com.github.mag0716.memorytraining.repository.database.MemoryDao;
 import com.github.mag0716.memorytraining.service.TaskConductor;
 
 import timber.log.Timber;
@@ -20,14 +22,15 @@ import timber.log.Timber;
  * Created by mag0716 on 2017/07/02.
  */
 public class BootCompletedReceiver extends BroadcastReceiver {
+
     @Override
     public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
         Timber.d("BootCompletedReceiver#onReceive : action = %s", action);
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
-            TaskConductor.registerTaskIfNeeded(context,
-                    ((Application) context.getApplicationContext()).getDatabase().memoryDao());
-            // TODO: 訓練日時が過ぎていたら、Notification を通知する
+            final MemoryDao dao = ((Application) context.getApplicationContext()).getDatabase().memoryDao();
+            TaskConductor.registerTaskIfNeeded(context, dao);
+            NotificationConductor.notifyTrainingIfNeeded(context, dao);
         }
     }
 }

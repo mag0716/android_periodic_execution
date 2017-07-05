@@ -1,5 +1,8 @@
 package com.github.mag0716.memorytraining.service.gcmnetworkmanager;
 
+import com.github.mag0716.memorytraining.Application;
+import com.github.mag0716.memorytraining.notification.NotificationConductor;
+import com.github.mag0716.memorytraining.repository.database.MemoryDao;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
@@ -14,7 +17,8 @@ public class GcmNetworkManagerService extends GcmTaskService {
     @Override
     public int onRunTask(TaskParams taskParams) {
         Timber.d("onRunTask : tag = %s", taskParams.getTag());
-        // TODO: 現在日時を超えたデータがあれば BroadcastReceiver に通知を投げる
+        final MemoryDao dao = ((Application) getApplication()).getDatabase().memoryDao();
+        NotificationConductor.notifyTrainingIfNeeded(getApplicationContext(), dao);
         return GcmNetworkManager.RESULT_SUCCESS;
     }
 
