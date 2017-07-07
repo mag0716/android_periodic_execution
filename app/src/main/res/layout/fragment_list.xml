@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="presenter"
+            type="com.github.mag0716.memorytraining.presenter.ListPresenter" />
+
+        <variable
             name="viewModel"
             type="com.github.mag0716.memorytraining.viewmodel.ListViewModel" />
     </data>
@@ -13,9 +17,8 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="com.github.mag0716.memorytraining.activity.ListActivity"
-        tools:showIn="@layout/activity_list">
+        tools:context="com.github.mag0716.memorytraining.activity.TrainingActivity"
+        tools:showIn="@layout/activity_training">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/trainingList"

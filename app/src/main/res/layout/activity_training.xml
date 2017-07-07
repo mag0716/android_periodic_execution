@@ -7,13 +7,13 @@
 
         <variable
             name="presenter"
-            type="com.github.mag0716.memorytraining.presenter.ListPresenter" />
+            type="com.github.mag0716.memorytraining.presenter.TrainingPresenter" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.github.mag0716.memorytraining.activity.ListActivity">
+        tools:context="com.github.mag0716.memorytraining.activity.TrainingActivity">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -29,9 +29,11 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <include
+        <FrameLayout
             android:id="@+id/content"
-            layout="@layout/content_list" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
