@@ -47,14 +47,6 @@ public class ListPresenter implements IPresenter {
     }
 
     /**
-     * 訓練データの追加
-     */
-    public void addMemory() {
-        Timber.d("addMemory");
-        // TODO: 追加画面へ遷移
-    }
-
-    /**
      * 訓練日時が過ぎているデータを取得する
      *
      * @param trainingDatetime 訓練日時

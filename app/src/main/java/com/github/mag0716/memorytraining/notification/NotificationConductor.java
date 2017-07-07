@@ -9,7 +9,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.github.mag0716.memorytraining.R;
-import com.github.mag0716.memorytraining.activity.ListActivity;
+import com.github.mag0716.memorytraining.activity.TrainingActivity;
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
 
@@ -69,7 +69,7 @@ public class NotificationConductor {
         }).subscribeOn(Schedulers.io()).subscribe(count -> {
             final int notificationId = NotificationType.TRAINING_NOTIFICATION.getId();
             final NotificationManagerCompat manager = NotificationManagerCompat.from(context);
-            final Intent intent = ListActivity.createIntent(context);
+            final Intent intent = TrainingActivity.createIntent(context);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             final PendingIntent pendingIntent = PendingIntent.getActivity(context,
                     notificationId,
