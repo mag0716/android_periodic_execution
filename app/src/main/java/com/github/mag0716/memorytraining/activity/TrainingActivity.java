@@ -88,8 +88,8 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView 
     @Override
     public void showTrainingList() {
         final FragmentManager manager = getSupportFragmentManager();
-        if (manager.findFragmentByTag(ListFragment.class.getCanonicalName()) == null) {
-            manager.beginTransaction().replace(R.id.content, ListFragment.newInstance(), ListFragment.class.getCanonicalName()).commit();
+        if (manager.findFragmentByTag(ListFragment.TAG) == null) {
+            manager.beginTransaction().replace(R.id.content, ListFragment.newInstance(), ListFragment.TAG).commit();
         }
     }
 

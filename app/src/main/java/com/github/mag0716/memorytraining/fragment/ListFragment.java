@@ -30,6 +30,8 @@ import java.util.List;
  */
 public class ListFragment extends Fragment implements ListView {
 
+    public static final String TAG = ListFragment.class.getCanonicalName();
+
     private FragmentListBinding binding;
     private final ListViewModel viewModel = new ListViewModel();
     private ListPresenter presenter;
