@@ -9,9 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.mag0716.memorytraining.Application;
 import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.databinding.FragmentEditBinding;
 import com.github.mag0716.memorytraining.model.Memory;
+import com.github.mag0716.memorytraining.presenter.EditPresenter;
+import com.github.mag0716.memorytraining.view.EditView;
 import com.github.mag0716.memorytraining.viewmodel.EditViewModel;
 
 /**
@@ -19,13 +22,14 @@ import com.github.mag0716.memorytraining.viewmodel.EditViewModel;
  * <p>
  * Created by mag0716 on 2017/07/08.
  */
-public class EditFragment extends Fragment {
+public class EditFragment extends Fragment implements EditView {
 
     public static final String TAG = EditFragment.class.getCanonicalName();
     private static final String EXTRA_MEMORY = TAG + ".MEMORY";
-    private final EditViewModel viewModel = new EditViewModel();
 
     private FragmentEditBinding binding;
+    private EditViewModel viewModel;
+    private EditPresenter presenter;
 
     /**
      * インスタンスを返却
@@ -59,10 +63,43 @@ public class EditFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit, container, false);
+        presenter = new EditPresenter(((Application) getContext().getApplicationContext()).getDatabase().memoryDao());
+        binding.setPresenter(presenter);
+        final Bundle bundle = getArguments();
+        Memory memory = null;
+        if (bundle != null) {
+            memory = bundle.getParcelable(EXTRA_MEMORY);
+        }
+        viewModel = new EditViewModel(memory != null ? memory : new Memory());
         binding.setViewModel(viewModel);
         return binding.getRoot();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.attachView(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.detachView();
+    }
+
+    // endregion
+
+    // region EditView
+
+    @Override
+    public void saveSuccess() {
+
+    }
+
+    @Override
+    public void saveFailed() {
+
+    }
 
     // endregion
 }

@@ -2,9 +2,11 @@ package com.github.mag0716.memorytraining.viewmodel;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.github.mag0716.memorytraining.BR;
+import com.github.mag0716.memorytraining.model.Memory;
 
 /**
  * Created by mag0716 on 2017/07/08.
@@ -12,30 +14,42 @@ import com.github.mag0716.memorytraining.BR;
 public class EditViewModel extends BaseObservable {
 
     @Bindable
-    private String question;
-    @Bindable
-    private String answer;
+    private final Memory memory;
 
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question;
+    public EditViewModel(@NonNull Memory memory) {
+        this.memory = memory;
+        notifyPropertyChanged(BR.question);
+        notifyPropertyChanged(BR.answer);
         notifyPropertyChanged(BR.valid);
     }
 
+    public Memory getMemory() {
+        return memory;
+    }
+
+    @Bindable
+    public String getQuestion() {
+        return memory.getQuestion();
+    }
+
+    public void setQuestion(String question) {
+        memory.setQuestion(question);
+        notifyPropertyChanged(BR.valid);
+    }
+
+    @Bindable
     public String getAnswer() {
-        return answer;
+        return memory.getAnswer();
     }
 
     public void setAnswer(String answer) {
-        this.answer = answer;
+        memory.setAnswer(answer);
         notifyPropertyChanged(BR.valid);
     }
 
     @Bindable
     public boolean isValid() {
-        return !TextUtils.isEmpty(question) && !TextUtils.isEmpty(answer);
+        return !TextUtils.isEmpty(memory.getQuestion())
+                && !TextUtils.isEmpty(memory.getAnswer());
     }
 }
