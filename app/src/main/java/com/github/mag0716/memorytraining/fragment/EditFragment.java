@@ -2,6 +2,7 @@ package com.github.mag0716.memorytraining.fragment;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,10 +28,19 @@ public class EditFragment extends Fragment {
     /**
      * インスタンスを返却
      *
+     * @return EditFragment
+     */
+    public static EditFragment newInstance() {
+        return new EditFragment();
+    }
+
+    /**
+     * インスタンスを返却
+     *
      * @param memory 編集対象データ
      * @return EditFragment
      */
-    public static EditFragment newInstance(@Nullable Memory memory) {
+    public static EditFragment newInstance(@NonNull Memory memory) {
         final EditFragment fragment = new EditFragment();
         final Bundle bundle = new Bundle();
         bundle.putParcelable(EXTRA_MEMORY, memory);
