@@ -9,4 +9,9 @@
     <!-- 一覧画面 -->
     <string name="list_empty_message">データがありません。\n追加画面より追加して訓練を始めましょう。</string>
     <string name="list_completed_training_message">おめでとうございます!!\n全ての訓練が完了しました。</string>
+
+    <!-- 追加、編集画面 -->
+    <string name="edit_question_hint">質問を入力してください</string>
+    <string name="edit_answer_hint">答えを入力してください</string>
+    <string name="edit_save_button_name">保存</string>
 </resources>
