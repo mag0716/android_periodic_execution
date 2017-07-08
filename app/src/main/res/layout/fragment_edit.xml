@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.github.mag0716.memorytraining.viewmodel.EditViewModel" />
+
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -27,7 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/edit_question_hint"
-                android:maxLines="3" />
+                android:maxLines="3"
+                android:text="@={viewModel.question}" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -46,13 +51,15 @@
                 android:id="@+id/answer_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/edit_answer_hint" />
+                android:hint="@string/edit_answer_hint"
+                android:text="@={viewModel.answer}" />
         </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/save_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="@{viewModel.valid}"
             android:text="@string/edit_save_button_name"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="1"

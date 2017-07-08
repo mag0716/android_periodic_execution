@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.databinding.FragmentEditBinding;
 import com.github.mag0716.memorytraining.model.Memory;
+import com.github.mag0716.memorytraining.viewmodel.EditViewModel;
 
 /**
  * 追加、編集画面
@@ -22,6 +23,7 @@ public class EditFragment extends Fragment {
 
     public static final String TAG = EditFragment.class.getCanonicalName();
     private static final String EXTRA_MEMORY = TAG + ".MEMORY";
+    private final EditViewModel viewModel = new EditViewModel();
 
     private FragmentEditBinding binding;
 
@@ -57,6 +59,7 @@ public class EditFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit, container, false);
+        binding.setViewModel(viewModel);
         return binding.getRoot();
     }
 
