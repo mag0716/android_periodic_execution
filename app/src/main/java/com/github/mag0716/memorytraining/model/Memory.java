@@ -141,13 +141,15 @@ public class Memory implements Parcelable {
 
     @Override
     public String toString() {
-        final String format = "Memory(id=%d, count=%d, level=%d, next training datetime=%s)";
+        final String format = "Memory(id=%d, count=%d, level=%d, next training datetime=%s\nquestion=%s\nanswer=%s)";
         return String.format(Locale.getDefault(),
                 format,
                 id,
                 count,
                 level,
-                DatetimeUtil.convertDebugFormat(nextTrainingDatetime));
+                DatetimeUtil.convertDebugFormat(nextTrainingDatetime),
+                question,
+                answer);
     }
 
     // region Parcelable

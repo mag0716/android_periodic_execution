@@ -5,24 +5,30 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.databinding.ActivityTrainingBinding;
+import com.github.mag0716.memorytraining.fragment.EditFragment;
 import com.github.mag0716.memorytraining.fragment.ListFragment;
+import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.presenter.TrainingPresenter;
 import com.github.mag0716.memorytraining.view.TrainingView;
 
 /**
  * 訓練画面
  */
-public class TrainingActivity extends AppCompatActivity implements TrainingView {
+public class TrainingActivity extends AppCompatActivity implements TrainingView, FragmentManager.OnBackStackChangedListener {
 
     private ActivityTrainingBinding binding;
     private TrainingPresenter presenter;
+    private FragmentManager fragmentManager;
 
     public static Intent createIntent(@NonNull Context context) {
         return new Intent(context, TrainingActivity.class);
@@ -35,6 +41,7 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView 
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_training);
         presenter = new TrainingPresenter();
+        fragmentManager = getSupportFragmentManager();
         binding.setPresenter(presenter);
         setSupportActionBar(binding.toolbar);
 
@@ -45,12 +52,14 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView 
     protected void onResume() {
         super.onResume();
         presenter.attachView(this);
+        fragmentManager.addOnBackStackChangedListener(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         presenter.detachView();
+        fragmentManager.removeOnBackStackChangedListener(this);
     }
 
     // endregion
@@ -77,6 +86,28 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        final FragmentManager manager = getSupportFragmentManager();
+        if (manager.getBackStackEntryCount() > 0) {
+            manager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        final Fragment currentFragment = fragmentManager.findFragmentById(R.id.content);
+        // TODO: ここにロジックがあるのが若干気持ち悪い
+        if (currentFragment instanceof ListFragment) {
+            binding.fab.setVisibility(View.VISIBLE);
+        } else {
+            binding.fab.setVisibility(View.INVISIBLE);
+        }
+    }
+
+
     // region TrainingView
 
     @NonNull
@@ -87,10 +118,25 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView 
 
     @Override
     public void showTrainingList() {
-        final FragmentManager manager = getSupportFragmentManager();
-        if (manager.findFragmentByTag(ListFragment.TAG) == null) {
-            manager.beginTransaction().replace(R.id.content, ListFragment.newInstance(), ListFragment.TAG).commit();
+        if (fragmentManager.findFragmentByTag(ListFragment.TAG) == null) {
+            fragmentManager.beginTransaction().replace(R.id.content, ListFragment.newInstance(), ListFragment.TAG).commit();
         }
+    }
+
+    @Override
+    public void showAddView() {
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.addToBackStack(EditFragment.TAG);
+        transaction.replace(R.id.content, EditFragment.newInstance(), EditFragment.TAG);
+        transaction.commit();
+    }
+
+    @Override
+    public void showEditView(@NonNull Memory memory) {
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.addToBackStack(EditFragment.TAG);
+        transaction.replace(R.id.content, EditFragment.newInstance(memory), EditFragment.TAG);
+        transaction.commit();
     }
 
     // endregion

@@ -34,6 +34,6 @@ public class TrainingPresenter implements IPresenter {
      */
     public void addMemory() {
         Timber.d("addMemory");
-        // TODO: 追加画面へ遷移
+        view.showAddView();
     }
 }
