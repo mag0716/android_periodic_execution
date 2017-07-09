@@ -17,6 +17,8 @@ import com.github.mag0716.memorytraining.presenter.EditPresenter;
 import com.github.mag0716.memorytraining.view.EditView;
 import com.github.mag0716.memorytraining.viewmodel.EditViewModel;
 
+import timber.log.Timber;
+
 /**
  * 追加、編集画面
  * <p>
@@ -93,12 +95,14 @@ public class EditFragment extends Fragment implements EditView {
 
     @Override
     public void saveSuccess() {
-
+        Timber.d("saveSuccess");
+        getActivity().onBackPressed();
     }
 
     @Override
-    public void saveFailed() {
-
+    public void saveFailed(@NonNull Throwable throwable) {
+        Timber.w(throwable, "saveFailed");
+        // TODO: 基本は発生しないはずだが、調査できるように Exception はトラッキングしておく
     }
 
     // endregion
