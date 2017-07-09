@@ -1,13 +1,11 @@
 package com.github.mag0716.memorytraining;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.annimon.stream.Stream;
 import com.facebook.stetho.Stetho;
 import com.github.mag0716.memorytraining.model.Memory;
-import com.github.mag0716.memorytraining.repository.database.ApplicationDatabase;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
 import com.github.mag0716.memorytraining.service.TaskConductor;
 import com.squareup.moshi.JsonAdapter;
@@ -46,7 +44,7 @@ public class DebugApplication extends Application {
             throw new IllegalStateException("Database initialized already.");
         }
 
-        database = Room.inMemoryDatabaseBuilder(context, ApplicationDatabase.class).build();
+        database = getDatabase();
 
         // TODO: repository 経由でのアクセスに変更し、DB アクセスを隠蔽する
         // insert debug data
@@ -61,7 +59,7 @@ public class DebugApplication extends Application {
                 })
                 .subscribeOn(Schedulers.io())
                 .subscribe(() -> Timber.d("completed to insert debug data."),
-                        throwable -> Timber.w("failed to insert debug data.", throwable));
+                        throwable -> Timber.w(throwable, "failed to insert debug data."));
     }
 
     private List<Memory> loadTestData() {
