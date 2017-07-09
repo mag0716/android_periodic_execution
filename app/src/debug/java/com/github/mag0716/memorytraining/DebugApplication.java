@@ -59,7 +59,7 @@ public class DebugApplication extends Application {
                 })
                 .subscribeOn(Schedulers.io())
                 .subscribe(() -> Timber.d("completed to insert debug data."),
-                        throwable -> Timber.w("failed to insert debug data.", throwable));
+                        throwable -> Timber.w(throwable, "failed to insert debug data."));
     }
 
     private List<Memory> loadTestData() {
