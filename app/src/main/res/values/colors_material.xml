@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Buttons(https://material.io/guidelines/components/buttons.html) -->
+    <color name="buttons_raised_disabled_text">#42000000</color>
+    <color name="buttons_raised_disabled">#1F000000</color>
+    <color name="buttons_dark_raised_disabled_text">#4DFFFFFF</color>
+    <color name="buttons_dark_raised_disabled">#1FFFFFFF</color>
+
+</resources>

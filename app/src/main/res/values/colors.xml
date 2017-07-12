@@ -7,6 +7,7 @@
 
     <!-- text -->
     <color name="primary_text">#DE000000</color>
+    <color name="primary_light_text">#FFFFFF</color>
     <color name="secondary_text">#8A000000</color>
     <color name="disable_text">#39000000</color>
     <color name="hint_text">#39000000</color>

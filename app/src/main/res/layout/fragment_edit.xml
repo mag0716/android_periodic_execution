@@ -67,6 +67,7 @@
             android:enabled="@{viewModel.valid}"
             android:onClick="@{() -> presenter.save(viewModel.memory)}"
             android:text="@string/edit_save_button_name"
+            android:theme="@style/AppTheme.Button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintLeft_toLeftOf="parent"
