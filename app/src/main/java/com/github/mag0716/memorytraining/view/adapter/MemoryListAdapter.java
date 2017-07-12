@@ -41,7 +41,7 @@ public class MemoryListAdapter extends RecyclerView.Adapter<MemoryListAdapter.Me
     @Override
     public void onBindViewHolder(MemoryViewHolder viewHolder, int position) {
         final ListItemViewModel viewModel = viewModelList.get(position);
-        ((ViewListItemBinding) viewHolder.binding).setMemory(viewModel);
+        ((ViewListItemBinding) viewHolder.binding).setViewModel(viewModel);
         ((ViewListItemBinding) viewHolder.binding).setPresenter(presenter);
         viewHolder.binding.executePendingBindings();
     }

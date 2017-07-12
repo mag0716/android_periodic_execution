@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="memory"
+            name="viewModel"
             type="com.github.mag0716.memorytraining.viewmodel.ListItemViewModel" />
 
         <variable
@@ -20,7 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/cards_horizontal_margin"
-        android:layout_marginStart="@dimen/cards_horizontal_margin">
+        android:layout_marginStart="@dimen/cards_horizontal_margin"
+        android:onLongClick="@{() -> presenter.edit(viewModel.id)}">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -31,7 +32,7 @@
                 style="@style/AppTheme.Card.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{memory.question}"
+                android:text="@{viewModel.question}"
                 app:layout_constraintEnd_toStartOf="@id/open_and_close_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/answer_text"
@@ -44,17 +45,17 @@
                 android:layout_width="@dimen/touch_target_minimum_size"
                 android:layout_height="@dimen/touch_target_minimum_size"
                 android:layout_marginEnd="@dimen/cards_action_button_row_padding"
-                android:onClick="@{() -> memory.toggleShowingAnswer()}"
+                android:onClick="@{() -> viewModel.toggleShowingAnswer()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@{memory.openAndCloseIcon}" />
+                app:srcCompat="@{viewModel.openAndCloseIcon}" />
 
             <TextView
                 android:id="@+id/answer_text"
                 style="@style/AppTheme.Card.SubText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{memory.answer}"
+                android:text="@{viewModel.answer}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/question_text"
@@ -67,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/cards_action_button_row_padding"
                 android:layout_marginStart="@dimen/cards_action_button_row_padding"
-                android:onClick="@{() -> presenter.levelUp(memory.getId())}"
+                android:onClick="@{() -> presenter.levelUp(viewModel.getId())}"
                 android:text="OK"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/ng_button"
@@ -81,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/cards_action_button_row_padding"
-                android:onClick="@{() -> presenter.levelDown(memory.getId())}"
+                android:onClick="@{() -> presenter.levelDown(viewModel.getId())}"
                 android:text="NG"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:constraint_referenced_ids="answer_text"
-                app:visibleOrGone="@{memory.isShowingAnswer}" />
+                app:visibleOrGone="@{viewModel.isShowingAnswer}" />
 
         </android.support.constraint.ConstraintLayout>
 
