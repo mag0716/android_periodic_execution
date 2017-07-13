@@ -67,7 +67,6 @@ public class EditFragment extends Fragment implements EditView {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit, container, false);
         presenter = new EditPresenter(((Application) getContext().getApplicationContext()).getDatabase().memoryDao());
         binding.setPresenter(presenter);
-        loadMemoryIfNeeded(getArguments());
         return binding.getRoot();
     }
 
@@ -75,6 +74,7 @@ public class EditFragment extends Fragment implements EditView {
     public void onResume() {
         super.onResume();
         presenter.attachView(this);
+        presenter.loadIfNeeded(getArguments(), EXTRA_MEMORY_ID);
     }
 
     @Override
@@ -86,6 +86,12 @@ public class EditFragment extends Fragment implements EditView {
     // endregion
 
     // region EditView
+
+    @Override
+    public void showMemory(@NonNull Memory memory) {
+        viewModel = new EditViewModel(memory);
+        binding.setViewModel(viewModel);
+    }
 
     @Override
     public void saveSuccess() {
@@ -100,12 +106,4 @@ public class EditFragment extends Fragment implements EditView {
     }
 
     // endregion
-
-    private void loadMemoryIfNeeded(@Nullable Bundle bundle) {
-        if (bundle != null && bundle.containsKey(EXTRA_MEMORY_ID)) {
-        } else {
-            viewModel = new EditViewModel(new Memory());
-            binding.setViewModel(viewModel);
-        }
-    }
 }

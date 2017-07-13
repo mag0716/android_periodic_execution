@@ -1,6 +1,8 @@
 package com.github.mag0716.memorytraining.presenter;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
@@ -8,6 +10,8 @@ import com.github.mag0716.memorytraining.view.EditView;
 import com.github.mag0716.memorytraining.view.IView;
 
 import io.reactivex.Completable;
+import io.reactivex.Single;
+import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -57,5 +61,27 @@ public class EditPresenter implements IPresenter {
                         .subscribe(() -> view.saveSuccess(),
                                 throwable -> view.saveFailed(throwable))
         );
+    }
+
+    public void loadIfNeeded(@Nullable Bundle bundle, @NonNull String key) {
+        Timber.d("loadIfNeeded");
+
+        if (bundle != null && bundle.containsKey(key)) {
+            final long id = bundle.getLong(key);
+            disposables.add(
+                    Single.create((SingleOnSubscribe<Memory>) emitter -> {
+                        final Memory memory = dao.load(id);
+                        if (memory != null) {
+                            emitter.onSuccess(memory);
+                        } else {
+                            emitter.onError(new IllegalArgumentException());
+                        }
+                    }).subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(memory -> view.showMemory(memory),
+                                    throwable -> view.showMemory(new Memory())));
+        } else {
+            view.showMemory(new Memory());
+        }
     }
 }
