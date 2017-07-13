@@ -1,9 +1,5 @@
 package com.github.mag0716.memorytraining.view;
 
-import android.support.annotation.NonNull;
-
-import com.github.mag0716.memorytraining.model.Memory;
-
 /**
  * 訓練画面の View インタフェース
  * <p>
@@ -23,6 +19,8 @@ public interface TrainingView extends IView {
 
     /**
      * 編集画面を表示する
+     *
+     * @param id Memory#id
      */
-    void showEditView(@NonNull Memory memory);
+    void showEditView(long id);
 }

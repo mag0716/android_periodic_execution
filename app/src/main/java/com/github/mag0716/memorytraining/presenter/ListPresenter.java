@@ -123,7 +123,7 @@ public class ListPresenter implements IPresenter {
      */
     public boolean edit(long id) {
         Timber.d("edit : %d", id);
-        // TODO:
+        view.editMemory(id);
         return true;
     }
 

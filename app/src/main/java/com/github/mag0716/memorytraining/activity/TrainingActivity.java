@@ -17,7 +17,6 @@ import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.databinding.ActivityTrainingBinding;
 import com.github.mag0716.memorytraining.fragment.EditFragment;
 import com.github.mag0716.memorytraining.fragment.ListFragment;
-import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.presenter.TrainingPresenter;
 import com.github.mag0716.memorytraining.view.TrainingView;
 
@@ -132,10 +131,10 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
     }
 
     @Override
-    public void showEditView(@NonNull Memory memory) {
+    public void showEditView(long id) {
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.addToBackStack(EditFragment.TAG);
-        transaction.replace(R.id.content, EditFragment.newInstance(memory), EditFragment.TAG);
+        transaction.replace(R.id.content, EditFragment.newInstance(id), EditFragment.TAG);
         transaction.commit();
     }
 

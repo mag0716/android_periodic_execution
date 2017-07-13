@@ -21,6 +21,13 @@ public interface ListView extends IView {
     void showMemoryList(@NonNull List<Memory> memoryList);
 
     /**
+     * 訓練対象データを編集する
+     *
+     * @param id Memory#id
+     */
+    void editMemory(long id);
+
+    /**
      * 訓練対象データを非表示にする
      *
      * @param id Memory#id
