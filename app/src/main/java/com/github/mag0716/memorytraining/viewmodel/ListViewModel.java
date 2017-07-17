@@ -23,8 +23,9 @@ public class ListViewModel extends BaseObservable {
     private boolean isCompleted = false;
 
     // TODO: Memory の追加、削除
-    public void addAll(List<Memory> memoryList) {
+    public void set(List<Memory> memoryList) {
         if (memoryList != null) {
+            itemViewModelList.clear();
             itemViewModelList.addAll(Stream.of(memoryList)
                     .map(ListItemViewModel::new)
                     .toList());

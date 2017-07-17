@@ -88,7 +88,7 @@ public class ListFragment extends Fragment implements ListView {
 
     @Override
     public void showMemoryList(@NonNull List<Memory> memoryList) {
-        viewModel.addAll(memoryList);
+        viewModel.set(memoryList);
     }
 
     @Override
