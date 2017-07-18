@@ -55,7 +55,7 @@ public class ListFragment extends Fragment implements ListView {
         binding.setViewModel(viewModel);
         presenter = new ListPresenter(((Application) getContext().getApplicationContext()).getDatabase().memoryDao());
         binding.setPresenter(presenter);
-        adapter = new MemoryListAdapter(getContext(), presenter, viewModel.getItemViewModelList());
+        adapter = new MemoryListAdapter(getContext(), presenter);
         binding.trainingList.setLayoutManager(new LinearLayoutManager(getContext()));
         itemDecoration = new CardItemDecoration(getContext());
         binding.trainingList.addItemDecoration(itemDecoration);
@@ -88,7 +88,7 @@ public class ListFragment extends Fragment implements ListView {
 
     @Override
     public void showMemoryList(@NonNull List<Memory> memoryList) {
-        viewModel.addAll(memoryList);
+        viewModel.set(memoryList);
     }
 
     @Override
