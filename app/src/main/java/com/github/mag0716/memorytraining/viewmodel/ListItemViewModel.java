@@ -9,9 +9,14 @@ import com.github.mag0716.memorytraining.BR;
 import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.model.Memory;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 /**
  * Created by mag0716 on 2017/06/16.
  */
+@ToString
+@EqualsAndHashCode(callSuper = false)
 public class ListItemViewModel extends BaseObservable {
 
     private final long id;
