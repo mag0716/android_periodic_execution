@@ -139,6 +139,15 @@ public class Memory implements Parcelable {
         this.level = nextLevel;
     }
 
+    /**
+     * 新規作成時のデータかどうか
+     *
+     * @return true:新規作成データ、false:DBに保存済みのデータ
+     */
+    public boolean isNewData() {
+        return id <= 0;
+    }
+
     @Override
     public String toString() {
         final String format = "Memory(id=%d, count=%d, level=%d, next training datetime=%s\nquestion=%s\nanswer=%s)";

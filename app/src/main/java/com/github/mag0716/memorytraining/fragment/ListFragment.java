@@ -17,6 +17,7 @@ import com.github.mag0716.memorytraining.databinding.FragmentListBinding;
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.presenter.ListPresenter;
 import com.github.mag0716.memorytraining.view.ListView;
+import com.github.mag0716.memorytraining.view.TrainingView;
 import com.github.mag0716.memorytraining.view.adapter.MemoryListAdapter;
 import com.github.mag0716.memorytraining.view.decoration.CardItemDecoration;
 import com.github.mag0716.memorytraining.viewmodel.ListViewModel;
@@ -89,6 +90,13 @@ public class ListFragment extends Fragment implements ListView {
     @Override
     public void showMemoryList(@NonNull List<Memory> memoryList) {
         viewModel.set(memoryList);
+    }
+
+    @Override
+    public void editMemory(long id) {
+        if (getActivity() instanceof TrainingView) {
+            ((TrainingView) getActivity()).showEditView(id);
+        }
     }
 
     @Override

@@ -27,7 +27,7 @@ import timber.log.Timber;
 public class EditFragment extends Fragment implements EditView {
 
     public static final String TAG = EditFragment.class.getCanonicalName();
-    private static final String EXTRA_MEMORY = TAG + ".MEMORY";
+    private static final String EXTRA_MEMORY_ID = TAG + ".MEMORY_ID";
 
     private FragmentEditBinding binding;
     private EditViewModel viewModel;
@@ -45,13 +45,13 @@ public class EditFragment extends Fragment implements EditView {
     /**
      * インスタンスを返却
      *
-     * @param memory 編集対象データ
+     * @param id 編集対象データの ID
      * @return EditFragment
      */
-    public static EditFragment newInstance(@NonNull Memory memory) {
+    public static EditFragment newInstance(long id) {
         final EditFragment fragment = new EditFragment();
         final Bundle bundle = new Bundle();
-        bundle.putParcelable(EXTRA_MEMORY, memory);
+        bundle.putLong(EXTRA_MEMORY_ID, id);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -67,13 +67,6 @@ public class EditFragment extends Fragment implements EditView {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit, container, false);
         presenter = new EditPresenter(((Application) getContext().getApplicationContext()).getDatabase().memoryDao());
         binding.setPresenter(presenter);
-        final Bundle bundle = getArguments();
-        Memory memory = null;
-        if (bundle != null) {
-            memory = bundle.getParcelable(EXTRA_MEMORY);
-        }
-        viewModel = new EditViewModel(memory != null ? memory : new Memory());
-        binding.setViewModel(viewModel);
         return binding.getRoot();
     }
 
@@ -81,6 +74,7 @@ public class EditFragment extends Fragment implements EditView {
     public void onResume() {
         super.onResume();
         presenter.attachView(this);
+        presenter.loadIfNeeded(getArguments(), EXTRA_MEMORY_ID);
     }
 
     @Override
@@ -92,6 +86,12 @@ public class EditFragment extends Fragment implements EditView {
     // endregion
 
     // region EditView
+
+    @Override
+    public void showMemory(@NonNull Memory memory) {
+        viewModel = new EditViewModel(memory);
+        binding.setViewModel(viewModel);
+    }
 
     @Override
     public void saveSuccess() {
