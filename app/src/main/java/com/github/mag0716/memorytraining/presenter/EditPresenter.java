@@ -52,8 +52,7 @@ public class EditPresenter implements IPresenter {
         Timber.d("save : %s", memory);
         disposables.add(
                 Completable.create(emitter -> {
-                            // TODO: 編集データかどうかの判定処理
-                            if (memory.getId() <= 0) {
+                            if (memory.isNewData()) {
                                 dao.insert(memory);
                             } else {
                                 dao.update(memory);
