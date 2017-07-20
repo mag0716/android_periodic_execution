@@ -28,10 +28,13 @@ public class EditFragment extends Fragment implements EditView {
 
     public static final String TAG = EditFragment.class.getCanonicalName();
     private static final String EXTRA_MEMORY_ID = TAG + ".MEMORY_ID";
+    private static final String EXTRA_MEMORY = TAG + ".MEMORY";
 
     private FragmentEditBinding binding;
     private EditViewModel viewModel;
     private EditPresenter presenter;
+
+    private Memory memory;
 
     /**
      * インスタンスを返却
@@ -67,6 +70,12 @@ public class EditFragment extends Fragment implements EditView {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit, container, false);
         presenter = new EditPresenter(((Application) getContext().getApplicationContext()).getDatabase().memoryDao());
         binding.setPresenter(presenter);
+        if (savedInstanceState != null) {
+            memory = savedInstanceState.getParcelable(EXTRA_MEMORY);
+            if (memory != null) {
+                showMemory(memory);
+            }
+        }
         return binding.getRoot();
     }
 
@@ -74,7 +83,9 @@ public class EditFragment extends Fragment implements EditView {
     public void onResume() {
         super.onResume();
         presenter.attachView(this);
-        presenter.loadIfNeeded(getArguments(), EXTRA_MEMORY_ID);
+        if (memory == null) {
+            presenter.loadIfNeeded(getArguments(), EXTRA_MEMORY_ID);
+        }
     }
 
     @Override
@@ -83,12 +94,20 @@ public class EditFragment extends Fragment implements EditView {
         presenter.detachView();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(EXTRA_MEMORY, viewModel.getMemory());
+    }
+
     // endregion
 
     // region EditView
 
     @Override
     public void showMemory(@NonNull Memory memory) {
+        Timber.d("showMemory : %s", memory);
+        this.memory = memory;
         viewModel = new EditViewModel(memory);
         binding.setViewModel(viewModel);
     }
