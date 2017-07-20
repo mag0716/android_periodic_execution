@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.databinding.ActivityTrainingBinding;
@@ -19,6 +18,9 @@ import com.github.mag0716.memorytraining.fragment.EditFragment;
 import com.github.mag0716.memorytraining.fragment.ListFragment;
 import com.github.mag0716.memorytraining.presenter.TrainingPresenter;
 import com.github.mag0716.memorytraining.view.TrainingView;
+import com.github.mag0716.memorytraining.viewmodel.TrainingViewModel;
+
+import timber.log.Timber;
 
 /**
  * 訓練画面
@@ -28,6 +30,7 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
     private ActivityTrainingBinding binding;
     private TrainingPresenter presenter;
     private FragmentManager fragmentManager;
+    private TrainingViewModel viewModel = new TrainingViewModel();
 
     public static Intent createIntent(@NonNull Context context) {
         return new Intent(context, TrainingActivity.class);
@@ -41,6 +44,7 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
         binding = DataBindingUtil.setContentView(this, R.layout.activity_training);
         presenter = new TrainingPresenter();
         fragmentManager = getSupportFragmentManager();
+        binding.setViewModel(viewModel);
         binding.setPresenter(presenter);
         setSupportActionBar(binding.toolbar);
 
@@ -97,15 +101,8 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
 
     @Override
     public void onBackStackChanged() {
-        final Fragment currentFragment = fragmentManager.findFragmentById(R.id.content);
-        // TODO: ここにロジックがあるのが若干気持ち悪い
-        if (currentFragment instanceof ListFragment) {
-            binding.fab.setVisibility(View.VISIBLE);
-        } else {
-            binding.fab.setVisibility(View.INVISIBLE);
-        }
+        updateFabVisibility();
     }
-
 
     // region TrainingView
 
@@ -117,13 +114,17 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
 
     @Override
     public void showTrainingList() {
+        Timber.d("showTrainingList : %s", fragmentManager.findFragmentByTag(ListFragment.TAG));
         if (fragmentManager.findFragmentByTag(ListFragment.TAG) == null) {
             fragmentManager.beginTransaction().replace(R.id.content, ListFragment.newInstance(), ListFragment.TAG).commit();
+        } else {
+            updateFabVisibility();
         }
     }
 
     @Override
     public void showAddView() {
+        Timber.d("showAddView");
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.addToBackStack(EditFragment.TAG);
         transaction.replace(R.id.content, EditFragment.newInstance(), EditFragment.TAG);
@@ -132,6 +133,7 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
 
     @Override
     public void showEditView(long id) {
+        Timber.d("showEditView : %d", id);
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.addToBackStack(EditFragment.TAG);
         transaction.replace(R.id.content, EditFragment.newInstance(id), EditFragment.TAG);
@@ -139,4 +141,13 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
     }
 
     // endregion
+
+    /**
+     * FAB の表示状態を更新する
+     */
+    private void updateFabVisibility() {
+        final Fragment currentFragment = fragmentManager.findFragmentById(R.id.content);
+        Timber.d("updateFabVisibility : %s", currentFragment);
+        viewModel.setAddable(currentFragment instanceof ListFragment);
+    }
 }
