@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="viewModel"
+            type="com.github.mag0716.memorytraining.viewmodel.TrainingViewModel" />
+
+        <variable
             name="presenter"
             type="com.github.mag0716.memorytraining.presenter.TrainingPresenter" />
     </data>
@@ -43,7 +47,8 @@
             android:layout_margin="@dimen/fab_margin"
             android:onClick="@{() -> presenter.addMemory()}"
             app:layout_behavior="com.github.mag0716.memorytraining.view.behavior.FloatingActionButtonShowHideBehavior"
-            app:srcCompat="@drawable/ic_add_white_24dp" />
+            app:srcCompat="@drawable/ic_add_white_24dp"
+            app:visibleOrInvisible="@{viewModel.isAddable}" />
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

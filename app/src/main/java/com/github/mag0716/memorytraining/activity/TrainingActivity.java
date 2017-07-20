@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.databinding.ActivityTrainingBinding;
@@ -19,6 +18,7 @@ import com.github.mag0716.memorytraining.fragment.EditFragment;
 import com.github.mag0716.memorytraining.fragment.ListFragment;
 import com.github.mag0716.memorytraining.presenter.TrainingPresenter;
 import com.github.mag0716.memorytraining.view.TrainingView;
+import com.github.mag0716.memorytraining.viewmodel.TrainingViewModel;
 
 import timber.log.Timber;
 
@@ -30,6 +30,7 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
     private ActivityTrainingBinding binding;
     private TrainingPresenter presenter;
     private FragmentManager fragmentManager;
+    private TrainingViewModel viewModel = new TrainingViewModel();
 
     public static Intent createIntent(@NonNull Context context) {
         return new Intent(context, TrainingActivity.class);
@@ -43,6 +44,7 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
         binding = DataBindingUtil.setContentView(this, R.layout.activity_training);
         presenter = new TrainingPresenter();
         fragmentManager = getSupportFragmentManager();
+        binding.setViewModel(viewModel);
         binding.setPresenter(presenter);
         setSupportActionBar(binding.toolbar);
 
@@ -146,10 +148,6 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
     private void updateFabVisibility() {
         final Fragment currentFragment = fragmentManager.findFragmentById(R.id.content);
         Timber.d("updateFabVisibility : %s", currentFragment);
-        if (currentFragment instanceof ListFragment) {
-            binding.fab.setVisibility(View.VISIBLE);
-        } else {
-            binding.fab.setVisibility(View.INVISIBLE);
-        }
+        viewModel.setAddable(currentFragment instanceof ListFragment);
     }
 }
