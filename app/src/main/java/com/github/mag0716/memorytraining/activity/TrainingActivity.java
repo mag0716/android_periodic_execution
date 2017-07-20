@@ -20,6 +20,8 @@ import com.github.mag0716.memorytraining.fragment.ListFragment;
 import com.github.mag0716.memorytraining.presenter.TrainingPresenter;
 import com.github.mag0716.memorytraining.view.TrainingView;
 
+import timber.log.Timber;
+
 /**
  * 訓練画面
  */
@@ -97,15 +99,8 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
 
     @Override
     public void onBackStackChanged() {
-        final Fragment currentFragment = fragmentManager.findFragmentById(R.id.content);
-        // TODO: ここにロジックがあるのが若干気持ち悪い
-        if (currentFragment instanceof ListFragment) {
-            binding.fab.setVisibility(View.VISIBLE);
-        } else {
-            binding.fab.setVisibility(View.INVISIBLE);
-        }
+        updateFabVisibility();
     }
-
 
     // region TrainingView
 
@@ -117,13 +112,17 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
 
     @Override
     public void showTrainingList() {
+        Timber.d("showTrainingList : %s", fragmentManager.findFragmentByTag(ListFragment.TAG));
         if (fragmentManager.findFragmentByTag(ListFragment.TAG) == null) {
             fragmentManager.beginTransaction().replace(R.id.content, ListFragment.newInstance(), ListFragment.TAG).commit();
+        } else {
+            updateFabVisibility();
         }
     }
 
     @Override
     public void showAddView() {
+        Timber.d("showAddView");
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.addToBackStack(EditFragment.TAG);
         transaction.replace(R.id.content, EditFragment.newInstance(), EditFragment.TAG);
@@ -132,6 +131,7 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
 
     @Override
     public void showEditView(long id) {
+        Timber.d("showEditView : %d", id);
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.addToBackStack(EditFragment.TAG);
         transaction.replace(R.id.content, EditFragment.newInstance(id), EditFragment.TAG);
@@ -139,4 +139,17 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
     }
 
     // endregion
+
+    /**
+     * FAB の表示状態を更新する
+     */
+    private void updateFabVisibility() {
+        final Fragment currentFragment = fragmentManager.findFragmentById(R.id.content);
+        Timber.d("updateFabVisibility : %s", currentFragment);
+        if (currentFragment instanceof ListFragment) {
+            binding.fab.setVisibility(View.VISIBLE);
+        } else {
+            binding.fab.setVisibility(View.INVISIBLE);
+        }
+    }
 }
