@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +29,8 @@ import timber.log.Timber;
 /**
  * 訓練画面
  */
-public class TrainingActivity extends AppCompatActivity implements TrainingView, FragmentManager.OnBackStackChangedListener {
+public class TrainingActivity extends AppCompatActivity
+        implements TrainingView, FragmentManager.OnBackStackChangedListener, NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityTrainingBinding binding;
     private TrainingPresenter presenter;
@@ -47,6 +52,15 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
         binding.setViewModel(viewModel);
         binding.setPresenter(presenter);
         setSupportActionBar(binding.toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         showTrainingList();
     }
@@ -91,11 +105,15 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
 
     @Override
     public void onBackPressed() {
-        final FragmentManager manager = getSupportFragmentManager();
-        if (manager.getBackStackEntryCount() > 0) {
-            manager.popBackStack();
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            final FragmentManager manager = getSupportFragmentManager();
+            if (manager.getBackStackEntryCount() > 0) {
+                manager.popBackStack();
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -103,6 +121,17 @@ public class TrainingActivity extends AppCompatActivity implements TrainingView,
     public void onBackStackChanged() {
         updateFabVisibility();
     }
+
+    // region NavigationView.OnNavigationItemSelectedListener
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        // TODO:
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    // endregion
 
     // region TrainingView
 
