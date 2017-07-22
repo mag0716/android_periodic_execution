@@ -25,6 +25,10 @@ public class TrainingViewModel extends BaseObservable {
      */
     private int currentCategory = CATEGORY_ONLY_NEED_TRAINING;
     /**
+     * カテゴリを選択可能かどうか
+     */
+    private boolean selectableCategory = true;
+    /**
      * 訓練データを追加可能かどうか
      */
     private boolean addable = true;
@@ -35,6 +39,16 @@ public class TrainingViewModel extends BaseObservable {
 
     public void setCurrentCategory(@IntRange(from = CATEGORY_ALL, to = CATEGORY_ONLY_NEED_TRAINING) int currentCategory) {
         this.currentCategory = currentCategory;
+    }
+
+    @Bindable
+    public boolean isSelectableCategory() {
+        return selectableCategory;
+    }
+
+    public void setSelectableCategory(boolean selectableCategory) {
+        this.selectableCategory = selectableCategory;
+        notifyPropertyChanged(BR.selectableCategory);
     }
 
     @Bindable

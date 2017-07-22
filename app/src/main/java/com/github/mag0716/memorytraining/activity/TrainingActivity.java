@@ -3,6 +3,8 @@ package com.github.mag0716.memorytraining.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.databinding.Observable;
+import android.databinding.Observable.OnPropertyChangedCallback;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -16,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.github.mag0716.memorytraining.BR;
 import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.databinding.ActivityTrainingBinding;
 import com.github.mag0716.memorytraining.fragment.EditFragment;
@@ -37,6 +40,17 @@ public class TrainingActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     private TrainingViewModel viewModel = new TrainingViewModel();
 
+    private ActionBarDrawerToggle toggle;
+
+    private final Observable.OnPropertyChangedCallback propertyChangedCallback = new OnPropertyChangedCallback() {
+        @Override
+        public void onPropertyChanged(Observable sender, int propertyId) {
+            if (propertyId == BR.selectableCategory) {
+                setDrawerEnabled(viewModel.isSelectableCategory());
+            }
+        }
+    };
+
     public static Intent createIntent(@NonNull Context context) {
         return new Intent(context, TrainingActivity.class);
     }
@@ -47,6 +61,7 @@ public class TrainingActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_training);
+        viewModel.addOnPropertyChangedCallback(propertyChangedCallback);
         presenter = new TrainingPresenter();
         fragmentManager = getSupportFragmentManager();
         binding.setViewModel(viewModel);
@@ -54,7 +69,7 @@ public class TrainingActivity extends AppCompatActivity
         setSupportActionBar(binding.toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, binding.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -77,6 +92,12 @@ public class TrainingActivity extends AppCompatActivity
         super.onPause();
         presenter.detachView();
         fragmentManager.removeOnBackStackChangedListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewModel.removeOnPropertyChangedCallback(propertyChangedCallback);
     }
 
     // endregion
@@ -119,7 +140,7 @@ public class TrainingActivity extends AppCompatActivity
 
     @Override
     public void onBackStackChanged() {
-        updateFabVisibility();
+        updateView();
     }
 
     // region NavigationView.OnNavigationItemSelectedListener
@@ -147,7 +168,7 @@ public class TrainingActivity extends AppCompatActivity
         if (fragmentManager.findFragmentByTag(ListFragment.TAG) == null) {
             fragmentManager.beginTransaction().replace(R.id.content, ListFragment.newInstance(), ListFragment.TAG).commit();
         } else {
-            updateFabVisibility();
+            updateView();
         }
     }
 
@@ -172,11 +193,23 @@ public class TrainingActivity extends AppCompatActivity
     // endregion
 
     /**
-     * FAB の表示状態を更新する
+     * 表示状態を更新する
      */
-    private void updateFabVisibility() {
+    private void updateView() {
         final Fragment currentFragment = fragmentManager.findFragmentById(R.id.content);
-        Timber.d("updateFabVisibility : %s", currentFragment);
+        Timber.d("updateView : %s", currentFragment);
+        viewModel.setSelectableCategory(currentFragment instanceof ListFragment);
         viewModel.setAddable(currentFragment instanceof ListFragment);
+    }
+
+    /**
+     * Drawer の有効状態を変更する
+     *
+     * @param enabled true:有効、false:無効
+     */
+    private void setDrawerEnabled(boolean enabled) {
+        Timber.d("setDrawerEnabled : %b", enabled);
+        binding.drawerLayout.setDrawerLockMode(enabled ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        toggle.setDrawerIndicatorEnabled(enabled);
     }
 }
