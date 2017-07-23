@@ -83,8 +83,7 @@ public class ListFragment extends Fragment implements ListView {
         }
         Timber.d("onResume : %d", category);
         presenter.attachView(this);
-        // TODO: カテゴリを指定する
-        presenter.loadTrainingData(System.currentTimeMillis());
+        presenter.loadTrainingData(category, System.currentTimeMillis());
     }
 
     @Override
