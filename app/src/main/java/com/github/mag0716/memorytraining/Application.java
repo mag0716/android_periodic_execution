@@ -27,9 +27,12 @@ public class Application extends android.app.Application implements IConfigurati
     @Override
     public void onCreate() {
         super.onCreate();
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
         // TODO: ログ出力を抑制する
         Timber.plant(new Timber.DebugTree());
-        LeakCanary.install(this);
     }
 
     @NonNull
