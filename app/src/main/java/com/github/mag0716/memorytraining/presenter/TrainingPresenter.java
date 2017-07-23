@@ -36,7 +36,7 @@ public class TrainingPresenter implements IPresenter {
      */
     public void changeCategory(int category) {
         Timber.d("changeCategory : %d", category);
-        // TODO:
+        view.showTrainingList(category);
     }
 
     /**

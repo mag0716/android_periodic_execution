@@ -80,7 +80,11 @@ public class TrainingActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        showTrainingList();
+        if (savedInstanceState == null) {
+            showTrainingList(viewModel.getCurrentCategory());
+        } else {
+            updateView();
+        }
     }
 
     @Override
@@ -166,13 +170,10 @@ public class TrainingActivity extends AppCompatActivity
     }
 
     @Override
-    public void showTrainingList() {
-        Timber.d("showTrainingList : %s", fragmentManager.findFragmentByTag(ListFragment.TAG));
-        if (fragmentManager.findFragmentByTag(ListFragment.TAG) == null) {
-            fragmentManager.beginTransaction().replace(R.id.content, ListFragment.newInstance(), ListFragment.TAG).commit();
-        } else {
-            updateView();
-        }
+    public void showTrainingList(int category) {
+        final ListFragment fragment = (ListFragment) fragmentManager.findFragmentByTag(ListFragment.TAG);
+        Timber.d("showTrainingList : %d, %s", category, fragment);
+        fragmentManager.beginTransaction().replace(R.id.content, ListFragment.newInstance(category), ListFragment.TAG).commit();
     }
 
     @Override
