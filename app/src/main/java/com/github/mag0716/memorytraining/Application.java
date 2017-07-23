@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 
 import com.github.mag0716.memorytraining.repository.database.ApplicationDatabase;
+import com.squareup.leakcanary.LeakCanary;
 
 import timber.log.Timber;
 
@@ -26,6 +27,10 @@ public class Application extends android.app.Application implements IConfigurati
     @Override
     public void onCreate() {
         super.onCreate();
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
         // TODO: ログ出力を抑制する
         Timber.plant(new Timber.DebugTree());
     }
