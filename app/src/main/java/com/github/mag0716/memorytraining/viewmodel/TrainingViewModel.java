@@ -2,9 +2,13 @@ package com.github.mag0716.memorytraining.viewmodel;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.support.annotation.IdRes;
 import android.support.annotation.IntRange;
 
 import com.github.mag0716.memorytraining.BR;
+import com.github.mag0716.memorytraining.R;
+
+import timber.log.Timber;
 
 /**
  * Created by mag0716 on 2017/07/20.
@@ -33,12 +37,14 @@ public class TrainingViewModel extends BaseObservable {
      */
     private boolean addable = true;
 
+    @Bindable
     public int getCurrentCategory() {
         return currentCategory;
     }
 
-    public void setCurrentCategory(@IntRange(from = CATEGORY_ALL, to = CATEGORY_ONLY_NEED_TRAINING) int currentCategory) {
+    private void setCurrentCategory(@IntRange(from = CATEGORY_ALL, to = CATEGORY_ONLY_NEED_TRAINING) int currentCategory) {
         this.currentCategory = currentCategory;
+        notifyPropertyChanged(BR.currentCategory);
     }
 
     @Bindable
@@ -59,5 +65,16 @@ public class TrainingViewModel extends BaseObservable {
     public void setAddable(boolean addable) {
         this.addable = addable;
         notifyPropertyChanged(BR.addable);
+    }
+
+    public void changeCategory(@IdRes int categoryId) {
+        Timber.d("changeCategory : %d", categoryId);
+        if (categoryId == R.id.navigation_all_data) {
+            setCurrentCategory(CATEGORY_ALL);
+        } else if (categoryId == R.id.navigation_training_data) {
+            setCurrentCategory(CATEGORY_ONLY_NEED_TRAINING);
+        } else {
+            throw new IllegalArgumentException("invalid category ID");
+        }
     }
 }

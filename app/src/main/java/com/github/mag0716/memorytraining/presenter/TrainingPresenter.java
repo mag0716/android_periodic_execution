@@ -30,6 +30,16 @@ public class TrainingPresenter implements IPresenter {
     }
 
     /**
+     * カテゴリの変更
+     *
+     * @param category カテゴリ
+     */
+    public void changeCategory(int category) {
+        Timber.d("changeCategory : %d", category);
+        // TODO:
+    }
+
+    /**
      * 訓練データの追加
      */
     public void addMemory() {

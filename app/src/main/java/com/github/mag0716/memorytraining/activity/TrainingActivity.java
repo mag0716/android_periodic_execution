@@ -45,8 +45,11 @@ public class TrainingActivity extends AppCompatActivity
     private final Observable.OnPropertyChangedCallback propertyChangedCallback = new OnPropertyChangedCallback() {
         @Override
         public void onPropertyChanged(Observable sender, int propertyId) {
+            Timber.d("onPropertyChanged : %d", propertyId);
             if (propertyId == BR.selectableCategory) {
                 setDrawerEnabled(viewModel.isSelectableCategory());
+            } else if (propertyId == BR.currentCategory) {
+                presenter.changeCategory(viewModel.getCurrentCategory());
             }
         }
     };
@@ -147,7 +150,7 @@ public class TrainingActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        // TODO:
+        viewModel.changeCategory(menuItem.getItemId());
         binding.drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
