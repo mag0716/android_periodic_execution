@@ -61,12 +61,15 @@ public class ListFragment extends Fragment implements ListView {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        final Bundle bundle = getArguments();
+        if (bundle != null) {
+            category = bundle.getInt(EXTRA_CATEGORY);
+        }
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false);
         binding.setViewModel(viewModel);
         presenter = new ListPresenter(((Application) getContext().getApplicationContext()).getDatabase().memoryDao());
         binding.setPresenter(presenter);
-        adapter = new MemoryListAdapter(getContext(), presenter);
+        adapter = new MemoryListAdapter(getContext(), presenter, category);
         binding.trainingList.setLayoutManager(new LinearLayoutManager(getContext()));
         itemDecoration = new CardItemDecoration(getContext());
         binding.trainingList.addItemDecoration(itemDecoration);
@@ -77,10 +80,6 @@ public class ListFragment extends Fragment implements ListView {
     @Override
     public void onResume() {
         super.onResume();
-        final Bundle bundle = getArguments();
-        if (bundle != null) {
-            category = bundle.getInt(EXTRA_CATEGORY);
-        }
         Timber.d("onResume : %d", category);
         presenter.attachView(this);
         presenter.loadTrainingData(category, System.currentTimeMillis());
