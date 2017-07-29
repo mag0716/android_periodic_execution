@@ -1,0 +1,7 @@
+<resources>
+
+    <!-- https://material.io/guidelines/style/typography.html#typography-styles -->
+    <style name="AppTheme.Text.Drawer.Header" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/primary_light_text</item>
+    </style>
+</resources>
