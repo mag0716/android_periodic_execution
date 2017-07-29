@@ -1,9 +1,12 @@
 package com.github.mag0716.memorytraining.viewmodel;
 
+import android.content.Context;
+import android.content.res.TypedArray;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 
 import com.github.mag0716.memorytraining.BR;
 import com.github.mag0716.memorytraining.R;
@@ -25,6 +28,11 @@ public class TrainingViewModel extends BaseObservable {
     public static final int CATEGORY_ALL = -2;
 
     /**
+     * Navigation Drawer の高さ
+     * status bar + Toolbar
+     */
+    private int drawerHeaderHeight;
+    /**
      * 現在選択中のカテゴリ
      */
     private int currentCategory = CATEGORY_ONLY_NEED_TRAINING;
@@ -36,6 +44,23 @@ public class TrainingViewModel extends BaseObservable {
      * 訓練データを追加可能かどうか
      */
     private boolean addable = true;
+
+    @Bindable
+    public int getDrawerHeaderHeight() {
+        return drawerHeaderHeight;
+    }
+
+    private void setDrawerHeaderHeight(int drawerHeaderHeight) {
+        this.drawerHeaderHeight = drawerHeaderHeight;
+        notifyPropertyChanged(BR.drawerHeaderHeight);
+    }
+
+    public void calculateDrawerHeaderHeight(@NonNull Context context, int statusBarHeight) {
+        final TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
+        final int toolbarHeight = (int) styledAttributes.getDimension(0, 0);
+        styledAttributes.recycle();
+        setDrawerHeaderHeight(statusBarHeight + toolbarHeight);
+    }
 
     @Bindable
     public int getCurrentCategory() {

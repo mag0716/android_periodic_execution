@@ -15,15 +15,18 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.mag0716.memorytraining.BR;
 import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.databinding.ActivityTrainingBinding;
+import com.github.mag0716.memorytraining.databinding.DrawerHeaderBinding;
 import com.github.mag0716.memorytraining.fragment.EditFragment;
 import com.github.mag0716.memorytraining.fragment.ListFragment;
 import com.github.mag0716.memorytraining.presenter.TrainingPresenter;
+import com.github.mag0716.memorytraining.util.DeviceUtil;
 import com.github.mag0716.memorytraining.view.TrainingView;
 import com.github.mag0716.memorytraining.viewmodel.TrainingViewModel;
 
@@ -36,6 +39,7 @@ public class TrainingActivity extends AppCompatActivity
         implements TrainingView, FragmentManager.OnBackStackChangedListener, NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityTrainingBinding binding;
+    private DrawerHeaderBinding drawerHeaderBinding;
     private TrainingPresenter presenter;
     private FragmentManager fragmentManager;
     private TrainingViewModel viewModel = new TrainingViewModel();
@@ -64,6 +68,9 @@ public class TrainingActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_training);
+        drawerHeaderBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.drawer_header, binding.drawerLayout, false);
+        drawerHeaderBinding.setViewModel(viewModel);
+        binding.navigationView.addHeaderView(drawerHeaderBinding.getRoot());
         viewModel.addOnPropertyChangedCallback(propertyChangedCallback);
         presenter = new TrainingPresenter();
         fragmentManager = getSupportFragmentManager();
@@ -85,6 +92,12 @@ public class TrainingActivity extends AppCompatActivity
         } else {
             updateView();
         }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        viewModel.calculateDrawerHeaderHeight(this, DeviceUtil.getStatusBarHeight(getWindow()));
     }
 
     @Override
