@@ -8,7 +8,9 @@ import com.github.mag0716.memorytraining.repository.database.MemoryDao;
 import com.github.mag0716.memorytraining.service.TaskConductor;
 import com.github.mag0716.memorytraining.view.IView;
 import com.github.mag0716.memorytraining.view.ListView;
+import com.github.mag0716.memorytraining.viewmodel.TrainingViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -49,11 +51,20 @@ public class ListPresenter implements IPresenter {
     /**
      * 訓練日時が過ぎているデータを取得する
      *
+     * @param category         カテゴリ
      * @param trainingDatetime 訓練日時
      */
-    public void loadTrainingData(long trainingDatetime) {
+    public void loadTrainingData(int category, long trainingDatetime) {
+        Timber.d("loadTrainingData : %d, %d", category, trainingDatetime);
         disposables.add(Single.create((SingleOnSubscribe<List<Memory>>) emitter -> {
-            final List<Memory> memoryList = dao.loadAll(trainingDatetime);
+            final List<Memory> memoryList;
+            if (category == TrainingViewModel.CATEGORY_ALL) {
+                memoryList = dao.loadAll();
+            } else if (category == TrainingViewModel.CATEGORY_ONLY_NEED_TRAINING) {
+                memoryList = dao.loadAll(trainingDatetime);
+            } else {
+                memoryList = new ArrayList<>();
+            }
             emitter.onSuccess(memoryList);
         })
                 .subscribeOn(Schedulers.io())

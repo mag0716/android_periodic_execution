@@ -6,6 +6,16 @@
     <dimen name="view_vertical_margin">8dp</dimen>
     <dimen name="touch_target_minimum_size">48dp</dimen>
 
+    <!-- Navigation drawer(https://material.io/guidelines/patterns/navigation-drawer.html#navigation-drawer-specs) -->
+    <dimen name="navigation_drawer_maximum_width">280dp</dimen>
+    <dimen name="navigation_drawer_elevation">16dp</dimen>
+    <dimen name="navigation_drawer_horizontal_padding">16dp</dimen>
+    <dimen name="navigation_drawer_vertical_padding">8dp</dimen>
+    <dimen name="navigation_drawer_sub_title_height">56dp</dimen>
+    <dimen name="navigation_drawer_view_vertical_margin">8dp</dimen>
+    <dimen name="navigation_drawer_list_item_height">48dp</dimen>
+    <dimen name="navigation_drawer_text_size">14sp</dimen>
+
     <!-- Buttons(https://material.io/guidelines/components/buttons.html) -->
     <dimen name="buttons_minimum_width">88dp</dimen>
     <dimen name="buttons_minimum_height">36dp</dimen>

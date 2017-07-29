@@ -24,6 +24,8 @@ import com.github.mag0716.memorytraining.viewmodel.ListViewModel;
 
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * 訓練データ一覧画面
  * <p>
@@ -32,6 +34,7 @@ import java.util.List;
 public class ListFragment extends Fragment implements ListView {
 
     public static final String TAG = ListFragment.class.getCanonicalName();
+    private static final String EXTRA_CATEGORY = TAG + ".CATEGORY";
 
     private FragmentListBinding binding;
     private final ListViewModel viewModel = new ListViewModel();
@@ -40,8 +43,14 @@ public class ListFragment extends Fragment implements ListView {
     private MemoryListAdapter adapter;
     private RecyclerView.ItemDecoration itemDecoration;
 
-    public static ListFragment newInstance() {
-        return new ListFragment();
+    private int category;
+
+    public static ListFragment newInstance(int category) {
+        ListFragment fragment = new ListFragment();
+        final Bundle bundle = new Bundle();
+        bundle.putInt(EXTRA_CATEGORY, category);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     public ListFragment() {
@@ -52,11 +61,15 @@ public class ListFragment extends Fragment implements ListView {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final Bundle bundle = getArguments();
+        if (bundle != null) {
+            category = bundle.getInt(EXTRA_CATEGORY);
+        }
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false);
         binding.setViewModel(viewModel);
         presenter = new ListPresenter(((Application) getContext().getApplicationContext()).getDatabase().memoryDao());
         binding.setPresenter(presenter);
-        adapter = new MemoryListAdapter(getContext(), presenter);
+        adapter = new MemoryListAdapter(getContext(), presenter, category);
         binding.trainingList.setLayoutManager(new LinearLayoutManager(getContext()));
         itemDecoration = new CardItemDecoration(getContext());
         binding.trainingList.addItemDecoration(itemDecoration);
@@ -67,8 +80,9 @@ public class ListFragment extends Fragment implements ListView {
     @Override
     public void onResume() {
         super.onResume();
+        Timber.d("onResume : %d", category);
         presenter.attachView(this);
-        presenter.loadTrainingData(System.currentTimeMillis());
+        presenter.loadTrainingData(category, System.currentTimeMillis());
     }
 
     @Override

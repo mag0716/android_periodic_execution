@@ -9,8 +9,10 @@ public interface TrainingView extends IView {
 
     /**
      * 一覧画面を表示する
+     *
+     * @param category 表示するデータのカテゴリ
      */
-    void showTrainingList();
+    void showTrainingList(int category);
 
     /**
      * 追加画面を表示する

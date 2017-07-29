@@ -14,4 +14,6 @@
     <string name="edit_question_hint">質問を入力してください</string>
     <string name="edit_answer_hint">答えを入力してください</string>
     <string name="edit_save_button_name">保存</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
