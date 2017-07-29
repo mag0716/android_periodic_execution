@@ -65,6 +65,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
+            app:itemBackground="@android:color/transparent"
             app:menu="@menu/menu_training_activity_drawer" />
     </android.support.v4.widget.DrawerLayout>
 </layout>
