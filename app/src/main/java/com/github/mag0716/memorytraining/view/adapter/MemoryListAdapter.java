@@ -60,6 +60,7 @@ public class MemoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         final ListItemViewModel viewModel = viewModelList.get(position);
         if (viewHolder instanceof MemoryViewHolder) {
             ((MemoryViewHolder) viewHolder).binding.setViewModel(viewModel);
+            ((MemoryViewHolder) viewHolder).binding.setPresenter(presenter);
             ((MemoryViewHolder) viewHolder).binding.executePendingBindings();
         } else if (viewHolder instanceof TrainableMemoryViewHolder) {
             ((TrainableMemoryViewHolder) viewHolder).binding.setViewModel(viewModel);

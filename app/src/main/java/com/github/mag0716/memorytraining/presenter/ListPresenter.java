@@ -129,13 +129,10 @@ public class ListPresenter implements IPresenter {
      * データの編集
      *
      * @param id 編集対象データ ID
-     * @return 必ず true
-     * onLongClick でバインディングさせるために boolean を戻り値にしている
      */
-    public boolean edit(long id) {
+    public void edit(long id) {
         Timber.d("edit : %d", id);
         view.editMemory(id);
-        return true;
     }
 
     private Single<Memory> loadMemory(long id) {
