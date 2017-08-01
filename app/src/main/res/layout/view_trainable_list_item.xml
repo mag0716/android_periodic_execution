@@ -20,9 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/cards_horizontal_margin"
-        android:layout_marginStart="@dimen/cards_horizontal_margin"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:onLongClick="@{() -> presenter.edit(viewModel.id)}">
+        android:layout_marginStart="@dimen/cards_horizontal_margin">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
