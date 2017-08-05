@@ -1,6 +1,7 @@
 package com.github.mag0716.memorytraining.service;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.github.mag0716.memorytraining.model.Memory;
@@ -28,6 +29,7 @@ import timber.log.Timber;
 public class TaskConductor {
 
     private static final String TASK_TAG = "MemoryTask";
+    public static final String TASK_EXTRAS_TRAINING_DATETIME_KEY = "TrainingDatetime";
 
     /**
      * 直近の訓練日時のデータがあればタスクを登録する
@@ -76,10 +78,13 @@ public class TaskConductor {
     private static void registerGcmTask(@NonNull Context context, @NonNull Memory memory) {
         Timber.d("registerGcmTask : memory = %s", memory);
         final long delayMilliseconds = memory.getNextTrainingDatetime() - System.currentTimeMillis();
+        final Bundle extras = new Bundle();
+        extras.putLong(TASK_EXTRAS_TRAINING_DATETIME_KEY, memory.getNextTrainingDatetime());
         final GcmNetworkManager manager = GcmNetworkManager.getInstance(context);
         final OneoffTask task = new OneoffTask.Builder()
                 .setService(GcmNetworkManagerService.class)
                 .setTag(TASK_TAG)
+                .setExtras(extras)
                 .setExecutionWindow(TimeUnit.MILLISECONDS.toSeconds(delayMilliseconds),
                         TimeUnit.MILLISECONDS.toSeconds(delayMilliseconds) + 60L) // TODO: 固定値の調整
                 .setRequiredNetwork(Task.NETWORK_STATE_ANY)

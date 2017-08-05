@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 
 def support_lib_version = "25.3.1"
 def arch_lib_version = "1.0.0-alpha3"
-def play_services_version = "11.0.1"
+def play_services_version = "11.0.4"
 def leakcanary_version = "1.5"
 def permission_dispatcher_version = "2.3.2"
 
@@ -80,6 +80,9 @@ dependencies {
     testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${leakcanary_version}"
     debugImplementation 'com.facebook.stetho:stetho:1.5.0'
 
+    // for tracking
+    implementation "com.google.firebase:firebase-core:${play_services_version}"
+
     // for test
     testImplementation 'junit:junit:4.12'
     testImplementation "org.robolectric:robolectric:3.3.2"
@@ -89,3 +92,5 @@ dependencies {
     testImplementation "android.arch.persistence.room:testing:${arch_lib_version}"
     testImplementation 'com.github.gfx.android.robolectricinstrumentation:robolectric-instrumentation:3.1.4'
 }
+
+apply plugin: 'com.google.gms.google-services'
