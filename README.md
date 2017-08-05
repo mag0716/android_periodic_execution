@@ -5,8 +5,8 @@ Android の定期実行を検証する
 ## 目的
 
 * 定期実行を以下で試してそれぞれどのくらいずれるのかを検証する
-    * AlarmManager
-    *　JobScheduler
+    * AlarmManager
+    * JobScheduler
     * GcmNetworkManager
     * Firebase JobDispatcher
     
@@ -56,8 +56,8 @@ Android の定期実行を検証する
 * Doze 中だったかどうか
 * 定期実行のホワイトリスト設定に含まれていたかどうか
 * 以下は必要かどうか不明
-    * ネットワーク状況
-    * 充電状況
+    * ネットワーク状況
+    * 充電状況
 
 ### どうせなら試してみたいこと
 
