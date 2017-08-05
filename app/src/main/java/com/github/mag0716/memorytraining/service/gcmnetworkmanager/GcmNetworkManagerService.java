@@ -25,6 +25,7 @@ public class GcmNetworkManagerService extends GcmTaskService {
         // TODO: 別クラスにトラッキング処理をまとめる
         final FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(getApplicationContext());
         final Bundle bundle = new Bundle();
+        bundle.putString("type", getClass().getSimpleName());
         bundle.putLong("accuracy", System.currentTimeMillis() - taskParams.getExtras().getLong(TaskConductor.TASK_EXTRAS_TRAINING_DATETIME_KEY));
         analytics.logEvent("notify", bundle);
 
