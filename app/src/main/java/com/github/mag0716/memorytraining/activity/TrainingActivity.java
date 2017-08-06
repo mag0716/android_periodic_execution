@@ -187,6 +187,7 @@ public class TrainingActivity extends AppCompatActivity
         final ListFragment fragment = (ListFragment) fragmentManager.findFragmentByTag(ListFragment.TAG);
         Timber.d("showTrainingList : %d, %s", category, fragment);
         fragmentManager.beginTransaction().replace(R.id.content, ListFragment.newInstance(category), ListFragment.TAG).commit();
+        binding.fab.show();
     }
 
     @Override
