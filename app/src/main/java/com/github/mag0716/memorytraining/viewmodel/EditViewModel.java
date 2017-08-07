@@ -16,6 +16,11 @@ public class EditViewModel extends BaseObservable {
     @Bindable
     private final Memory memory;
 
+    /**
+     * 訓練日時をクリアするかどうか
+     */
+    private boolean isClearTrainingDatetime;
+
     public EditViewModel(@NonNull Memory memory) {
         this.memory = memory;
         notifyPropertyChanged(BR.question);
@@ -45,6 +50,16 @@ public class EditViewModel extends BaseObservable {
     public void setAnswer(String answer) {
         memory.setAnswer(answer);
         notifyPropertyChanged(BR.valid);
+    }
+
+    @Bindable
+    public boolean isClearTrainingDatetime() {
+        return isClearTrainingDatetime;
+    }
+
+    public void setClearTrainingDatetime(boolean clearTrainingDatetime) {
+        isClearTrainingDatetime = clearTrainingDatetime;
+        notifyPropertyChanged(BR.clearTrainingDatetime);
     }
 
     @Bindable

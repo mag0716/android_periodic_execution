@@ -46,15 +46,17 @@ public class EditPresenter implements IPresenter {
     /**
      * 保存
      *
-     * @param memory 保存対象データ
+     * @param memory                  保存対象データ
+     * @param isClearTrainingDatetime 訓練日時をクリアするかどうか
      */
-    public void save(@NonNull Memory memory) {
-        Timber.d("save : %s", memory);
+    public void save(@NonNull Memory memory, boolean isClearTrainingDatetime) {
+        Timber.d("save : %s, %b", memory, isClearTrainingDatetime);
         disposables.add(
                 Completable.create(emitter -> {
                             if (memory.isNewData()) {
                                 dao.insert(memory);
                             } else {
+                                memory.setNextTrainingDatetime(0);
                                 dao.update(memory);
                             }
                             emitter.onComplete();
