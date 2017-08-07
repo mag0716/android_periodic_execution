@@ -68,7 +68,8 @@
             app:layout_constraintBottom_toTopOf="@id/save_button"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/answer_input_layout" />
+            app:layout_constraintTop_toBottomOf="@id/answer_input_layout"
+            app:visibleOrGone="@{!viewModel.memory.isNewData()}" />
 
         <Button
             android:id="@+id/save_button"
