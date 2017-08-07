@@ -46,7 +46,7 @@
             android:layout_height="0dp"
             android:layout_marginBottom="@dimen/view_vertical_margin"
             android:layout_marginTop="@dimen/view_vertical_margin"
-            app:layout_constraintBottom_toTopOf="@id/save_button"
+            app:layout_constraintBottom_toTopOf="@id/clear_training_datetime_checkbox"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/question_input_layout"
@@ -60,12 +60,24 @@
                 android:text="@={viewModel.answer}" />
         </android.support.design.widget.TextInputLayout>
 
+        <CheckBox
+            android:id="@+id/clear_training_datetime_checkbox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:checked="@={viewModel.clearTrainingDatetime}"
+            android:text="@string/edit_clear_training_datetime"
+            app:layout_constraintBottom_toTopOf="@id/save_button"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/answer_input_layout"
+            app:visibleOrGone="@{!viewModel.memory.isNewData()}" />
+
         <Button
             android:id="@+id/save_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="@{viewModel.valid}"
-            android:onClick="@{() -> presenter.save(viewModel.memory)}"
+            android:onClick="@{() -> presenter.save(viewModel.memory, viewModel.clearTrainingDatetime)}"
             android:text="@string/edit_save_button_name"
             android:theme="@style/AppTheme.Button"
             app:layout_constraintBottom_toBottomOf="parent"
