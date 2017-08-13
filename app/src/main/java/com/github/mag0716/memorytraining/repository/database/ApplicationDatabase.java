@@ -10,7 +10,7 @@ import com.github.mag0716.memorytraining.model.Memory;
  * <p>
  * Created by mag0716 on 2017/06/03.
  */
-@Database(entities = {Memory.class}, version = 1)
+@Database(entities = {Memory.class}, version = 2)
 public abstract class ApplicationDatabase extends RoomDatabase {
     /**
      * Memory テーブルアクセス用の DAO 返却
