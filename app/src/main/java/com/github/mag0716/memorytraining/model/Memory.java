@@ -74,6 +74,18 @@ public class Memory implements Parcelable {
 
     @Ignore
     @VisibleForTesting
+    public Memory(long id, String question, String answer, int level, int count, long nextTrainingDatetime) {
+        this.id = id;
+        this.question = question;
+        this.answer = answer;
+        this.level = level;
+        this.count = count;
+        this.nextTrainingDatetime = nextTrainingDatetime;
+        this.totalCount = 0L;
+    }
+
+    @Ignore
+    @VisibleForTesting
     public Memory(long id, String question, String answer, int level, int count, long nextTrainingDatetime, long totalCount) {
         this.id = id;
         this.question = question;
@@ -147,14 +159,16 @@ public class Memory implements Parcelable {
             count = 0;
         }
         this.level = nextLevel;
+        countUp();
     }
 
     public void levelDown(@IntRange(from = 0, to = 4) int nextLevel) {
         count = 0;
         this.level = nextLevel;
+        countUp();
     }
 
-    public void countUp() {
+    private void countUp() {
         totalCount++;
     }
 
