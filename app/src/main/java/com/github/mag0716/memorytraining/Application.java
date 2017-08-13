@@ -39,7 +39,9 @@ public class Application extends android.app.Application implements IConfigurati
     @Override
     public ApplicationDatabase getDatabase() {
         if (database == null) {
-            database = Room.databaseBuilder(this, ApplicationDatabase.class, DB_NAME).build();
+            database = Room.databaseBuilder(this, ApplicationDatabase.class, DB_NAME)
+                    .addMigrations(ApplicationDatabase.MIGRATION_1_2)
+                    .build();
         }
         return database;
     }
