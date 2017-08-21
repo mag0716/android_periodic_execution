@@ -1,19 +1,19 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
-def support_lib_version = "25.3.1"
-def arch_lib_version = "1.0.0-alpha8"
+def support_lib_version = "26.0.1"
+def arch_lib_version = "1.0.0-alpha9"
 def play_services_version = "11.0.4"
 def leakcanary_version = "1.5"
 def permission_dispatcher_version = "2.3.2"
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "com.github.mag0716.memorytraining"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
