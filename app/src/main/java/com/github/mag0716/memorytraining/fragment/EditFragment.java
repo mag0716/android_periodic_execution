@@ -124,5 +124,11 @@ public class EditFragment extends Fragment implements EditView {
         // TODO: 基本は発生しないはずだが、調査できるように Exception はトラッキングしておく
     }
 
+    @Override
+    public void deleteSuccess() {
+        Timber.d("deleteSuccess");
+        getActivity().onBackPressed();
+    }
+
     // endregion
 }

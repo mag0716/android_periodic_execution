@@ -68,6 +68,23 @@ public class EditPresenter implements IPresenter {
         );
     }
 
+    /**
+     * 削除
+     *
+     * @param memory 　削除対象データ
+     */
+    public void delete(@NonNull Memory memory) {
+        Timber.d("delete : %s", memory);
+        disposables.add(
+                Completable.create(emitter -> {
+                    dao.delete(memory);
+                    emitter.onComplete();
+                }).subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> view.saveSuccess())
+        );
+    }
+
     public void loadIfNeeded(@Nullable Bundle bundle, @NonNull String key) {
         Timber.d("loadIfNeeded");
 
