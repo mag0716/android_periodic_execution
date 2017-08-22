@@ -21,7 +21,7 @@ public abstract class ApplicationDatabase extends RoomDatabase {
     public static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
-            database.execSQL("ALTER TABLE Memory ADD COLUMN total_count INTEGER DEFAULT 0");
+            database.execSQL("ALTER TABLE Memory ADD COLUMN total_count INTEGER NOT NULL DEFAULT 0");
         }
     };
 
