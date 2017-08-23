@@ -24,6 +24,11 @@
         <item name="android:textColor">@color/button_text_color</item>
     </style>
 
+    <style name="AppTheme.AccentButton" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/md_red_A200</item>
+        <item name="android:textColor">@color/button_text_color</item>
+    </style>
+
     <style name="AppTheme.Card" parent="CardView.Light" />
 
     <style name="AppTheme.Card.Title">

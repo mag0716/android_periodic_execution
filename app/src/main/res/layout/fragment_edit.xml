@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:onClick="@{() -> presenter.delete(viewModel.memory)}"
             android:text="@string/edit_delete_button_name"
-            android:theme="@style/AppTheme.Button"
+            android:theme="@style/AppTheme.AccentButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintLeft_toLeftOf="parent"
