@@ -2,6 +2,7 @@ package com.github.mag0716.memorytraining.presenter;
 
 import android.support.annotation.NonNull;
 
+import com.annimon.stream.Stream;
 import com.github.mag0716.memorytraining.model.Level;
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
@@ -9,6 +10,7 @@ import com.github.mag0716.memorytraining.service.TaskConductor;
 import com.github.mag0716.memorytraining.view.IView;
 import com.github.mag0716.memorytraining.view.ListView;
 import com.github.mag0716.memorytraining.viewmodel.TrainingViewModel;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +71,14 @@ public class ListPresenter implements IPresenter {
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(memoryList -> view.showMemoryList(memoryList),
+                .subscribe(memoryList -> {
+                            view.showMemoryList(memoryList);
+                            // FIXME: トラッキング処理を一箇所で管理する
+                            long totalCount = Stream.of(memoryList)
+                                    .map(Memory::getTotalCount)
+                                    .count();
+                            FirebaseAnalytics.getInstance(view.getContext()).setUserProperty("level", String.valueOf(totalCount / 100));
+                        },
                         throwable -> Timber.w(throwable, "loadTrainingData")));
     }
 

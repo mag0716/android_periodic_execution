@@ -46,7 +46,7 @@ public class Memory implements Parcelable {
     private int level;
 
     /**
-     * 訓練回数
+     * 今の訓練レベルでの訓練回数
      */
     private int count;
 
@@ -55,6 +55,12 @@ public class Memory implements Parcelable {
      */
     @ColumnInfo(name = "next_training_datetime")
     private long nextTrainingDatetime;
+
+    /**
+     * 合計訓練回数
+     */
+    @ColumnInfo(name = "total_count")
+    private long totalCount;
 
     @Ignore
     @VisibleForTesting
@@ -75,6 +81,19 @@ public class Memory implements Parcelable {
         this.level = level;
         this.count = count;
         this.nextTrainingDatetime = nextTrainingDatetime;
+        this.totalCount = 0L;
+    }
+
+    @Ignore
+    @VisibleForTesting
+    public Memory(long id, String question, String answer, int level, int count, long nextTrainingDatetime, long totalCount) {
+        this.id = id;
+        this.question = question;
+        this.answer = answer;
+        this.level = level;
+        this.count = count;
+        this.nextTrainingDatetime = nextTrainingDatetime;
+        this.totalCount = totalCount;
     }
 
     public long getId() {
@@ -125,6 +144,14 @@ public class Memory implements Parcelable {
         this.nextTrainingDatetime = nextTrainingDatetime;
     }
 
+    public long getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(long totalCount) {
+        this.totalCount = totalCount;
+    }
+
     public void levelUp(@IntRange(from = 0, to = 4) int nextLevel) {
         if (this.level == nextLevel) {
             count++;
@@ -132,11 +159,17 @@ public class Memory implements Parcelable {
             count = 0;
         }
         this.level = nextLevel;
+        countUp();
     }
 
     public void levelDown(@IntRange(from = 0, to = 4) int nextLevel) {
         count = 0;
         this.level = nextLevel;
+        countUp();
+    }
+
+    private void countUp() {
+        totalCount++;
     }
 
     /**
@@ -150,7 +183,7 @@ public class Memory implements Parcelable {
 
     @Override
     public String toString() {
-        final String format = "Memory(id=%d, count=%d, level=%d, next training datetime=%s\nquestion=%s\nanswer=%s)";
+        final String format = "Memory(id=%d, count=%d, level=%d, next training datetime=%s\nquestion=%s\nanswer=%s\ntotalCount=%d)";
         return String.format(Locale.getDefault(),
                 format,
                 id,
@@ -158,7 +191,8 @@ public class Memory implements Parcelable {
                 level,
                 DatetimeUtil.convertDebugFormat(nextTrainingDatetime),
                 question,
-                answer);
+                answer,
+                totalCount);
     }
 
     // region Parcelable
@@ -179,6 +213,7 @@ public class Memory implements Parcelable {
         dest.writeInt(this.level);
         dest.writeInt(this.count);
         dest.writeLong(this.nextTrainingDatetime);
+        dest.writeLong(this.totalCount);
     }
 
     protected Memory(Parcel in) {
@@ -188,6 +223,7 @@ public class Memory implements Parcelable {
         this.level = in.readInt();
         this.count = in.readInt();
         this.nextTrainingDatetime = in.readLong();
+        this.totalCount = in.readLong();
     }
 
     public static final Creator<Memory> CREATOR = new Creator<Memory>() {
