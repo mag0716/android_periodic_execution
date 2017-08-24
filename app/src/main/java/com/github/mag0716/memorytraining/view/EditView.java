@@ -32,4 +32,10 @@ public interface EditView extends IView {
      */
     @MainThread
     void saveFailed(@NonNull Throwable throwable);
+
+    /**
+     * 削除に成功
+     */
+    @MainThread
+    void deleteSuccess();
 }
