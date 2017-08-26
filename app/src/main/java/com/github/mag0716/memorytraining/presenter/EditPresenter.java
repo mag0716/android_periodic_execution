@@ -39,7 +39,7 @@ public class EditPresenter implements IPresenter {
 
     @Override
     public void detachView() {
-        disposables.dispose();
+        disposables.clear();
         this.view = null;
     }
 
