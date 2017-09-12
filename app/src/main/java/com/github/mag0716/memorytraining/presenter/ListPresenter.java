@@ -6,6 +6,7 @@ import com.annimon.stream.Stream;
 import com.github.mag0716.memorytraining.Application;
 import com.github.mag0716.memorytraining.model.Level;
 import com.github.mag0716.memorytraining.model.Memory;
+import com.github.mag0716.memorytraining.notification.NotificationConductor;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
 import com.github.mag0716.memorytraining.service.TaskConductor;
 import com.github.mag0716.memorytraining.tracking.TrackerConductor;
@@ -95,6 +96,7 @@ public class ListPresenter implements IPresenter {
                     memory.levelUp(nextLevel.getId());
                     dao.update(memory);
                     TaskConductor.registerTaskIfNeeded(view.getContext(), dao);
+                    NotificationConductor.clearNotificationIfNeeded(view.getContext(), dao);
                     return memory;
                 })
                 .subscribeOn(Schedulers.io())
@@ -121,6 +123,7 @@ public class ListPresenter implements IPresenter {
                     memory.levelDown(previousLevel.getId());
                     dao.update(memory);
                     TaskConductor.registerTaskIfNeeded(view.getContext(), dao);
+                    NotificationConductor.clearNotificationIfNeeded(view.getContext(), dao);
                     return memory;
                 })
                 .subscribeOn(Schedulers.io())
