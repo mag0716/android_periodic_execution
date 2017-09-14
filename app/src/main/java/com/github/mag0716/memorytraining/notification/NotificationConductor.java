@@ -17,6 +17,8 @@ import java.util.List;
 
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
+import io.reactivex.Single;
+import io.reactivex.SingleOnSubscribe;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -84,5 +86,20 @@ public class NotificationConductor {
                     .build();
             manager.notify(notificationId, notification);
         });
+    }
+
+    public static void clearNotificationIfNeeded(@NonNull Context context, @NonNull MemoryDao dao) {
+        Timber.d("clearNotificationIfNeeded");
+
+        Single.create((SingleOnSubscribe<Boolean>) emitter -> {
+            final List<Memory> memoryList = dao.loadAll(System.currentTimeMillis());
+            emitter.onSuccess(memoryList.isEmpty());
+        }).subscribeOn(Schedulers.io()).subscribe(allCleared -> {
+            if (allCleared) {
+                final NotificationManagerCompat manager = NotificationManagerCompat.from(context);
+                manager.cancel(NotificationType.TRAINING_NOTIFICATION.getId());
+            }
+        });
+
     }
 }
