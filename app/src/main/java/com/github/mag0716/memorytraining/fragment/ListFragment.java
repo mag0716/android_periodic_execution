@@ -67,7 +67,8 @@ public class ListFragment extends Fragment implements ListView {
         }
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false);
         binding.setViewModel(viewModel);
-        presenter = new ListPresenter(((Application) getContext().getApplicationContext()).getDatabase().memoryDao());
+        presenter = new ListPresenter(((Application) getContext().getApplicationContext()).getDatabase().memoryDao(),
+                ((Application) getContext().getApplicationContext()).getTaskConductor());
         binding.setPresenter(presenter);
         adapter = new MemoryListAdapter(getContext(), presenter, category);
         binding.trainingList.setLayoutManager(new LinearLayoutManager(getContext()));

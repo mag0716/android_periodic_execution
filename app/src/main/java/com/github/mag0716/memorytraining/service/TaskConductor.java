@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
+import com.github.mag0716.memorytraining.service.gcmnetworkmanager.GcmNetworkManagerRegister;
 
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
@@ -23,15 +24,25 @@ public class TaskConductor {
 
     public static final String TASK_EXTRAS_TRAINING_DATETIME_KEY = "TrainingDatetime";
 
+    private Context context;
+
+    private MemoryDao memoryDao;
+
+    private ITaskRegister taskRegister;
+
+    public TaskConductor(@NonNull Context context, @NonNull MemoryDao memoryDao) {
+        this.context = context;
+        this.memoryDao = memoryDao;
+        updateTaskRegister();
+    }
+
     /**
      * 直近の訓練日時のデータがあればタスクを登録する
-     *
-     * @param dao MemoryDao
      */
-    public static void registerTaskIfNeeded(@NonNull Context context, @NonNull MemoryDao dao) {
+    public void registerTaskIfNeeded() {
         // TODO: 各 API の振り分け, タスクの登録, 選択中の API 以外のタスクをキャンセル
         Maybe.create((MaybeOnSubscribe<Memory>) emitter -> {
-                    final Memory recentMemory = dao.loadRecent(System.currentTimeMillis());
+                    final Memory recentMemory = memoryDao.loadRecent(System.currentTimeMillis());
                     if (recentMemory != null) {
                         emitter.onSuccess(recentMemory);
                     } else {
@@ -47,7 +58,7 @@ public class TaskConductor {
 
                     @Override
                     public void onSuccess(Memory memory) {
-                        registerGcmTask(context, memory);
+                        registerTask(memory);
                     }
 
                     @Override
@@ -62,11 +73,22 @@ public class TaskConductor {
                 });
     }
 
+    private void updateTaskRegister() {
+        // TODO: 他 API の利用を考慮する
+        final ITaskRegister gcmNetworkManagerRegister = new GcmNetworkManagerRegister();
+        if (gcmNetworkManagerRegister.isAvailable(context)) {
+            taskRegister = gcmNetworkManagerRegister;
+        }
+    }
+
     /**
-     * GcmNetworkManager を利用してタスクを登録する
+     * 利用してタスクを登録する
      *
      * @param memory 直近の訓練データ
      */
-    private static void registerGcmTask(@NonNull Context context, @NonNull Memory memory) {
+    private void registerTask(@NonNull Memory memory) {
+        if (taskRegister != null) {
+            taskRegister.registerTask(context, memory);
+        }
     }
 }

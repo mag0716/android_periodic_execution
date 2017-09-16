@@ -28,8 +28,9 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         final String action = intent.getAction();
         Timber.d("BootCompletedReceiver#onReceive : action = %s", action);
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
+            final TaskConductor taskConductor = ((Application) context.getApplicationContext()).getTaskConductor();
             final MemoryDao dao = ((Application) context.getApplicationContext()).getDatabase().memoryDao();
-            TaskConductor.registerTaskIfNeeded(context, dao);
+            taskConductor.registerTaskIfNeeded();
             NotificationConductor.notifyTrainingIfNeeded(context, dao);
         }
     }
