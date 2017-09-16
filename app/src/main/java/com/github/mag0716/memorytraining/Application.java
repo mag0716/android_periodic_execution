@@ -41,7 +41,7 @@ public class Application extends android.app.Application implements IConfigurati
         LeakCanary.install(this);
         // TODO: ログ出力を抑制する
         Timber.plant(new Timber.DebugTree());
-        trackerConductor.addTracker(new FirebaseTracker(this));
+        setUpTracker();
     }
 
     @Override
@@ -72,5 +72,10 @@ public class Application extends android.app.Application implements IConfigurati
 
     public TrackerConductor getTrackerConductor() {
         return trackerConductor;
+    }
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    protected void setUpTracker() {
+        trackerConductor.addTracker(new FirebaseTracker(this));
     }
 }
