@@ -39,7 +39,6 @@ public class TaskConductor {
      * 直近の訓練日時のデータがあればタスクを登録する
      */
     public void registerTaskIfNeeded() {
-        // TODO: 各 API の振り分け, タスクの登録, 選択中の API 以外のタスクをキャンセル
         Maybe.create((MaybeOnSubscribe<Memory>) emitter -> {
                     final Memory recentMemory = memoryDao.loadRecent(System.currentTimeMillis());
                     if (recentMemory != null) {
@@ -73,9 +72,10 @@ public class TaskConductor {
     }
 
     /**
-     *
+     * 定期実行タスク登録に利用する ITaskRegsiter を更新
      */
     private void updateTaskRegister() {
+        // TODO: ITaskRegister が切り替わったら前回利用していた ITaskRegister の定期実行をキャンセルする
         for (TaskRegisterType taskRegisterType : TaskRegisterType.values()) {
             ITaskRegister taskRegister = taskRegisterType.getTaskRegister();
             if (taskRegister != null && taskRegister.isAvailable(context)) {
