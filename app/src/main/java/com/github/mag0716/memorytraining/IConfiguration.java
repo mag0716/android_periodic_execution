@@ -3,6 +3,7 @@ package com.github.mag0716.memorytraining;
 import android.support.annotation.NonNull;
 
 import com.github.mag0716.memorytraining.repository.database.ApplicationDatabase;
+import com.github.mag0716.memorytraining.service.TaskConductor;
 
 /**
  * アプリケーションの設定情報インタフェース
@@ -19,4 +20,6 @@ public interface IConfiguration {
     @NonNull
     ApplicationDatabase getDatabase();
 
+    @NonNull
+    TaskConductor getTaskConductor();
 }

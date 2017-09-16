@@ -1,17 +1,10 @@
 package com.github.mag0716.memorytraining.service;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
-import com.github.mag0716.memorytraining.service.gcmnetworkmanager.GcmNetworkManagerService;
-import com.google.android.gms.gcm.GcmNetworkManager;
-import com.google.android.gms.gcm.OneoffTask;
-import com.google.android.gms.gcm.Task;
-
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
@@ -28,18 +21,26 @@ import timber.log.Timber;
  */
 public class TaskConductor {
 
-    private static final String TASK_TAG = "MemoryTask";
     public static final String TASK_EXTRAS_TRAINING_DATETIME_KEY = "TrainingDatetime";
+
+    private Context context;
+
+    private MemoryDao memoryDao;
+
+    private ITaskRegister taskRegister;
+
+    public TaskConductor(@NonNull Context context, @NonNull MemoryDao memoryDao) {
+        this.context = context;
+        this.memoryDao = memoryDao;
+        updateTaskRegister();
+    }
 
     /**
      * 直近の訓練日時のデータがあればタスクを登録する
-     *
-     * @param dao MemoryDao
      */
-    public static void registerTaskIfNeeded(@NonNull Context context, @NonNull MemoryDao dao) {
-        // TODO: 各 API の振り分け, タスクの登録, 選択中の API 以外のタスクをキャンセル
+    public void registerTaskIfNeeded() {
         Maybe.create((MaybeOnSubscribe<Memory>) emitter -> {
-                    final Memory recentMemory = dao.loadRecent(System.currentTimeMillis());
+                    final Memory recentMemory = memoryDao.loadRecent(System.currentTimeMillis());
                     if (recentMemory != null) {
                         emitter.onSuccess(recentMemory);
                     } else {
@@ -55,7 +56,7 @@ public class TaskConductor {
 
                     @Override
                     public void onSuccess(Memory memory) {
-                        registerGcmTask(context, memory);
+                        registerTask(memory);
                     }
 
                     @Override
@@ -71,27 +72,26 @@ public class TaskConductor {
     }
 
     /**
-     * GcmNetworkManager を利用してタスクを登録する
+     * 定期実行タスク登録に利用する ITaskRegsiter を更新
+     */
+    private void updateTaskRegister() {
+        // TODO: ITaskRegister が切り替わったら前回利用していた ITaskRegister の定期実行をキャンセルする
+        for (TaskRegisterType taskRegisterType : TaskRegisterType.values()) {
+            ITaskRegister taskRegister = taskRegisterType.getTaskRegister();
+            if (taskRegister != null && taskRegister.isAvailable(context)) {
+                this.taskRegister = taskRegister;
+            }
+        }
+    }
+
+    /**
+     * 利用してタスクを登録する
      *
      * @param memory 直近の訓練データ
      */
-    private static void registerGcmTask(@NonNull Context context, @NonNull Memory memory) {
-        Timber.d("registerGcmTask : memory = %s", memory);
-        final long delayMilliseconds = memory.getNextTrainingDatetime() - System.currentTimeMillis();
-        final Bundle extras = new Bundle();
-        extras.putLong(TASK_EXTRAS_TRAINING_DATETIME_KEY, memory.getNextTrainingDatetime());
-        final GcmNetworkManager manager = GcmNetworkManager.getInstance(context);
-        final OneoffTask task = new OneoffTask.Builder()
-                .setService(GcmNetworkManagerService.class)
-                .setTag(TASK_TAG)
-                .setExtras(extras)
-                .setExecutionWindow(TimeUnit.MILLISECONDS.toSeconds(delayMilliseconds),
-                        TimeUnit.MILLISECONDS.toSeconds(delayMilliseconds) + 60L) // TODO: 固定値の調整
-                .setRequiredNetwork(Task.NETWORK_STATE_ANY)
-                .setRequiresCharging(false)
-                .setPersisted(false)
-                .setUpdateCurrent(true)
-                .build();
-        manager.schedule(task);
+    private void registerTask(@NonNull Memory memory) {
+        if (taskRegister != null) {
+            taskRegister.registerTask(context, memory);
+        }
     }
 }

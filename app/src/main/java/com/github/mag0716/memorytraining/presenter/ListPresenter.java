@@ -34,6 +34,7 @@ import timber.log.Timber;
 public class ListPresenter implements IPresenter {
 
     private final MemoryDao dao;
+    private final TaskConductor taskConductor;
     private ListView view;
 
     private final CompositeDisposable disposables = new CompositeDisposable();
@@ -95,7 +96,7 @@ public class ListPresenter implements IPresenter {
                     memory.setNextTrainingDatetime(System.currentTimeMillis() + nextLevel.getTrainingInterval());
                     memory.levelUp(nextLevel.getId());
                     dao.update(memory);
-                    TaskConductor.registerTaskIfNeeded(view.getContext(), dao);
+                    taskConductor.registerTaskIfNeeded();
                     NotificationConductor.clearNotificationIfNeeded(view.getContext(), dao);
                     return memory;
                 })
@@ -122,7 +123,7 @@ public class ListPresenter implements IPresenter {
                     memory.setNextTrainingDatetime(System.currentTimeMillis() + previousLevel.getTrainingInterval());
                     memory.levelDown(previousLevel.getId());
                     dao.update(memory);
-                    TaskConductor.registerTaskIfNeeded(view.getContext(), dao);
+                    taskConductor.registerTaskIfNeeded();
                     NotificationConductor.clearNotificationIfNeeded(view.getContext(), dao);
                     return memory;
                 })
