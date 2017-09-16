@@ -28,7 +28,7 @@ public class Application extends android.app.Application implements IConfigurati
     protected static ApplicationDatabase database;
 
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
-    protected final TaskConductor taskConductor = new TaskConductor(this, getDatabase().memoryDao());
+    protected TaskConductor taskConductor;
 
     private final TrackerConductor trackerConductor = new TrackerConductor();
 
@@ -64,6 +64,9 @@ public class Application extends android.app.Application implements IConfigurati
     @NonNull
     @Override
     public TaskConductor getTaskConductor() {
+        if (taskConductor == null) {
+            taskConductor = new TaskConductor(this, getDatabase().memoryDao());
+        }
         return taskConductor;
     }
 

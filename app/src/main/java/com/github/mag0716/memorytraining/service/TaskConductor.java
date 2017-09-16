@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
-import com.github.mag0716.memorytraining.service.gcmnetworkmanager.GcmNetworkManagerRegister;
 
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
@@ -73,11 +72,15 @@ public class TaskConductor {
                 });
     }
 
+    /**
+     *
+     */
     private void updateTaskRegister() {
-        // TODO: 他 API の利用を考慮する
-        final ITaskRegister gcmNetworkManagerRegister = new GcmNetworkManagerRegister();
-        if (gcmNetworkManagerRegister.isAvailable(context)) {
-            taskRegister = gcmNetworkManagerRegister;
+        for (TaskRegisterType taskRegisterType : TaskRegisterType.values()) {
+            ITaskRegister taskRegister = taskRegisterType.getTaskRegister();
+            if (taskRegister != null && taskRegister.isAvailable(context)) {
+                this.taskRegister = taskRegister;
+            }
         }
     }
 

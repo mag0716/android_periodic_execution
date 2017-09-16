@@ -35,7 +35,7 @@ public class DebugApplication extends Application {
         super.onCreate();
         Stetho.initializeWithDefaults(this);
         initializeDatabaseForDebug(this);
-        taskConductor.registerTaskIfNeeded();
+        getTaskConductor().registerTaskIfNeeded();
     }
 
     private void initializeDatabaseForDebug(@NonNull Context context) {
