@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 
+import com.github.mag0716.memorytraining.event.EventBus;
 import com.github.mag0716.memorytraining.repository.database.ApplicationDatabase;
 import com.github.mag0716.memorytraining.service.TaskConductor;
 import com.github.mag0716.memorytraining.tracking.FirebaseTracker;
@@ -30,6 +31,8 @@ public class Application extends android.app.Application implements IConfigurati
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     protected TaskConductor taskConductor;
 
+    private EventBus eventBus;
+
     private final TrackerConductor trackerConductor = new TrackerConductor();
 
     @Override
@@ -41,6 +44,7 @@ public class Application extends android.app.Application implements IConfigurati
         LeakCanary.install(this);
         // TODO: ログ出力を抑制する
         Timber.plant(new Timber.DebugTree());
+        eventBus = new EventBus();
         setUpTracker();
     }
 
@@ -68,6 +72,12 @@ public class Application extends android.app.Application implements IConfigurati
             taskConductor = new TaskConductor(this, getDatabase().memoryDao());
         }
         return taskConductor;
+    }
+
+    @NonNull
+    @Override
+    public EventBus getEventBus() {
+        return eventBus;
     }
 
     public TrackerConductor getTrackerConductor() {
