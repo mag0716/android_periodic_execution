@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import com.github.mag0716.memorytraining.Application;
 import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.databinding.FragmentListBinding;
+import com.github.mag0716.memorytraining.event.EventBus;
+import com.github.mag0716.memorytraining.event.StartTrainingEvent;
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.presenter.ListPresenter;
 import com.github.mag0716.memorytraining.view.ListView;
@@ -24,6 +26,7 @@ import com.github.mag0716.memorytraining.viewmodel.ListViewModel;
 
 import java.util.List;
 
+import io.reactivex.disposables.CompositeDisposable;
 import timber.log.Timber;
 
 /**
@@ -36,9 +39,12 @@ public class ListFragment extends Fragment implements ListView {
     public static final String TAG = ListFragment.class.getCanonicalName();
     private static final String EXTRA_CATEGORY = TAG + ".CATEGORY";
 
+    private final CompositeDisposable disposables = new CompositeDisposable();
+
     private FragmentListBinding binding;
     private final ListViewModel viewModel = new ListViewModel();
     private ListPresenter presenter;
+    private EventBus eventBus;
 
     private MemoryListAdapter adapter;
     private RecyclerView.ItemDecoration itemDecoration;
@@ -69,6 +75,7 @@ public class ListFragment extends Fragment implements ListView {
         binding.setViewModel(viewModel);
         presenter = new ListPresenter(((Application) getContext().getApplicationContext()).getDatabase().memoryDao(),
                 ((Application) getContext().getApplicationContext()).getTaskConductor());
+        eventBus = ((Application) getContext().getApplicationContext()).getEventBus();
         binding.setPresenter(presenter);
         adapter = new MemoryListAdapter(getContext(), presenter, category);
         binding.trainingList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -76,6 +83,17 @@ public class ListFragment extends Fragment implements ListView {
         binding.trainingList.addItemDecoration(itemDecoration);
         binding.trainingList.setAdapter(adapter);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // 一覧画面表示中に予定時刻になったら画面表示を更新する
+        disposables.add(eventBus.toObservable().subscribe(event -> {
+            if (event instanceof StartTrainingEvent) {
+                presenter.loadTrainingData(category, System.currentTimeMillis());
+            }
+        }));
     }
 
     @Override
@@ -90,6 +108,12 @@ public class ListFragment extends Fragment implements ListView {
     public void onPause() {
         super.onPause();
         presenter.detachView();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        disposables.clear();
     }
 
     @Override

@@ -8,8 +8,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
+import com.github.mag0716.memorytraining.Application;
 import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.activity.TrainingActivity;
+import com.github.mag0716.memorytraining.event.EventBus;
+import com.github.mag0716.memorytraining.event.StartTrainingEvent;
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
 
@@ -61,6 +64,10 @@ public class NotificationConductor {
     public static void notifyTrainingIfNeeded(@NonNull Context context, @NonNull MemoryDao dao) {
         Timber.d("notifyTrainingIfNeeded");
 
+        final EventBus eventBus = ((Application) context.getApplicationContext()).getEventBus();
+        eventBus.send(new StartTrainingEvent());
+
+        // TODO: 一覧画面表示中は実行しない
         Maybe.create((MaybeOnSubscribe<Integer>) emitter -> {
             final List<Memory> memoryList = dao.loadAll(System.currentTimeMillis());
             if (memoryList.isEmpty()) {
