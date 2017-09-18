@@ -64,35 +64,37 @@ public class NotificationConductor {
     public static void notifyTrainingIfNeeded(@NonNull Context context, @NonNull MemoryDao dao) {
         Timber.d("notifyTrainingIfNeeded");
 
-        final EventBus eventBus = ((Application) context.getApplicationContext()).getEventBus();
-        eventBus.send(new StartTrainingEvent());
+        final EventBus<StartTrainingEvent> startTrainingEventBus = ((Application) context.getApplicationContext()).getStartTrainingEventBus();
+        startTrainingEventBus.send(new StartTrainingEvent());
 
-        // TODO: 一覧画面表示中は実行しない
-        Maybe.create((MaybeOnSubscribe<Integer>) emitter -> {
-            final List<Memory> memoryList = dao.loadAll(System.currentTimeMillis());
-            if (memoryList.isEmpty()) {
-                emitter.onComplete();
-            } else {
-                emitter.onSuccess(memoryList.size());
-            }
-        }).subscribeOn(Schedulers.io()).subscribe(count -> {
-            final int notificationId = NotificationType.TRAINING_NOTIFICATION.getId();
-            final NotificationManagerCompat manager = NotificationManagerCompat.from(context);
-            final Intent intent = TrainingActivity.createIntent(context);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            final PendingIntent pendingIntent = PendingIntent.getActivity(context,
-                    notificationId,
-                    intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-            Notification notification = new NotificationCompat.Builder(context)
-                    .setSmallIcon(R.drawable.ic_alarm_black_24dp)
-                    .setContentTitle(context.getString(R.string.notification_training_title))
-                    .setContentText(context.getString(R.string.notification_training_message_format, count))
-                    .setAutoCancel(true)
-                    .setContentIntent(pendingIntent)
-                    .build();
-            manager.notify(notificationId, notification);
-        });
+        // 訓練中は Notification は不要
+        if (!startTrainingEventBus.hasObservers()) {
+            Maybe.create((MaybeOnSubscribe<Integer>) emitter -> {
+                final List<Memory> memoryList = dao.loadAll(System.currentTimeMillis());
+                if (memoryList.isEmpty()) {
+                    emitter.onComplete();
+                } else {
+                    emitter.onSuccess(memoryList.size());
+                }
+            }).subscribeOn(Schedulers.io()).subscribe(count -> {
+                final int notificationId = NotificationType.TRAINING_NOTIFICATION.getId();
+                final NotificationManagerCompat manager = NotificationManagerCompat.from(context);
+                final Intent intent = TrainingActivity.createIntent(context);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                final PendingIntent pendingIntent = PendingIntent.getActivity(context,
+                        notificationId,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+                Notification notification = new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.ic_alarm_black_24dp)
+                        .setContentTitle(context.getString(R.string.notification_training_title))
+                        .setContentText(context.getString(R.string.notification_training_message_format, count))
+                        .setAutoCancel(true)
+                        .setContentIntent(pendingIntent)
+                        .build();
+                manager.notify(notificationId, notification);
+            });
+        }
     }
 
     public static void clearNotificationIfNeeded(@NonNull Context context, @NonNull MemoryDao dao) {

@@ -3,6 +3,7 @@ package com.github.mag0716.memorytraining;
 import android.support.annotation.NonNull;
 
 import com.github.mag0716.memorytraining.event.EventBus;
+import com.github.mag0716.memorytraining.event.StartTrainingEvent;
 import com.github.mag0716.memorytraining.repository.database.ApplicationDatabase;
 import com.github.mag0716.memorytraining.service.TaskConductor;
 
@@ -25,5 +26,5 @@ public interface IConfiguration {
     TaskConductor getTaskConductor();
 
     @NonNull
-    EventBus getEventBus();
+    EventBus<StartTrainingEvent> getStartTrainingEventBus();
 }

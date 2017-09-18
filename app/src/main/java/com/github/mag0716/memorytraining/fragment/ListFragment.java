@@ -44,7 +44,7 @@ public class ListFragment extends Fragment implements ListView {
     private FragmentListBinding binding;
     private final ListViewModel viewModel = new ListViewModel();
     private ListPresenter presenter;
-    private EventBus eventBus;
+    private EventBus<StartTrainingEvent> startTrainingEventBus;
 
     private MemoryListAdapter adapter;
     private RecyclerView.ItemDecoration itemDecoration;
@@ -75,7 +75,7 @@ public class ListFragment extends Fragment implements ListView {
         binding.setViewModel(viewModel);
         presenter = new ListPresenter(((Application) getContext().getApplicationContext()).getDatabase().memoryDao(),
                 ((Application) getContext().getApplicationContext()).getTaskConductor());
-        eventBus = ((Application) getContext().getApplicationContext()).getEventBus();
+        startTrainingEventBus = ((Application) getContext().getApplicationContext()).getStartTrainingEventBus();
         binding.setPresenter(presenter);
         adapter = new MemoryListAdapter(getContext(), presenter, category);
         binding.trainingList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -89,10 +89,8 @@ public class ListFragment extends Fragment implements ListView {
     public void onStart() {
         super.onStart();
         // 一覧画面表示中に予定時刻になったら画面表示を更新する
-        disposables.add(eventBus.toObservable().subscribe(event -> {
-            if (event instanceof StartTrainingEvent) {
-                presenter.loadTrainingData(category, System.currentTimeMillis());
-            }
+        disposables.add(startTrainingEventBus.toObservable().subscribe(event -> {
+            presenter.loadTrainingData(category, System.currentTimeMillis());
         }));
     }
 

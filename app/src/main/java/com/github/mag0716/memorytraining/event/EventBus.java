@@ -8,15 +8,19 @@ import io.reactivex.subjects.PublishSubject;
 /**
  * Created by mag0716 on 2017/09/17.
  */
-public class EventBus {
+public class EventBus<E extends IEvent> {
 
-    private PublishSubject<IEvent> bus = PublishSubject.create();
+    private PublishSubject<E> bus = PublishSubject.create();
 
-    public Observable<IEvent> toObservable() {
+    public Observable<E> toObservable() {
         return bus;
     }
 
-    public void send(@NonNull IEvent event) {
+    public void send(@NonNull E event) {
         bus.onNext(event);
+    }
+
+    public boolean hasObservers() {
+        return bus.hasObservers();
     }
 }
