@@ -49,7 +49,7 @@ public class ListPresenter implements IPresenter {
 
     @Override
     public void detachView() {
-        disposables.dispose();
+        disposables.clear();
         view = null;
     }
 
