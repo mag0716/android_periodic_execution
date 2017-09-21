@@ -1,5 +1,6 @@
 package com.github.mag0716.memorytraining.service;
 
+import com.github.mag0716.memorytraining.service.alarmmanager.AlarmManagerRegister;
 import com.github.mag0716.memorytraining.service.gcmnetworkmanager.GcmNetworkManagerRegister;
 
 /**
@@ -10,8 +11,8 @@ import com.github.mag0716.memorytraining.service.gcmnetworkmanager.GcmNetworkMan
 public enum TaskRegisterType {
 
     GCM_NETWORK_MANAGER(new GcmNetworkManagerRegister()),
+    ALARM_MANAGER(new AlarmManagerRegister()),
     // TODO: ITaskRegister の実体を追加
-    ALARM_MANAGER(null),
     JOB_DISPATCHER(null),
     JOB_SCHEDULER(null);
 
