@@ -88,7 +88,7 @@ public class NotificationConductor {
                 Notification notification = new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.ic_alarm_black_24dp)
                         .setContentTitle(context.getString(R.string.notification_training_title))
-                        .setContentText(context.getString(R.string.notification_training_message_format, count))
+                        .setContentText(context.getString(R.string.notification_training_message))
                         .setAutoCancel(true)
                         .setContentIntent(pendingIntent)
                         .build();
