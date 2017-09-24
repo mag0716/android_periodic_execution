@@ -29,5 +29,8 @@ public class AlarmManagerReceiver extends BroadcastReceiver {
 
         final MemoryDao dao = ((Application) context.getApplicationContext()).getDatabase().memoryDao();
         NotificationConductor.notifyTrainingIfNeeded(context, dao);
+
+        final TaskConductor taskConductor = ((Application) context.getApplicationContext()).getTaskConductor();
+        taskConductor.registerTaskIfNeeded();
     }
 }

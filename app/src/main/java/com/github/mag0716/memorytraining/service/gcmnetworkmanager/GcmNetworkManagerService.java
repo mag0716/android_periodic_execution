@@ -27,6 +27,9 @@ public class GcmNetworkManagerService extends GcmTaskService {
         final MemoryDao dao = ((Application) getApplication()).getDatabase().memoryDao();
         NotificationConductor.notifyTrainingIfNeeded(getApplicationContext(), dao);
 
+        final TaskConductor taskConductor = ((Application)getApplication()).getTaskConductor();
+        taskConductor.registerTaskIfNeeded();
+
         return GcmNetworkManager.RESULT_SUCCESS;
     }
 
