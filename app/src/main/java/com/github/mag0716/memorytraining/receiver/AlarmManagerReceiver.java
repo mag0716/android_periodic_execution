@@ -8,9 +8,7 @@ import android.support.annotation.NonNull;
 
 import com.github.mag0716.memorytraining.Application;
 import com.github.mag0716.memorytraining.notification.NotificationConductor;
-import com.github.mag0716.memorytraining.repository.database.MemoryDao;
 import com.github.mag0716.memorytraining.service.TaskConductor;
-import com.github.mag0716.memorytraining.tracking.TrackerConductor;
 
 import timber.log.Timber;
 
@@ -23,14 +21,14 @@ public class AlarmManagerReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Timber.d("AlarmManagerReceiver#onReceive");
-        final TrackerConductor trackerConductor = ((Application) context.getApplicationContext()).getTrackerConductor();
-        trackerConductor.trackNotifyEvent(context, getClass().getSimpleName(),
+
+        final Application application = ((Application) context.getApplicationContext());
+
+        application.getTrackerConductor().trackNotifyEvent(context, getClass().getSimpleName(),
                 intent.getLongExtra(TaskConductor.TASK_EXTRAS_TRAINING_DATETIME_KEY, 0L));
 
-        final MemoryDao dao = ((Application) context.getApplicationContext()).getDatabase().memoryDao();
-        NotificationConductor.notifyTrainingIfNeeded(context, dao);
+        NotificationConductor.notifyTrainingIfNeeded(context, application.getDatabase().memoryDao());
 
-        final TaskConductor taskConductor = ((Application) context.getApplicationContext()).getTaskConductor();
-        taskConductor.registerTaskIfNeeded();
+        application.getTaskConductor().registerTaskIfNeeded();
     }
 }
