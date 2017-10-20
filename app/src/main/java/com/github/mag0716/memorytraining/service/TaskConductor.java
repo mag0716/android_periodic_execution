@@ -80,6 +80,7 @@ public class TaskConductor {
             ITaskRegister taskRegister = taskRegisterType.getTaskRegister();
             if (taskRegister != null && taskRegister.isAvailable(context)) {
                 this.taskRegister = taskRegister;
+                break;
             }
         }
     }
