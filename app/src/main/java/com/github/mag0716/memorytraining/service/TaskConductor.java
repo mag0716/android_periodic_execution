@@ -2,6 +2,8 @@ package com.github.mag0716.memorytraining.service;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
+import android.support.annotation.VisibleForTesting;
 
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
@@ -33,6 +35,14 @@ public class TaskConductor {
         this.context = context;
         this.memoryDao = memoryDao;
         updateTaskRegister();
+    }
+
+    @RestrictTo(value = RestrictTo.Scope.TESTS)
+    @VisibleForTesting
+    public TaskConductor(@NonNull Context context, @NonNull MemoryDao memoryDao, @NonNull ITaskRegister taskRegister) {
+        this.context = context;
+        this.memoryDao = memoryDao;
+        this.taskRegister = taskRegister;
     }
 
     /**
