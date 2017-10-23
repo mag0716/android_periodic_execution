@@ -60,7 +60,7 @@ public class ListPresenter implements IPresenter {
      * @param trainingDatetime 訓練日時
      */
     public void loadTrainingData(int category, long trainingDatetime) {
-        Timber.d("loadTrainingData : %d, %d", category, trainingDatetime);
+        Timber.d("loadTrainingData : %d, %d, %b", category, trainingDatetime, (view != null));
         disposables.add(Single.create((SingleOnSubscribe<List<Memory>>) emitter -> {
             final List<Memory> memoryList;
             if (category == TrainingViewModel.CATEGORY_ALL) {
@@ -70,11 +70,14 @@ public class ListPresenter implements IPresenter {
             } else {
                 memoryList = new ArrayList<>();
             }
+            Timber.d("loadTrainingData : before call onSuccess.");
             emitter.onSuccess(memoryList);
+            Timber.d("loadTrainingData : after call onSuccess.");
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(memoryList -> {
+                            Timber.d("loadTrainingData#onSuccess : %b", (view != null));
                             view.showMemoryList(memoryList);
                             final TrackerConductor trackerConductor = ((Application) view.getContext().getApplicationContext()).getTrackerConductor();
                             trackerConductor.trackUserInformation(Stream.of(memoryList).map(Memory::getTotalCount).count());
