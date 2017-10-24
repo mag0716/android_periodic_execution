@@ -9,6 +9,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.BaseColumns;
 import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
 import com.github.mag0716.memorytraining.util.DatetimeUtil;
@@ -28,6 +29,7 @@ public class Memory implements Parcelable {
      */
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = BaseColumns._ID)
+    @NonNull
     private long id;
 
     /**
