@@ -4,6 +4,7 @@ import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.migration.Migration;
+import android.support.annotation.NonNull;
 
 import com.github.mag0716.memorytraining.model.Memory;
 
@@ -12,7 +13,7 @@ import com.github.mag0716.memorytraining.model.Memory;
  * <p>
  * Created by mag0716 on 2017/06/03.
  */
-@Database(entities = {Memory.class}, version = 2)
+@Database(entities = {Memory.class}, version = 3)
 public abstract class ApplicationDatabase extends RoomDatabase {
 
     /**
@@ -20,8 +21,19 @@ public abstract class ApplicationDatabase extends RoomDatabase {
      */
     public static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
-        public void migrate(SupportSQLiteDatabase database) {
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE Memory ADD COLUMN total_count INTEGER NOT NULL DEFAULT 0");
+        }
+    };
+
+    /**
+     * プライマリキーに @NonNull 指定が必須になった
+     */
+    public static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            // noop
         }
     };
 
