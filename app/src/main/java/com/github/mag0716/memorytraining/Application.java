@@ -60,7 +60,7 @@ public class Application extends android.app.Application implements IConfigurati
     public ApplicationDatabase getDatabase() {
         if (database == null) {
             database = Room.databaseBuilder(this, ApplicationDatabase.class, DB_NAME)
-                    .addMigrations(ApplicationDatabase.MIGRATION_1_2)
+                    .addMigrations(ApplicationDatabase.MIGRATION_1_2, ApplicationDatabase.MIGRATION_2_3)
                     .build();
         }
         return database;
