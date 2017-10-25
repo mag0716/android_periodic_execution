@@ -1,9 +1,12 @@
 package com.github.mag0716.memorytraining.notification;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -32,6 +35,8 @@ import timber.log.Timber;
  */
 public class NotificationConductor {
 
+    private static final String NOTIFICATION_CHANNEL_ID = "TrainingNotificationChannel";
+
     /**
      * Notification 種別
      */
@@ -53,6 +58,28 @@ public class NotificationConductor {
     }
 
     private NotificationConductor() {
+    }
+
+    /**
+     * NotificationChannel を初期化
+     *
+     * @param context Context
+     */
+    public static void initChannel(@NonNull Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            final NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (notificationManager != null) {
+                if (notificationManager.getNotificationChannel(NOTIFICATION_CHANNEL_ID) == null) {
+                    final NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
+                            context.getString(R.string.notification_channel_name),
+                            NotificationManager.IMPORTANCE_DEFAULT);
+                    channel.setDescription(context.getString(R.string.notification_channel_description));
+                    channel.enableVibration(true);
+                    channel.setShowBadge(true);
+                    notificationManager.createNotificationChannel(channel);
+                }
+            }
+        }
     }
 
     /**
@@ -85,7 +112,7 @@ public class NotificationConductor {
                         notificationId,
                         intent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
-                Notification notification = new NotificationCompat.Builder(context)
+                Notification notification = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_alarm_black_24dp)
                         .setContentTitle(context.getString(R.string.notification_training_title))
                         .setContentText(context.getString(R.string.notification_training_message))
