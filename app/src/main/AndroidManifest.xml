@@ -26,6 +26,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activity.SettingActivity" />
+
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
             android:theme="@style/AppTheme.License" />
@@ -51,10 +53,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".receiver.AlarmManagerReceiver"
             android:exported="false" />
+
     </application>
 
 </manifest>

@@ -145,12 +145,14 @@ public class TrainingActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        final int groupId = menuItem.getGroupId();
+        final int menuGroupId = menuItem.getGroupId();
         final int menuId = menuItem.getItemId();
-        if (groupId == R.id.training_category) {
+        if (menuGroupId == R.id.training_category) {
             viewModel.changeCategory(menuId);
         } else {
-            if (menuId == R.id.navigation_license) {
+            if (menuId == R.id.navigation_settings) {
+                startActivity(SettingActivity.createIntent(this));
+            } else if (menuId == R.id.navigation_license) {
                 startActivity(new Intent(this, OssLicensesMenuActivity.class));
             }
         }
@@ -199,6 +201,7 @@ public class TrainingActivity extends AppCompatActivity
     /**
      * 表示状態を更新する
      */
+
     private void updateView() {
         final Fragment currentFragment = fragmentManager.findFragmentById(R.id.content);
         Timber.d("updateView : %s", currentFragment);
