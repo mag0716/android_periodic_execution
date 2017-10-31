@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="setting_api_category"
+        android:title="定期実行タスク API">
+
+        <Preference
+            android:key="setting_api_alarm_manager"
+            android:summary="全ての端末で利用できます。"
+            android:title="AlarmManager" />
+
+        <Preference
+            android:key="setting_api_gcm_network_manager"
+            android:summary="Play Services 開発者サービスが必要です"
+            android:title="GcmNetworkManager" />
+    </PreferenceCategory>
+</PreferenceScreen>
