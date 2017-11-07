@@ -22,6 +22,12 @@ public class AlarmManagerRegister implements ITaskRegister {
     }
 
     @Override
+    public boolean isResolvable(@NonNull Context context) {
+        // AlarmManager は常に利用可能
+        return false;
+    }
+
+    @Override
     public void registerTask(@NonNull Context context, @NonNull Memory memory) {
         final Intent intent = new Intent(context, AlarmManagerReceiver.class);
         intent.putExtra(TaskConductor.TASK_EXTRAS_TRAINING_DATETIME_KEY, memory.getNextTrainingDatetime());

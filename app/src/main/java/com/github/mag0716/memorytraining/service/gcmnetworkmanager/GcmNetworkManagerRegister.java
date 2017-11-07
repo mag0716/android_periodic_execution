@@ -32,6 +32,12 @@ public class GcmNetworkManagerRegister implements ITaskRegister {
     }
 
     @Override
+    public boolean isResolvable(@NonNull Context context) {
+        GoogleApiAvailability availability = GoogleApiAvailability.getInstance();
+        return availability.isUserResolvableError(availability.isGooglePlayServicesAvailable(context));
+    }
+
+    @Override
     public void registerTask(@NonNull Context context, @NonNull Memory memory) {
         final long delayMilliseconds = memory.getNextTrainingDatetime() - System.currentTimeMillis();
         final Bundle extras = new Bundle();

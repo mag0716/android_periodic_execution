@@ -13,16 +13,24 @@ public interface ITaskRegister {
     /**
      * 利用可能かどうか
      *
-     * @param context
-     * @return
+     * @param context Context
+     * @return API が利用可能かどうか
      */
     boolean isAvailable(@NonNull Context context);
 
     /**
+     * 復旧可能かどうか
+     *
+     * @param context Context
+     * @return API が利用不可の場合にユーザが操作することで利用可能になるかどうか
+     */
+    boolean isResolvable(@NonNull Context context);
+
+    /**
      * タスクの登録
      *
-     * @param context
-     * @param memory
+     * @param context Context
+     * @param memory  登録対象
      */
     void registerTask(@NonNull Context context, @NonNull Memory memory);
 }
