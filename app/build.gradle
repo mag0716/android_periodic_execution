@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 def support_lib_version = "26.1.0"
-def arch_lib_version = "1.0.0-rc1"
+def arch_lib_version = "1.0.0"
 def play_services_version = "11.4.2"
 def leakcanary_version = "1.5"
 def permission_dispatcher_version = "2.3.2"
