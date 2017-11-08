@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.service.ITaskRegister;
 import com.github.mag0716.memorytraining.service.TaskConductor;
@@ -24,6 +25,18 @@ import java.util.concurrent.TimeUnit;
 public class GcmNetworkManagerRegister implements ITaskRegister {
 
     private static final String TASK_TAG = "MemoryTask";
+
+    @NonNull
+    @Override
+    public String getName(@NonNull Context context) {
+        return context.getString(R.string.setting_api_gcmnetworkmanager_name);
+    }
+
+    @NonNull
+    @Override
+    public String getDescription(@NonNull Context context) {
+        return context.getString(R.string.setting_api_gcmnetworkmanager_description);
+    }
 
     @Override
     public boolean isAvailable(@NonNull Context context) {

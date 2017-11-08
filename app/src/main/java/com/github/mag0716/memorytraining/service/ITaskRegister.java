@@ -11,6 +11,24 @@ import com.github.mag0716.memorytraining.model.Memory;
 public interface ITaskRegister {
 
     /**
+     * 利用する API の名前を返却
+     *
+     * @param context Context
+     * @return 利用する API 名
+     */
+    @NonNull
+    String getName(@NonNull Context context);
+
+    /**
+     * 利用する API の説明を返却
+     *
+     * @param context Context
+     * @return 利用する API の説明
+     */
+    @NonNull
+    String getDescription(@NonNull Context context);
+
+    /**
      * 利用可能かどうか
      *
      * @param context Context
