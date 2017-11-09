@@ -32,9 +32,16 @@ public enum TaskRegisterType {
         return taskRegister;
     }
 
+    /**
+     * 選択可能な登録 API 一覧を返却
+     *
+     * @param context Context
+     * @return 選択可能な登録 API 一覧
+     */
     public static List<String> getRegisterNameList(@NonNull Context context) {
         return Stream.of(TaskRegisterType.values())
-                .filter(type -> type.getTaskRegister() != null)
+                // TODO: SettingApiFragment 側で復旧処理を実装したら利用不可でも復旧可能だったら選択可能にする
+                .filter(type -> type.getTaskRegister() != null && type.getTaskRegister().isAvailable(context))
                 .map(taskRegisterType -> taskRegisterType.getTaskRegister().getName(context))
                 .toList();
     }
