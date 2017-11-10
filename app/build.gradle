@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.oss.licenses.plugin'
 
 def support_lib_version = "26.1.0"
 def arch_lib_version = "1.0.0"
@@ -58,6 +59,7 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:${arch_lib_version}"
     annotationProcessor "android.arch.persistence.room:compiler:${arch_lib_version}"
     implementation "com.google.android.gms:play-services-gcm:${play_services_version}"
+    implementation "com.google.android.gms:play-services-oss-licenses:${play_services_version}"
 
     compileOnly "org.projectlombok:lombok:1.16.16"
     annotationProcessor "org.projectlombok:lombok:1.16.16"

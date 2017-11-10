@@ -28,6 +28,7 @@ import com.github.mag0716.memorytraining.presenter.TrainingPresenter;
 import com.github.mag0716.memorytraining.util.DeviceUtil;
 import com.github.mag0716.memorytraining.view.TrainingView;
 import com.github.mag0716.memorytraining.viewmodel.TrainingViewModel;
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 
 import timber.log.Timber;
 
@@ -144,7 +145,15 @@ public class TrainingActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        viewModel.changeCategory(menuItem.getItemId());
+        final int groupId = menuItem.getGroupId();
+        final int menuId = menuItem.getItemId();
+        if (groupId == R.id.training_category) {
+            viewModel.changeCategory(menuId);
+        } else {
+            if (menuId == R.id.navigation_license) {
+                startActivity(new Intent(this, OssLicensesMenuActivity.class));
+            }
+        }
         binding.drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

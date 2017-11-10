@@ -3,6 +3,9 @@
     <string name="action_settings">Settings</string>
     <string name="action_delete">削除</string>
 
+    <!-- menu -->
+    <string name="menu_license">ライセンス</string>
+
     <!-- notification -->
     <string name="notification_training_title">訓練日時になりました</string>
     <string name="notification_training_message">訓練対象データがあります。復習しましょう。</string>
