@@ -3,8 +3,6 @@ package com.github.mag0716.memorytraining.service;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
 import com.github.mag0716.memorytraining.model.Memory;
@@ -27,24 +25,16 @@ public class TaskConductor {
 
     public static final String TASK_EXTRAS_TRAINING_DATETIME_KEY = "TrainingDatetime";
 
-    private Context context;
+    private final Context context;
 
-    private MemoryDao memoryDao;
+    private final MemoryDao memoryDao;
 
     private ITaskRegister taskRegister;
 
-    public TaskConductor(@NonNull Context context, @NonNull MemoryDao memoryDao) {
+    public TaskConductor(@NonNull Context context, @NonNull MemoryDao memoryDao, @Nullable ITaskRegister taskRegister) {
         this.context = context;
         this.memoryDao = memoryDao;
-        updateTaskRegister(null);
-    }
-
-    @RestrictTo(value = RestrictTo.Scope.TESTS)
-    @VisibleForTesting
-    public TaskConductor(@NonNull Context context, @NonNull MemoryDao memoryDao, @NonNull ITaskRegister taskRegister) {
-        this.context = context;
-        this.memoryDao = memoryDao;
-        this.taskRegister = taskRegister;
+        updateTaskRegister(taskRegister);
     }
 
     /**
@@ -90,20 +80,21 @@ public class TaskConductor {
      *                     null の場合はデフォルトの ITaskRegister を利用する
      */
     public void updateTaskRegister(@Nullable ITaskRegister taskRegister) {
+        Timber.d("updateTaskRegister : %s", taskRegister);
         final ITaskRegister nextTaskRegister = taskRegister != null ? taskRegister : getDefaultTaskRegister();
 
         if (nextTaskRegister == null) {
             throw new IllegalStateException("not exists valid ITaskRegister");
         }
 
-        final String taskRegisterName = taskRegister != null ? taskRegister.getName(context) : null;
+        final String taskRegisterName = this.taskRegister != null ? this.taskRegister.getName(context) : null;
         final String nextTaskRegisterName = nextTaskRegister.getName(context);
 
         Timber.d("updateTaskRegister : %s -> %s", taskRegisterName, nextTaskRegisterName);
 
         if (!TextUtils.equals(taskRegisterName, nextTaskRegisterName)) {
             if (!TextUtils.isEmpty(taskRegisterName)) {
-                taskRegister.unregisterTask(context);
+                this.taskRegister.unregisterTask(context);
             }
             this.taskRegister = nextTaskRegister;
             registerTaskIfNeeded();
