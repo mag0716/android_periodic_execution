@@ -26,6 +26,8 @@
 
     <!-- 設定画面 -->
     <string name="setting_api_key">SettingApi</string>
+    <string name="setting_api_title">定期実行 API</string>
+    <string name="setting_api_summary">定期実行に利用する API を設定します</string>
     <string name="setting_api_alarmmanager_name">AlarmManager</string>
     <string name="setting_api_alarmmanager_description">全ての端末で利用できます</string>
     <string name="setting_api_gcmnetworkmanager_name">GcmNetworkManager</string>

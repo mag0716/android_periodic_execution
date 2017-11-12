@@ -2,8 +2,10 @@ package com.github.mag0716.memorytraining.service;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
+import android.text.TextUtils;
 
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.repository.database.MemoryDao;
@@ -34,7 +36,7 @@ public class TaskConductor {
     public TaskConductor(@NonNull Context context, @NonNull MemoryDao memoryDao) {
         this.context = context;
         this.memoryDao = memoryDao;
-        updateTaskRegister();
+        updateTaskRegister(null);
     }
 
     @RestrictTo(value = RestrictTo.Scope.TESTS)
@@ -82,17 +84,45 @@ public class TaskConductor {
     }
 
     /**
-     * 定期実行タスク登録に利用する ITaskRegsiter を更新
+     * 定期実行タスク登録に利用する ITaskRegister を更新
+     *
+     * @param taskRegister 更新後の ITaskRegister
+     *                     null の場合はデフォルトの ITaskRegister を利用する
      */
-    private void updateTaskRegister() {
-        // TODO: ITaskRegister が切り替わったら前回利用していた ITaskRegister の定期実行をキャンセルする
+    public void updateTaskRegister(@Nullable ITaskRegister taskRegister) {
+        final ITaskRegister nextTaskRegister = taskRegister != null ? taskRegister : getDefaultTaskRegister();
+
+        if (nextTaskRegister == null) {
+            throw new IllegalStateException("not exists valid ITaskRegister");
+        }
+
+        final String taskRegisterName = taskRegister != null ? taskRegister.getName(context) : null;
+        final String nextTaskRegisterName = nextTaskRegister.getName(context);
+
+        Timber.d("updateTaskRegister : %s -> %s", taskRegisterName, nextTaskRegisterName);
+
+        if (!TextUtils.equals(taskRegisterName, nextTaskRegisterName)) {
+            if (!TextUtils.isEmpty(taskRegisterName)) {
+                taskRegister.unregisterTask(context);
+            }
+            this.taskRegister = nextTaskRegister;
+            registerTaskIfNeeded();
+        }
+    }
+
+    /**
+     * デフォルトの ITaskRegister を返す
+     *
+     * @return ITaskRegister
+     */
+    private ITaskRegister getDefaultTaskRegister() {
         for (TaskRegisterType taskRegisterType : TaskRegisterType.values()) {
             ITaskRegister taskRegister = taskRegisterType.getTaskRegister();
             if (taskRegister != null && taskRegister.isAvailable(context)) {
-                this.taskRegister = taskRegister;
-                break;
+                return taskRegister;
             }
         }
+        throw new IllegalStateException("not exists valid ITaskRegister");
     }
 
     /**
@@ -101,6 +131,7 @@ public class TaskConductor {
      * @param memory 直近の訓練データ
      */
     private void registerTask(@NonNull Memory memory) {
+        Timber.d("registerTask : %s.registerTask(%s)", taskRegister, memory);
         if (taskRegister != null) {
             taskRegister.registerTask(context, memory);
         }
