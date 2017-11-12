@@ -38,6 +38,16 @@ public class TaskConductor {
     }
 
     /**
+     * 利用中の定期実行タスク登録 API を返却する
+     *
+     * @return 利用中の API
+     */
+    @NonNull
+    public ITaskRegister getTaskRegister() {
+        return taskRegister;
+    }
+
+    /**
      * 直近の訓練日時のデータがあればタスクを登録する
      */
     public void registerTaskIfNeeded() {

@@ -1,5 +1,6 @@
 package com.github.mag0716.memorytraining.fragment;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.ListPreference;
@@ -7,6 +8,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.github.mag0716.memorytraining.Application;
 import com.github.mag0716.memorytraining.R;
+import com.github.mag0716.memorytraining.service.ITaskRegister;
 import com.github.mag0716.memorytraining.service.TaskRegisterType;
 
 import java.util.List;
@@ -40,13 +42,16 @@ public class SettingApiFragment extends PreferenceFragmentCompat implements Shar
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        final Context context = getContext();
         setPreferencesFromResource(R.xml.setting_api_preferences, rootKey);
         final ListPreference listPreference = (ListPreference) findPreference(getString(R.string.setting_api_key));
         listPreference.setTitle(getString(R.string.setting_api_title));
         listPreference.setSummary(getString(R.string.setting_api_summary));
-        final List<String> taskRegisterList = TaskRegisterType.getRegisterNameList(getContext());
+        final List<String> taskRegisterList = TaskRegisterType.getRegisterNameList(context);
         listPreference.setEntries(taskRegisterList.toArray(new CharSequence[taskRegisterList.size()]));
         listPreference.setEntryValues(taskRegisterList.toArray(new CharSequence[taskRegisterList.size()]));
+        final ITaskRegister currentTaskRegister = ((Application) getActivity().getApplication()).getTaskConductor().getTaskRegister();
+        listPreference.setValue(currentTaskRegister.getName(context));
     }
 
     @Override
