@@ -105,6 +105,10 @@ class ListPresenterTest {
             registeredMemory = memory
         }
 
+        override fun unregisterTask(context: Context) {
+            registeredMemory = null
+        }
+
         override fun getName(context: Context): String {
             return "name"
         }

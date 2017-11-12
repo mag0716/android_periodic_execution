@@ -51,4 +51,11 @@ public interface ITaskRegister {
      * @param memory  登録対象
      */
     void registerTask(@NonNull Context context, @NonNull Memory memory);
+
+    /**
+     * 登録済みのタスクを解除する
+     *
+     * @param context Context
+     */
+    void unregisterTask(@NonNull Context context);
 }

@@ -52,4 +52,15 @@ public class AlarmManagerRegister implements ITaskRegister {
                     AlarmManagerReceiver.createPendingIntent(context, intent));
         }
     }
+
+    @Override
+    public void unregisterTask(@NonNull Context context) {
+        final AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager != null) {
+            alarmManager.cancel(
+                    AlarmManagerReceiver.createPendingIntent(
+                            context,
+                            new Intent(context, AlarmManagerReceiver.class)));
+        }
+    }
 }

@@ -69,4 +69,10 @@ public class GcmNetworkManagerRegister implements ITaskRegister {
                 .build();
         manager.schedule(task);
     }
+
+    @Override
+    public void unregisterTask(@NonNull Context context) {
+        final GcmNetworkManager manager = GcmNetworkManager.getInstance(context);
+        manager.cancelAllTasks(GcmNetworkManagerService.class);
+    }
 }
