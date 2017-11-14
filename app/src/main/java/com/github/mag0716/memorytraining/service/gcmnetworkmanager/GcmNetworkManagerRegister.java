@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.github.mag0716.memorytraining.R;
 import com.github.mag0716.memorytraining.model.Memory;
 import com.github.mag0716.memorytraining.service.ITaskRegister;
 import com.github.mag0716.memorytraining.service.TaskConductor;
@@ -25,10 +26,28 @@ public class GcmNetworkManagerRegister implements ITaskRegister {
 
     private static final String TASK_TAG = "MemoryTask";
 
+    @NonNull
+    @Override
+    public String getName(@NonNull Context context) {
+        return context.getString(R.string.setting_api_gcmnetworkmanager_name);
+    }
+
+    @NonNull
+    @Override
+    public String getDescription(@NonNull Context context) {
+        return context.getString(R.string.setting_api_gcmnetworkmanager_description);
+    }
+
     @Override
     public boolean isAvailable(@NonNull Context context) {
         GoogleApiAvailability availability = GoogleApiAvailability.getInstance();
         return availability.isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
+    }
+
+    @Override
+    public boolean isResolvable(@NonNull Context context) {
+        GoogleApiAvailability availability = GoogleApiAvailability.getInstance();
+        return availability.isUserResolvableError(availability.isGooglePlayServicesAvailable(context));
     }
 
     @Override
@@ -49,5 +68,11 @@ public class GcmNetworkManagerRegister implements ITaskRegister {
                 .setUpdateCurrent(true)
                 .build();
         manager.schedule(task);
+    }
+
+    @Override
+    public void unregisterTask(@NonNull Context context) {
+        final GcmNetworkManager manager = GcmNetworkManager.getInstance(context);
+        manager.cancelAllTasks(GcmNetworkManagerService.class);
     }
 }

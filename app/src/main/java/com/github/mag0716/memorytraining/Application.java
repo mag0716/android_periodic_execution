@@ -2,6 +2,8 @@ package com.github.mag0716.memorytraining;
 
 import android.annotation.SuppressLint;
 import android.arch.persistence.room.Room;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 
@@ -10,6 +12,7 @@ import com.github.mag0716.memorytraining.event.StartTrainingEvent;
 import com.github.mag0716.memorytraining.notification.NotificationConductor;
 import com.github.mag0716.memorytraining.repository.database.ApplicationDatabase;
 import com.github.mag0716.memorytraining.service.TaskConductor;
+import com.github.mag0716.memorytraining.service.TaskRegisterType;
 import com.github.mag0716.memorytraining.tracking.FirebaseTracker;
 import com.github.mag0716.memorytraining.tracking.TrackerConductor;
 import com.squareup.leakcanary.LeakCanary;
@@ -72,7 +75,10 @@ public class Application extends android.app.Application implements IConfigurati
     @Override
     public TaskConductor getTaskConductor() {
         if (taskConductor == null) {
-            taskConductor = new TaskConductor(this, getDatabase().memoryDao());
+            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            taskConductor = new TaskConductor(this,
+                    getDatabase().memoryDao(),
+                    TaskRegisterType.getTaskRegister(this, preferences.getString(getString(R.string.setting_api_key), null)));
         }
         return taskConductor;
     }

@@ -105,10 +105,25 @@ class ListPresenterTest {
             registeredMemory = memory
         }
 
+        override fun unregisterTask(context: Context) {
+            registeredMemory = null
+        }
+
+        override fun getName(context: Context): String {
+            return "name"
+        }
+
+        override fun getDescription(context: Context): String {
+            return "description"
+        }
+
         override fun isAvailable(context: Context): Boolean {
             return true
         }
 
+        override fun isResolvable(context: Context): Boolean {
+            return true;
+        }
     }
 
     lateinit var presenter: ListPresenter

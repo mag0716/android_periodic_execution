@@ -23,4 +23,13 @@
     <string name="edit_save_button_name">保存</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- 設定画面 -->
+    <string name="setting_api_key">SettingApi</string>
+    <string name="setting_api_title">定期実行 API</string>
+    <string name="setting_api_summary">定期実行に利用する API を設定します</string>
+    <string name="setting_api_alarmmanager_name">AlarmManager</string>
+    <string name="setting_api_alarmmanager_description">全ての端末で利用できます</string>
+    <string name="setting_api_gcmnetworkmanager_name">GcmNetworkManager</string>
+    <string name="setting_api_gcmnetworkmanager_description">Play Services 開発者サービスが必要です</string>
 </resources>
