@@ -15,7 +15,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
+/* ktlint-disable no-wildcard-imports */
 import java.util.*
+/* ktlint-disable no-wildcard-imports */
 import java.util.concurrent.TimeUnit
 
 /**
@@ -122,5 +124,4 @@ class MemoryDaoTest {
         testSubscriber.assertError(IllegalStateException::class.java)
     }
     // endregion
-
 }
