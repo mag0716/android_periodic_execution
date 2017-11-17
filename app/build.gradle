@@ -53,7 +53,7 @@ ktlint {
     verbose = true
     android = true
     reporter = "checkstyle"
-    ignoreFailures = true
+    ignoreFailures = false
 }
 
 dependencies {
