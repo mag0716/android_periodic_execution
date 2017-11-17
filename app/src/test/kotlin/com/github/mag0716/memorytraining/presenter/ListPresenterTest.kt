@@ -122,7 +122,7 @@ class ListPresenterTest {
         }
 
         override fun isResolvable(context: Context): Boolean {
-            return true;
+            return true
         }
     }
 
@@ -149,5 +149,4 @@ class ListPresenterTest {
     @Test
     fun test() {
     }
-
 }

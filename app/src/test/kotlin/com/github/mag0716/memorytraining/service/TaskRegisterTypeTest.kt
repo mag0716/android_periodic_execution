@@ -17,7 +17,6 @@ import org.robolectric.annotation.Config
 import org.robolectric.shadow.api.Shadow
 import org.robolectric.shadows.gms.common.ShadowGoogleApiAvailability
 
-
 /**
  * Created by mag0716 on 2017/11/08.
  */

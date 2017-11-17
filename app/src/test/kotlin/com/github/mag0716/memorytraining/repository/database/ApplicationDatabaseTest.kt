@@ -75,7 +75,7 @@ class ApplicationDatabaseTest {
             }
         }
 
-        db.close();
+        db.close()
 
         val migratedDb = helper.runMigrationsAndValidate(DB_NAME, 2, false, ApplicationDatabase.MIGRATION_1_2)
 

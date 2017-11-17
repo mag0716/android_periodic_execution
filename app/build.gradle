@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: "org.jlleitschuh.gradle.ktlint"
 apply plugin: 'com.google.gms.oss.licenses.plugin'
 
 def support_lib_version = "26.1.0"
@@ -44,6 +45,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+ktlint {
+    version = "0.12.1"
+    debug = true
+    verbose = true
+    android = true
+    reporter = "checkstyle"
+    ignoreFailures = false
 }
 
 dependencies {

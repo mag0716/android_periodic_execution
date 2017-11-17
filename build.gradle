@@ -18,6 +18,7 @@ buildscript {
         // in the individual module build.gradle files
         classpath 'com.google.gms:google-services:3.1.0'
         classpath 'com.google.gms:oss-licenses:0.9.1'
+        classpath "gradle.plugin.org.jlleitschuh.gradle:ktlint-gradle:2.3.0"
     }
 }
 

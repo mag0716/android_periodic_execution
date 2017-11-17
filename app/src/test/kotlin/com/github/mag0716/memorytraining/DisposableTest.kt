@@ -8,7 +8,9 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subscribers.DisposableSubscriber
 import org.hamcrest.core.Is.`is`
 import org.junit.After
+/* ktlint-disable no-wildcard-imports */
 import org.junit.Assert.*
+/* ktlint-disable no-wildcard-imports */
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.TimeUnit
@@ -48,14 +50,12 @@ class DisposableTest {
             override fun onComplete() {
                 isCompleted = true
             }
-
         }
         val disposable: Disposable = Flowable.interval(1, TimeUnit.SECONDS).subscribeWith(subscriber)
         compositeDisposable.add(disposable)
 
-
         Thread.sleep(1500)
-        compositeDisposable.clear();
+        compositeDisposable.clear()
         Thread.sleep(1500)
 
         assertTrue(subscriber.isDisposed)
