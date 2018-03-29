@@ -3,19 +3,19 @@ apply plugin: 'kotlin-android'
 apply plugin: "org.jlleitschuh.gradle.ktlint"
 apply plugin: 'com.google.gms.oss.licenses.plugin'
 
-def support_lib_version = "26.1.0"
+def support_lib_version = "27.1.0"
 def arch_lib_version = "1.0.0"
 def play_services_version = "11.4.2"
 def leakcanary_version = "1.5"
 def permission_dispatcher_version = "3.0.1"
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.github.mag0716.memorytraining"
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
