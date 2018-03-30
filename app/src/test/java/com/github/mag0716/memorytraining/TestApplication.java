@@ -6,4 +6,9 @@ public class TestApplication extends Application {
     protected void setUpTracker() {
         // テスト実行時には不要なのでトラッキングは無効化する
     }
+
+    @Override
+    protected void setUpLeakCanary() {
+        // テスト実行時は不要なのでLeakCanaryは初期化しない
+    }
 }

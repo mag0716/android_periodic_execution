@@ -43,10 +43,7 @@ public class Application extends android.app.Application implements IConfigurati
     @Override
     public void onCreate() {
         super.onCreate();
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        LeakCanary.install(this);
+        setUpLeakCanary();
         // TODO: ログ出力を抑制する
         Timber.plant(new Timber.DebugTree());
         startTrainingEventBus = new EventBus<>();
@@ -96,5 +93,13 @@ public class Application extends android.app.Application implements IConfigurati
     @RestrictTo(RestrictTo.Scope.SUBCLASSES)
     protected void setUpTracker() {
         trackerConductor.addTracker(new FirebaseTracker(this));
+    }
+
+    @RestrictTo(RestrictTo.Scope.SUBCLASSES)
+    protected void setUpLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(this);
     }
 }
