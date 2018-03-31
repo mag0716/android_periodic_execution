@@ -1,6 +1,8 @@
 package com.github.mag0716.memorytraining.repository.database
 
 import android.arch.persistence.room.Room
+import android.support.test.InstrumentationRegistry
+import android.support.test.runner.AndroidJUnit4
 import com.github.mag0716.memorytraining.model.Memory
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -13,17 +15,13 @@ import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.RuntimeEnvironment
-/* ktlint-disable no-wildcard-imports */
 import java.util.*
-/* ktlint-disable no-wildcard-imports */
 import java.util.concurrent.TimeUnit
 
 /**
  * Created by mag0716 on 2017/06/28.
  */
-@RunWith(RobolectricTestRunner::class)
+@RunWith(AndroidJUnit4::class)
 class MemoryDaoTest {
 
     val TIMEOUT = 5L
@@ -33,7 +31,7 @@ class MemoryDaoTest {
 
     @Before
     fun setup() {
-        db = Room.inMemoryDatabaseBuilder(RuntimeEnvironment.application, ApplicationDatabase::class.java).build()
+        db = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(), ApplicationDatabase::class.java).build()
         dao = db.memoryDao()
 
         val testSubscriber = TestSubscriber<List<Memory>>()
